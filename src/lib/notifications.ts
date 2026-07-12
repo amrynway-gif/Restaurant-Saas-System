@@ -36,7 +36,7 @@ export function renderPointsBalanceSmsTemplate(params: {
   pointsBalance: number;
   publicLink: string | null;
 }): string {
-  const name = params.customerName?.trim() || "عميلنا";
-  const linkLine = params.publicLink ? `\nراجع نقاطك وسجلّك: ${params.publicLink}` : "";
-  return `مرحبًا ${name}، لديك الآن ${params.pointsBalance} نقطة.${linkLine}`;
+  const name = params.customerName?.trim() || "Unser Kunde";
+  const linkLine = params.publicLink ? `Geben Du Ihren Punkteverlauf zurück: ${params.publicLink}` : "";
+  return `Hallo A ${name}, ich habe jetzt ${params.pointsBalance} ein Punkt.${linkLine}`;
 }

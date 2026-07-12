@@ -1,10 +1,7 @@
 import QRCode from "qrcode";
 import { NextResponse } from "next/server";
 
-/**
- * يولّد صورة PNG لرمز QR — استخدم في src للطباعة: /api/qr?data=...
- * المعطى data يجب أن يكون الرابط الكامل لصفحة المنيو (مع رمز الطاولة إن وُجد).
- */
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const data = searchParams.get("data");

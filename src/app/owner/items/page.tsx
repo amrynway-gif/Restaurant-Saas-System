@@ -3,8 +3,8 @@ import { getCategories, getMenuItems } from "@/app/actions/admin-items";
 import { AdminItemsManager } from "@/app/admin/items/admin-items-manager";
 
 export const metadata = {
-  title: "أصناف القائمة | لوحة المطعم",
-  description: "إدارة أصناف القائمة",
+  title: "Menüelemente | Restauranttafel",
+  description: "Menüpunkte verwalten",
 };
 
 export default async function OwnerItemsPage() {
@@ -19,9 +19,9 @@ export default async function OwnerItemsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold tracking-tight">أصناف القائمة</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">Menüpunkte</h2>
         <p className="text-muted-foreground">
-          إضافة وتعديل وحذف الأصناف، مع دعم السعر الأساسي والعملة الثانية عند التفعيل.
+          Hinzufügen, Ändern und Löschen von Artikeln, mit Unterstützung des Grundpreises und der zweiten Währung bei Aktivierung.
         </p>
       </div>
       <AdminItemsManager

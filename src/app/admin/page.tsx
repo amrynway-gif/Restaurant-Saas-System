@@ -19,19 +19,15 @@ import { AdminDashboardCharts } from "./admin-dashboard-charts";
 import { OwnerDashboardCharts } from "@/app/owner/owner-dashboard-charts";
 
 export const metadata = {
-  title: "لوحة التحكم",
-  description: "نظرة عامة",
+  title: "Bedienfeld",
+  description: "Überblick",
 };
 
-/** زر أساسي — DESIGN_SYSTEM */
+
 const btnPrimary =
   "inline-flex h-[38px] items-center justify-center rounded-[var(--radius-md)] bg-[var(--brand)] px-4 text-sm font-semibold text-white transition-[background,transform] hover:bg-[var(--brand-dark)] active:scale-[0.98]";
 
-/**
- * نفس المسار /admin يعرض محتوى مختلف حسب الـ subdomain:
- * - بدون subdomain → لوحة مالك النظام (Super Admin)
- * - مع subdomain → لوحة المطعم (Restaurant Admin)
- */
+
 export default async function AdminDashboardPage() {
   const tenant = await getIdentifiedRestaurant();
 
@@ -45,10 +41,10 @@ export default async function AdminDashboardPage() {
       <div className="space-y-8 page-enter">
         <div>
           <h1 className="text-[32px] font-bold leading-tight text-[var(--text-primary)]">
-            نظرة عامة
+            Überblick
           </h1>
           <p className="mt-1 text-base text-[var(--text-secondary)]">
-            إحصائيات النظام والمطاعم. إضافة وتحرير المطاعم وإنشاء مستخدمين للمطاعم.
+            System- und Restaurantstatistiken. Füge Restaurants hinzu, bearbeite sie und erstelle Restaurantbenutzer.
           </p>
         </div>
 
@@ -58,33 +54,33 @@ export default async function AdminDashboardPage() {
             <div className="stat-icon">
               <Building2Icon className="size-5" />
             </div>
-            <div className="stat-label">إجمالي المطاعم</div>
+            <div className="stat-label">Insgesamt Restaurants</div>
             <div className="stat-value">{stats.totalRestaurants}</div>
-            <p className="text-[13px] text-[var(--text-muted)]">جميع المطاعم المسجلة</p>
+            <p className="text-[13px] text-[var(--text-muted)]">Alle registrierten Restaurants</p>
           </div>
           <div className="stat-card card-enter">
             <div className="stat-icon">
               <TrendingUpIcon className="size-5" />
             </div>
-            <div className="stat-label">المطاعم النشطة</div>
+            <div className="stat-label">Aktive Restaurants</div>
             <div className="stat-value">{stats.activeRestaurants}</div>
-            <p className="text-[13px] text-[var(--text-muted)]">نشط أو تجريبي</p>
+            <p className="text-[13px] text-[var(--text-muted)]">Aktiv oder experimentell</p>
           </div>
           <div className="stat-card card-enter">
             <div className="stat-icon">
               <UtensilsCrossedIcon className="size-5" />
             </div>
-            <div className="stat-label">أصناف القوائم</div>
+            <div className="stat-label">Listentypen</div>
             <div className="stat-value">{stats.totalMenuItems}</div>
-            <p className="text-[13px] text-[var(--text-muted)]">عبر جميع المطاعم</p>
+            <p className="text-[13px] text-[var(--text-muted)]">In allen Restaurants</p>
           </div>
           <div className="stat-card card-enter">
             <div className="stat-icon">
               <DollarSignIcon className="size-5" />
             </div>
-            <div className="stat-label">الإيرادات الشهرية</div>
+            <div className="stat-label">Monatlicher Umsatz</div>
             <div className="stat-value">—</div>
-            <p className="text-[13px] text-[var(--text-muted)]">قريباً</p>
+            <p className="text-[13px] text-[var(--text-muted)]">fast</p>
           </div>
         </div>
 
@@ -94,28 +90,28 @@ export default async function AdminDashboardPage() {
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-2xl font-semibold leading-tight text-[var(--text-primary)]">
-              أحدث المطاعم
+              Neueste Restaurants
             </h2>
             <Link href="/admin/restaurants" className={btnPrimary}>
-              عرض الكل
+              Alle anzeigen
             </Link>
           </div>
           <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-surface)] shadow-[var(--shadow-sm)]">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--bg-surface-2)] text-[11px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                  <th className="p-4 text-right">الاسم</th>
-                  <th className="p-4 text-right">النطاق الفرعي</th>
-                  <th className="p-4 text-right">اسم المستخدم</th>
-                  <th className="p-4 text-right">الحالة</th>
-                  <th className="p-4 text-right">التاريخ</th>
+                  <th className="p-4 text-left">der Name</th>
+                  <th className="p-4 text-left">Subdomain</th>
+                  <th className="p-4 text-left">Benutzername</th>
+                  <th className="p-4 text-left">der Zustand</th>
+                  <th className="p-4 text-left">das Datum</th>
                 </tr>
               </thead>
               <tbody>
                 {recentRestaurants.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="p-8 text-center text-[var(--text-muted)]">
-                      لا توجد مطاعم بعد. أضف مطعم من الإجراءات السريعة.
+                      Es gibt noch keine Restaurants. Füge ein Restaurant über Schnellaktionen hinzu.
                     </td>
                   </tr>
                 ) : (
@@ -144,10 +140,10 @@ export default async function AdminDashboardPage() {
                           }`}
                         >
                           {r.status === "active" || !r.status
-                            ? "نشط"
+                            ? "aktiv"
                             : r.status === "trial"
-                              ? "تجريبي"
-                              : "موقوف"}
+                              ? "Experimental-"
+                              : "Ausgesetzt"}
                         </span>
                       </td>
                       <td className="p-4 text-[var(--text-muted)]">
@@ -166,20 +162,20 @@ export default async function AdminDashboardPage() {
         {/* Quick Actions — DESIGN_SYSTEM */}
         <section className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-sm)]">
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-            إجراءات سريعة
+            Schnelle Aktionen
           </h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
-            إدارة المطاعم وإنشاء مستخدمين للمطاعم.
+            Verwalte Restaurants und erstelle Benutzer für Restaurants.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <Link href="/admin/restaurants" className={btnPrimary}>
-              إضافة مطعم جديد
+              Füge ein neues Restaurant hinzu
             </Link>
             <Link
               href="/admin/restaurants"
               className="inline-flex h-[38px] items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-surface-2)] px-4 text-sm font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-overlay)]"
             >
-              عرض جميع المطاعم
+              Alle Restaurants ansehen
             </Link>
           </div>
         </section>
@@ -187,10 +183,10 @@ export default async function AdminDashboardPage() {
         {/* Activity Feed placeholder */}
         <section className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-sm)]">
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-            آخر النشاط
+            Letzte Aktivität
           </h2>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
-            آخر المطاعم المسجلة والاشتراكات — قريباً.
+            Neueste registrierte Restaurants und Abonnements – bald verfügbar.
           </p>
         </section>
       </div>
@@ -205,10 +201,10 @@ export default async function AdminDashboardPage() {
     <div className="space-y-8 page-enter">
       <div>
         <h1 className="text-[32px] font-bold leading-tight text-[var(--text-primary)]">
-          نظرة عامة
+          Überblick
         </h1>
         <p className="mt-1 text-base text-[var(--text-secondary)]">
-          القائمة والمطعم في لمحة. إدارة التصنيفات والأصناف أدناه.
+          Speisekarte und Restaurant auf einen Blick. Verwalte unten Kategorien und Kategorien.
         </p>
       </div>
 
@@ -218,33 +214,33 @@ export default async function AdminDashboardPage() {
           <div className="stat-icon">
             <ShoppingBagIcon className="size-5" />
           </div>
-          <div className="stat-label">طلبات اليوم</div>
+          <div className="stat-label">Die heutigen Bestellungen</div>
           <div className="stat-value">—</div>
-          <p className="text-[13px] text-[var(--text-muted)]">قريباً</p>
+          <p className="text-[13px] text-[var(--text-muted)]">fast</p>
         </div>
         <div className="stat-card card-enter">
           <div className="stat-icon">
             <DollarSignIcon className="size-5" />
           </div>
-          <div className="stat-label">إيرادات اليوم</div>
+          <div className="stat-label">Der heutige Umsatz</div>
           <div className="stat-value">—</div>
-          <p className="text-[13px] text-[var(--text-muted)]">قريباً</p>
+          <p className="text-[13px] text-[var(--text-muted)]">fast</p>
         </div>
         <div className="stat-card card-enter">
           <div className="stat-icon">
             <UtensilsCrossedIcon className="size-5" />
           </div>
-          <div className="stat-label">أصناف المنيو</div>
+          <div className="stat-label">Menüpunkte</div>
           <div className="stat-value">{stats.menuItemsCount}</div>
-          <p className="text-[13px] text-[var(--text-muted)]">إجمالي الأصناف</p>
+          <p className="text-[13px] text-[var(--text-muted)]">Gesamtzahl der Artikel</p>
         </div>
         <div className="stat-card card-enter">
           <div className="stat-icon">
             <StarIcon className="size-5" />
           </div>
-          <div className="stat-label">متوسط التقييم</div>
+          <div className="stat-label">Durchschnittliche Bewertung</div>
           <div className="stat-value">—</div>
-          <p className="text-[13px] text-[var(--text-muted)]">قريباً</p>
+          <p className="text-[13px] text-[var(--text-muted)]">fast</p>
         </div>
       </div>
 
@@ -254,27 +250,27 @@ export default async function AdminDashboardPage() {
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-sm)]">
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-            التصنيفات
+            Kategorien
           </h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
-            {stats.categoriesCount} تصنيف
+            {stats.categoriesCount} Einstufung
           </p>
           <Link
             href="/admin/categories"
             className={btnPrimary + " mt-4 inline-block"}
           >
-            إدارة التصنيفات
+            Kategorienverwaltung
           </Link>
         </div>
         <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-sm)]">
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-            أصناف المنيو
+            Menüpunkte
           </h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
-            {stats.menuItemsCount} صنف
+            {stats.menuItemsCount} Klassifizieren
           </p>
           <Link href="/admin/menu" className={btnPrimary + " mt-4 inline-block"}>
-            إدارة أصناف المنيو
+            Menüpunkte verwalten
           </Link>
         </div>
       </div>
@@ -282,20 +278,20 @@ export default async function AdminDashboardPage() {
       {/* Recent Orders placeholder */}
       <section className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-sm)]">
         <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-          الطلبات الأخيرة
+          Letzte Bestellungen
         </h2>
         <p className="mt-2 text-sm text-[var(--text-muted)]">
-          آخر الطلبات الواردة — قريباً.
+          Aktuelle Bestellungen eingegangen – bald verfügbar.
         </p>
       </section>
 
       {/* Popular Items placeholder */}
       <section className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-sm)]">
         <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-          أكثر الأصناف طلباً
+          Am häufigsten nachgefragte Artikel
         </h2>
         <p className="mt-2 text-sm text-[var(--text-muted)]">
-          رسم بياني بسيط — قريباً.
+          Einfaches Diagramm – bald verfügbar.
         </p>
       </section>
     </div>

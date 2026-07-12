@@ -16,9 +16,9 @@ import { CustomerPhoneActions } from "./customer-phone-actions";
 import { OrderThermalPrintButton } from "./order-thermal-print-button";
 
 const FULFILLMENT_LABELS: Record<string, string> = {
-  dine_in: "داخل المطعم",
-  pickup: "استلام",
-  delivery: "توصيل",
+  dine_in: "Im Restaurant",
+  pickup: "zu empfangen",
+  delivery: "Lieferung",
 };
 
 type Props = {
@@ -34,10 +34,10 @@ type Props = {
   subdomain: string;
   publicBaseUrl: string;
   restaurantName: string;
-  /** تطبيق خصم النقاط من لوحة المالك */
+  
   onOwnerApplyLoyaltyRedeem?: (orderId: string) => void | Promise<void>;
   ownerRedeeming?: boolean;
-  /** عند التفعيل: اختيار الويتر المسؤول من البطاقة */
+  
   waitersSystemEnabled?: boolean;
   waitersForFilter?: { id: string; name: string }[];
   onAssignWaiter?: (orderId: string, waiterId: string | null) => void | Promise<void>;
@@ -109,7 +109,7 @@ export function OrderCard({
             </span>
           </p>
           <div className="space-y-0.5 text-sm">
-            <p className="text-xs font-medium text-muted-foreground">جوال الزبون</p>
+            <p className="text-xs font-medium text-muted-foreground">Mobiltelefon des Kunden</p>
             <CustomerPhoneActions
               phoneCountryPrefix={phoneCountryPrefix}
               customerPhone={o.customer_phone}
@@ -121,11 +121,11 @@ export function OrderCard({
             />
             <p className="text-muted-foreground">
               {FULFILLMENT_LABELS[o.fulfillment] ?? o.fulfillment}
-              {o.table_label ? ` — الطاولة: ${o.table_label}` : ""}
+              {o.table_label ? ` — Tisch: ${o.table_label}` : ""}
             </p>
             {waitersSystemEnabled && o.fulfillment === "dine_in" ? (
               <div className="space-y-1.5 pt-1">
-                <p className="text-xs font-medium text-muted-foreground">الويتر المسؤول</p>
+                <p className="text-xs font-medium text-muted-foreground">Der verantwortliche Twitter</p>
                 {waitersForFilter.length > 0 ? (
                   <select
                     className="w-full max-w-xs rounded-lg border border-input bg-background px-2 py-2 text-sm font-medium"
@@ -134,10 +134,10 @@ export function OrderCard({
                     onChange={(e) =>
                       onAssignWaiter?.(o.id, e.target.value ? e.target.value : null)
                     }
-                    aria-label="تعيين الويتر"
+                    aria-label="Stelle die Luftfeuchtigkeit ein"
                   >
                     <option value="">
-                      — تلقائي (ويتر الطاولة إن وُجد) —
+                      — Automatisch (Tischnässe falls verfügbar) —
                     </option>
                     {waitersForFilter.map((w) => (
                       <option key={w.id} value={w.id}>
@@ -147,26 +147,26 @@ export function OrderCard({
                   </select>
                 ) : (
                   <p className="text-xs text-amber-800 dark:text-amber-200">
-                    أضف أسماء الويترز من الإعدادات لتعيينهم هنا.
+                    Füge die Twitter-Namen aus den Einstellungen hinzu, um sie hier festzulegen.
                   </p>
                 )}
               </div>
             ) : null}
             {o.delivery_address ? (
-              <p className="text-xs leading-relaxed text-muted-foreground">العنوان: {o.delivery_address}</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">die Adresse: {o.delivery_address}</p>
             ) : null}
           </div>
           <ul className="space-y-1 border-t border-border/50 pt-2 text-sm">
             {previewItems.map((i) => (
               <li key={i.id} className="flex justify-between gap-2">
                 <span className="min-w-0 truncate font-medium">
-                  {i.menu_item_name ?? "صنف"}
+                  {i.menu_item_name ?? "Klassifizieren"}
                   {i.price_option_label ? ` (${i.price_option_label})` : ""} × {i.quantity}
                 </span>
               </li>
             ))}
             {more > 0 ? (
-              <li className="text-xs text-muted-foreground">+ {more} أصناف أخرى</li>
+              <li className="text-xs text-muted-foreground">+ {more} Andere Artikel</li>
             ) : null}
           </ul>
         </div>
@@ -174,21 +174,21 @@ export function OrderCard({
         <div className="flex shrink-0 flex-col items-stretch gap-2 sm:items-end">
           <div
             className="w-full min-w-[200px] rounded-xl border border-border/90 bg-muted/35 px-3 py-2.5 sm:max-w-[240px]"
-            dir="rtl"
+            dir="ltr"
           >
             <p className="text-center text-[10px] font-semibold tracking-wide text-muted-foreground">
-              ملخص المبلغ
+              Betragsübersicht
             </p>
             <div className="mt-2 space-y-1.5 text-[12px]">
               <div className="flex w-full items-center justify-between gap-2">
-                <span className="text-muted-foreground">مجموع الأصناف</span>
+                <span className="text-muted-foreground">Gesamtzahl der Artikel</span>
                 <span dir="ltr" className="shrink-0 tabular-nums text-foreground">
                   {formatMenuPrice(subtotal, currencyCode)}
                 </span>
               </div>
               {ownerDisc > 0 ? (
                 <div className="flex w-full items-center justify-between gap-2 text-sky-800 dark:text-sky-300/95">
-                  <span>خصم خاص</span>
+                  <span>Sonderrabatt</span>
                   <span dir="ltr" className="shrink-0 tabular-nums">
                     −{formatMenuPrice(ownerDisc, currencyCode)}
                   </span>
@@ -197,7 +197,7 @@ export function OrderCard({
               {loyaltyDisc > 0 ? (
                 <div className="flex w-full items-center justify-between gap-2 text-emerald-700 dark:text-emerald-400">
                   <span>
-                    خصم نقاط الولاء
+                    Rabatt auf Treuepunkte
                     <span className="ms-1 tabular-nums" dir="ltr">
                       ({o.loyalty_points_used ?? 0})
                     </span>
@@ -210,14 +210,14 @@ export function OrderCard({
                 <div className="space-y-2">
                   {o.customer_loyalty_points_balance > 0 ? (
                     <p className="text-center text-[10px] text-muted-foreground">
-                      رصيد نقاط الزبون:{" "}
+                      Kundenpunktestand:{" "}
                       <span className="font-semibold tabular-nums text-foreground" dir="ltr">
                         {o.customer_loyalty_points_balance}
                       </span>
                     </p>
                   ) : (
                     <p className="text-center text-[10px] text-muted-foreground">
-                      لا يوجد رصيد نقاط للزبون حالياً.
+                      Für den Kunden besteht derzeit kein Punkteguthaben.
                     </p>
                   )}
                   {o.owner_can_apply_loyalty_redeem && onOwnerApplyLoyaltyRedeem ? (
@@ -230,23 +230,23 @@ export function OrderCard({
                       onClick={() => void onOwnerApplyLoyaltyRedeem(o.id)}
                     >
                       {ownerRedeeming
-                        ? "جاري تطبيق الخصم…"
-                        : `تطبيق خصم النقاط على الطلب (حتى −${formatMenuPrice(o.owner_redeem_max_discount_cents, currencyCode)})`}
+                        ? "Rabatt wird angewendet..."
+                        : `Punkterabatt anwenden (bis zu −${formatMenuPrice(o.owner_redeem_max_discount_cents, currencyCode)})`}
                     </Button>
                   ) : loyaltyDisc === 0 && o.customer_loyalty_points_balance > 0 ? (
                     <p className="text-center text-[10px] leading-relaxed text-muted-foreground">
-                      لا يمكن تطبيق خصم على هذا الطلب (مثلاً مبلغ أصناف أقل من قيمة نقطة، أو طلب ملغى).
+                      Auf diese Bestellung kann kein Rabatt gewährt werden (z. B. ein Artikelbetrag unter einem Punktwert oder eine stornierte Bestellung).
                     </p>
                   ) : null}
                   {pointsEarnedOnOrder > 0 ? (
                     <p className="text-center text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
-                      +{pointsEarnedOnOrder} نقطة مكتسبة من هذا الطلب
+                      +{pointsEarnedOnOrder} Durch diese Anfrage erhaltener Punkt
                     </p>
                   ) : null}
                 </div>
               )}
               <div className="flex w-full items-center justify-between gap-2 border-t border-border/70 pt-2 text-sm font-bold text-foreground">
-                <span>المستحق</span>
+                <span>Das Fällige</span>
                 <span dir="ltr" className="shrink-0 tabular-nums text-base">
                   {formatMenuPrice(payable, currencyCode)}
                 </span>
@@ -273,11 +273,11 @@ export function OrderCard({
             ) : null}
             {o.status === "ready" ? (
               <p className="text-center text-xs text-blue-200/90 sm:text-end">
-                الطلب جاهز — يمكن للعميل الاستلام أو التواصل عبر الأزرار أعلاه.
+                Die Bestellung ist fertig – der Kunde kann sie abholen oder über die Schaltflächen oben Kontakt mit uns aufnehmen.
               </p>
             ) : null}
             <label className="flex items-center gap-2 text-xs text-muted-foreground sm:flex-col sm:items-end">
-              <span className="sr-only">تحديث الحالة</span>
+              <span className="sr-only">Statusaktualisierung</span>
               <select
                 className="max-w-full rounded-lg border border-input bg-background px-2 py-2 text-sm font-medium"
                 value={o.status}
@@ -304,7 +304,7 @@ export function OrderCard({
                 onClick={onOpenDetails}
                 className="text-sm font-medium text-primary underline-offset-4 hover:underline"
               >
-                عرض التفاصيل
+                Details anzeigen
               </button>
             </div>
           </div>

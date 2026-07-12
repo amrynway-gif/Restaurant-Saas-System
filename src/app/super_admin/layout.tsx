@@ -1,4 +1,4 @@
-import { getSuperAdminProfileOrRedirectWithLoginMode } from "@/app/actions/auth";
+import { getSuperAdminProfileOrRedirect } from "@/app/actions/auth";
 import { AdminShell } from "@/app/admin/admin-shell";
 
 export const metadata = {
@@ -11,7 +11,7 @@ export default async function SuperAdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await getSuperAdminProfileOrRedirectWithLoginMode("email");
+  await getSuperAdminProfileOrRedirect();
   return <AdminShell>{children}</AdminShell>;
 }
 

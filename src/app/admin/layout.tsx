@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { getRestaurantBySubdomain } from "@/app/actions/menu";
 import { resolveAdminTenant } from "@/lib/admin-resolve-tenant";
 import {
-  getSuperAdminProfileOrRedirectWithLoginMode,
+  getSuperAdminProfileOrRedirect,
   getProfileForRestaurantAdminOrRedirect,
   getRestaurantForProfile,
 } from "@/app/actions/auth";
@@ -16,15 +16,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const tenant = await resolveAdminTenant();
   if (!tenant) {
     return {
-      title: "لوحة التحكم",
-      description: "إدارة النظام أو المطعم",
+      title: "Bedienfeld",
+      description: "System- oder Restaurantmanagement",
     };
   }
   const { data: restaurant } = await getRestaurantBySubdomain(tenant.subdomain);
   const logoUrl = restaurant?.logo_url?.trim();
   return {
-    title: restaurant ? `لوحة التحكم — ${restaurant.name}` : "لوحة التحكم",
-    description: "إدارة النظام أو المطعم",
+    title: restaurant ? `Bedienfeld — ${restaurant.name}` : "Bedienfeld",
+    description: "System- oder Restaurantmanagement",
     ...(logoUrl
       ? {
           icons: {
@@ -36,11 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/**
- * توجيه /admin حسب الـ subdomain (حسب SYSTEM_CONTEXT.md):
- * - localhost:3000/admin (بدون subdomain) → لوحة مالك النظام (Super Admin)
- * - almankal.localhost:3000/admin (مع subdomain) → لوحة تحكم المطعم
- */
+
 export default async function AdminLayout({
   children,
 }: {
@@ -49,12 +45,12 @@ export default async function AdminLayout({
   const tenant = await resolveAdminTenant();
 
   if (!tenant) {
-    // بدون subdomain = منطقة Super Admin فقط
-    await getSuperAdminProfileOrRedirectWithLoginMode("username");
+    
+    await getSuperAdminProfileOrRedirect();
     return <AdminShell>{children}</AdminShell>;
   }
 
-  // مع subdomain = لوحة تحكم المطعم — التحقق من أن المستخدم مالك هذا المطعم
+  
   const profile = await getProfileForRestaurantAdminOrRedirect(tenant.id);
 
   const restaurant = await getRestaurantForProfile(profile);
@@ -69,11 +65,11 @@ export default async function AdminLayout({
 
   return (
     <AdminRestaurantShell
-      restaurantName={restaurant?.name ?? "المطعم"}
+      restaurantName={restaurant?.name ?? "Das Restaurant"}
       restaurantId={restaurant?.id ?? null}
       livePreviewUrl={livePreviewUrl}
       logoUrl={restaurant?.logo_url ?? null}
-      profile={{ name: "صاحب المطعم", role: "owner" }}
+      profile={{ name: "Restaurantbesitzer", role: "owner" }}
     >
       {children}
     </AdminRestaurantShell>

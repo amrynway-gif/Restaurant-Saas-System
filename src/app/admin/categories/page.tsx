@@ -5,11 +5,11 @@ import { getCategoriesForRestaurant } from "@/app/actions/admin-categories";
 import { CategoriesManager } from "@/app/admin/categories/categories-manager";
 
 export const metadata = {
-  title: "التصنيفات | لوحة المطعم",
-  description: "إدارة تصنيفات القائمة",
+  title: "Kategorien | Restauranttafel",
+  description: "Listenkategorien verwalten",
 };
 
-/** صفحة لوحة المطعم فقط — عند الدخول بدون subdomain نوجّه إلى /admin */
+
 export default async function AdminCategoriesPage() {
   const tenant = await getIdentifiedRestaurant();
   if (!tenant) redirect("/admin");
@@ -21,9 +21,9 @@ export default async function AdminCategoriesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold tracking-tight">التصنيفات</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">Kategorien</h2>
         <p className="text-muted-foreground">
-          تنظيم القائمة (مثلاً: مقبلات، أطباق رئيسية، مشروبات).
+          Organisation des Menüs (zum Beispiel: Vorspeisen, Hauptgerichte, Getränke).
         </p>
       </div>
       <CategoriesManager

@@ -3,10 +3,7 @@ import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { ensureEnvLoaded } from "@/lib/load-env";
 
-/**
- * للتشخيص فقط: يوضح هل متغيرات البيئة مُحمّلة.
- * احذف هذا الملف أو عطّل المسار في الإنتاج.
- */
+
 export async function GET() {
   ensureEnvLoaded();
   const env = {

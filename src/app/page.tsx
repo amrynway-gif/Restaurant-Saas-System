@@ -18,7 +18,7 @@ function subdomainFromHost(host: string): string | null {
   return null;
 }
 
-/** استنتاج المطعم من الهيدرات أو من الـ host (مثل almankal.localhost). */
+
 async function resolveTenant(): Promise<{ id: string; subdomain: string } | null> {
   let tenant = await getIdentifiedRestaurant();
   if (tenant) return tenant;
@@ -36,9 +36,9 @@ export async function generateMetadata() {
     if (restaurant) return { title: `${restaurant.name} – Menu` };
   }
   return {
-    title: "منيو — منصة استضافة المطاعم والمنيو الرقمي",
+    title: "Menü – Restaurant-Hosting und digitale Menüplattform",
     description:
-      "منيو مطعمك على الهواء. كود QR واحد، لوحة تحكم، وصفحة منيو للزبائن. خطط من الأساسية إلى السلاسل.",
+      "Deine Restaurantkarte ist live. Ein QR-Code, ein Bedienfeld und eine Menüseite für Kunden. Pläne von Basic bis Serie.",
   };
 }
 

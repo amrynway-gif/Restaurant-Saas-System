@@ -134,7 +134,7 @@ export function CategoryPickerField({
       onCategoriesChange((prev) => sortCategories([...prev.filter((c) => c.id !== data.id), data]));
       onValueChange(data.id);
       setOpen(false);
-      onNotify("ok", "تم إنشاء التصنيف.");
+      onNotify("ok", "Kategorie erstellt.");
     }
   }
 
@@ -159,7 +159,7 @@ export function CategoryPickerField({
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="ابحث أو اكتب اسم تصنيف جديد…"
+            placeholder="Suchen oder gib einen neuen Kategorienamen ein..."
             className="h-10 rounded-lg border-[var(--border)] bg-[var(--bg-base)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
             autoComplete="off"
           />
@@ -178,7 +178,7 @@ export function CategoryPickerField({
                 <PlusCircleIcon className="size-4 shrink-0" />
               )}
               <span className="truncate">
-                {creating ? "جاري الإنشاء…" : `إنشاء تصنيف «${trimmedQuery}»`}
+                {creating ? "Bauarbeiten laufen…" : `Konstruktion Einstufung «${trimmedQuery}»`}
               </span>
             </button>
           </div>
@@ -187,8 +187,8 @@ export function CategoryPickerField({
           {filtered.length === 0 && !showCreateRow ? (
             <p className="px-3 py-6 text-center text-sm text-[var(--text-muted)]">
               {categories.length === 0
-                ? "لا توجد تصنيفات بعد. اكتب اسماً في الحقل أعلاه لإنشاء تصنيف."
-                : "لا توجد نتائج"}
+                ? "Es liegen noch keine Bewertungen vor. Gib einen Namen in das Feld oben ein, um eine Kategorie zu erstellen."
+                : "Keine Ergebnisse gefunden"}
             </p>
           ) : null}
           {filtered.map((c) => (
@@ -239,7 +239,7 @@ export function CategoryPickerField({
             !selectedName && "text-[var(--text-muted)]"
           )}
         >
-          <span className="truncate">{selectedName ?? "اختر تصنيفاً"}</span>
+          <span className="truncate">{selectedName ?? "Wähle eine Kategorie"}</span>
           <ChevronsUpDownIcon className="size-4 shrink-0 opacity-50" aria-hidden />
         </Button>
       </div>

@@ -53,7 +53,7 @@ export async function createRestaurantWaiter(
   const profile = await getProfileOrRedirect();
   const rid = profile.restaurant_id!;
   const trimmed = name.trim();
-  if (!trimmed) return { id: null, error: "اسم الويتر مطلوب" };
+  if (!trimmed) return { id: null, error: "Twitter-Name ist erforderlich" };
 
   const supabase = await createClient();
   const { count } = await supabase
@@ -83,7 +83,7 @@ export async function updateRestaurantWaiterName(
   const profile = await getProfileOrRedirect();
   const rid = profile.restaurant_id!;
   const trimmed = name.trim();
-  if (!trimmed) return { error: "اسم الويتر مطلوب" };
+  if (!trimmed) return { error: "Twitter-Name ist erforderlich" };
 
   const supabase = await createClient();
   const { error } = await supabase

@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: Props) {
   const logoUrl = restaurant?.logo_url?.trim();
   return {
     title: restaurant
-      ? `تتبّع الطلب — ${restaurant.name}`
-      : `تتبّع الطلب — ${decoded}`,
+      ? `Verfolge die Bestellung — ${restaurant.name}`
+      : `Verfolge die Bestellung — ${decoded}`,
     ...(logoUrl
       ? {
           icons: {

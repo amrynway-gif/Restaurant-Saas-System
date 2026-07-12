@@ -6,14 +6,14 @@ import { SessionHashHandler } from "@/components/auth/SessionHashHandler";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-/** DESIGN_SYSTEM: Cairo — كل النصوص العربية */
+
 const cairo = Cairo({
   variable: "--font-sans",
   subsets: ["arabic", "latin"],
   weight: ["400", "500", "600", "700", "800"],
 });
 
-/** DESIGN_SYSTEM: JetBrains Mono — أرقام، كود، IDs */
+
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" data-theme="dark" suppressHydrationWarning className="transition-colors duration-300">
+    <html lang="de" data-theme="dark" suppressHydrationWarning className="transition-colors duration-300">
       <body
         className={`${cairo.variable} ${jetbrainsMono.variable} antialiased`}
         style={{ fontFamily: "var(--font-sans)" }}

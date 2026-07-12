@@ -22,7 +22,7 @@ function escapeHtmlForPrint(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** مثل alking.resturant.app من رابط المنيو العام */
+
 function menuPublicHostname(menuBaseUrl: string): string {
   const u = menuBaseUrl.trim();
   if (!u) return "";
@@ -36,7 +36,7 @@ function menuPublicHostname(menuBaseUrl: string): string {
 type Props = {
   initialTables: RestaurantTable[];
   menuBaseUrl: string;
-  /** يُعرض في ورقة الطباعة أسفل الـ QR للدخول اليدوي عند تعذّر المسح */
+  
   restaurantSubdomain: string;
   waitersSystemEnabled: boolean;
   waiters: RestaurantWaiter[];
@@ -91,7 +91,7 @@ export function TablesClient({
   }
 
   async function remove(id: string) {
-    if (!confirm("حذف هذه الطاولة؟ روابط الـ QR القديمة ستتوقف عن العمل.")) return;
+    if (!confirm("Diese Tabelle löschen? Alte QR-Links funktionieren nicht mehr.")) return;
     setError(null);
     const res = await deleteRestaurantTable(id);
     if (res.error) {
@@ -110,11 +110,11 @@ export function TablesClient({
     const safeHost = escapeHtmlForPrint(manualHost);
     const subBlock =
       safeHost.length > 0
-        ? `<p class="subdomain-label">عنوان موقع المطعم (للدخول اليدوي إن لم يعمل المسح)</p>
+        ? `<p class="subdomain-label">Über Und Und im Das Restaurant (um Und UndY einzugeben, wenn Yd nicht scannt)</p>
       <p class="subdomain-value" dir="ltr">${safeHost}</p>
-      <p class="manual-hint">افتح المتصفح واكتب العنوان أعلاه في شريط العنوان، ثم اختر الطاولة «${safeLabel}» من القائمة.</p>`
+      <p class="manual-hint">Öffnen Du A im Browser und geben Du die Adresse über Ae in Y ein, starten Du die Adresse und wählen Du dann den Tisch „${safeLabel}“ aus dem A-Menü.</p>`
         : "";
-    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"/><title>QR — ${safeLabel}</title>
+    w.document.write(`<!DOCTYPE html><html dir="ltr"><head><meta charset="utf-8"/><title>QR — ${safeLabel}</title>
       <style>
         body { font-family: system-ui; text-align: center; padding: 2rem; }
         h1 { font-size: 1.5rem; margin-bottom: 1rem; }
@@ -127,7 +127,7 @@ export function TablesClient({
       <h1>${safeLabel}</h1>
       <img src="${qrSrc}" alt="QR" />
       ${subBlock}
-      <p>امسح الرمز لفتح المنيو وربط الطلب بهذه الطاولة تلقائياً.</p>
+      <p>Scannen Du den Code, um die Speisekarte zu öffnen und automatisch mit diesem Gerät zu verbinden.</p>
       <script>window.onload = () => { window.print(); }</script>
       </body></html>`);
     w.document.close();
@@ -136,9 +136,9 @@ export function TablesClient({
   function printGeneralQr(homeUrl: string, qrSrc: string) {
     const w = window.open("", "_blank");
     if (!w) return;
-    const safeTitle = escapeHtmlForPrint("الصفحة الرئيسية للمطعم");
+    const safeTitle = escapeHtmlForPrint("Homepage des Restaurants");
     const safeUrl = escapeHtmlForPrint(homeUrl);
-    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"/><title>QR — ${safeTitle}</title>
+    w.document.write(`<!DOCTYPE html><html dir="ltr"><head><meta charset="utf-8"/><title>QR — ${safeTitle}</title>
       <style>
         body { font-family: system-ui; text-align: center; padding: 2rem; }
         h1 { font-size: 1.5rem; margin-bottom: 1rem; }
@@ -149,7 +149,7 @@ export function TablesClient({
       </style></head><body>
       <h1>${safeTitle}</h1>
       <img src="${qrSrc}" alt="QR" />
-      <p class="subdomain-label">رابط المطعم (للدخول اليدوي إن لم يعمل المسح)</p>
+      <p class="subdomain-label">Das Restaurant-Link (um UndYUndY einzugeben, wenn Y nicht scannt)</p>
       <p class="subdomain-value" dir="ltr">${safeUrl}</p>
       <script>window.onload = () => { window.print(); }</script>
       </body></html>`);
@@ -163,24 +163,24 @@ export function TablesClient({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">الطاولات ورموز QR</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Tabellen und QR-Codes</h1>
         <p className="text-muted-foreground">
-          أضف كل طاولة باسم واضح، ثم اطبع رمز QR الخاص بها وضعه على الطاولة. الزبون يمسح الرمز فيفتح المنيو
-          ويُرسَم الطلب على هذه الطاولة دون إدخال يدوي.
+          Füge jedem Tisch einen eindeutigen Namen hinzu, drucke dann seinen QR-Code aus und platziere ihn auf dem Tisch. Der Kunde scannt den Code und öffnet das Menü
+Auf dieser Tabelle wird die Bestellung ohne manuelle Eingabe erstellt.
         </p>
       </div>
 
       <Card className="border-primary/20 bg-primary/[0.03]">
         <CardHeader>
-          <CardTitle>رمز QR عام — الصفحة الرئيسية</CardTitle>
+          <CardTitle>Allgemeiner QR-Code – Startseite</CardTitle>
           <CardDescription>
-            للواجهة أو المدخل أو الإعلانات: يفتح الزبون صفحة المطعم والمنيو مباشرة دون ربط بطاولة محددة.
+            Für die Oberfläche, den Eingang oder die Werbung: Der Kunde öffnet die Restaurant- und Menüseite direkt, ohne an einen bestimmten Tisch gebunden zu sein.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {homeUrl.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              عيّن النطاق الفرعي للمطعم في الإعدادات حتى يظهر رابط المنيو العام ورمز QR.
+              Stelle die Restaurant-Subdomain in den Einstellungen so ein, dass der allgemeine Menülink und der QR-Code angezeigt werden.
             </p>
           ) : (
             <>
@@ -199,7 +199,7 @@ export function TablesClient({
                   onClick={() => printGeneralQr(homeUrl, generalQrSrc)}
                 >
                   <PrinterIcon className="size-4" />
-                  طباعة QR العام
+                  Öffentlicher QR-Druck
                 </Button>
                 <Button
                   type="button"
@@ -209,7 +209,7 @@ export function TablesClient({
                   onClick={() => window.open(generalQrSrc, "_blank")}
                 >
                   <QrCodeIcon className="size-4" />
-                  صورة QR
+                  QR-Bild
                 </Button>
               </div>
             </>
@@ -219,22 +219,22 @@ export function TablesClient({
 
       <Card>
         <CardHeader>
-          <CardTitle>إضافة طاولة</CardTitle>
-          <CardDescription>مثال: طاولة 5، تراس 2، VIP...</CardDescription>
+          <CardTitle>Füge eine Tabelle hinzu</CardTitle>
+          <CardDescription>Beispiel: Tisch 5, Terrasse 2, VIP...</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={addTable} className="flex flex-col gap-3 sm:flex-row sm:items-end">
             <div className="flex-1 space-y-2">
-              <label className="text-sm font-medium">اسم الطاولة</label>
+              <label className="text-sm font-medium">Tabellenname</label>
               <Input
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
-                placeholder="طاولة 12"
+                placeholder="Tabelle 12"
                 required
               />
             </div>
             <Button type="submit" disabled={loading}>
-              {loading ? "جاري الحفظ..." : "إضافة"}
+              {loading ? "Sparen..." : "Zusatz"}
             </Button>
           </form>
           {error ? (
@@ -260,14 +260,14 @@ export function TablesClient({
               <CardContent className="space-y-3">
                 {waitersSystemEnabled ? (
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-muted-foreground">الويتر المسؤول</label>
+                    <label className="text-xs font-medium text-muted-foreground">Der verantwortliche Twitter</label>
                     <select
                       className="w-full rounded-lg border border-input bg-background px-2 py-2 text-sm"
                       value={t.waiter_id ?? ""}
                       disabled={assigningTableId === t.id}
                       onChange={(e) => void assignWaiter(t.id, e.target.value)}
                     >
-                      <option value="">— بدون —</option>
+                      <option value="">- ohne -</option>
                       {waiters.map((w) => (
                         <option key={w.id} value={w.id}>
                           {w.name}
@@ -276,7 +276,7 @@ export function TablesClient({
                     </select>
                     {waiters.length === 0 ? (
                       <p className="text-[11px] text-muted-foreground">
-                        أضف أسماء الويترز من الإعدادات أولاً.
+                        Füge zuerst die Twitter-Namen aus den Einstellungen hinzu.
                       </p>
                     ) : null}
                   </div>
@@ -293,7 +293,7 @@ export function TablesClient({
                     onClick={() => printQr(t.label, qrSrc)}
                   >
                     <PrinterIcon className="size-4" />
-                    طباعة
+                    drucken
                   </Button>
                   <Button
                     type="button"
@@ -303,7 +303,7 @@ export function TablesClient({
                     onClick={() => window.open(qrSrc, "_blank")}
                   >
                     <QrCodeIcon className="size-4" />
-                    صورة QR
+                    QR-Bild
                   </Button>
                   <Button
                     type="button"
@@ -313,7 +313,7 @@ export function TablesClient({
                     onClick={() => remove(t.id)}
                   >
                     <Trash2Icon className="size-4" />
-                    حذف
+                    löschen
                   </Button>
                 </div>
               </CardContent>
@@ -324,7 +324,7 @@ export function TablesClient({
 
       {tables.length === 0 ? (
         <p className="text-center text-sm text-muted-foreground">
-          لا توجد طاولات بعد. أضف أول طاولة أعلاه ثم اطبع الرموز.
+          Es sind noch keine Tische vorhanden. Füge die erste Tabelle oben hinzu und drucke dann die Codes aus.
         </p>
       ) : null}
     </div>

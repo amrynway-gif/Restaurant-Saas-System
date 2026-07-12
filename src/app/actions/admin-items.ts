@@ -45,9 +45,9 @@ export type CreateMenuItemInput = {
   category_id: string | null;
   image_url: string | null;
   is_available?: boolean;
-  /** خيارات أسعار حسب الحجم/الوزن (نفر، نصف كيلو، كيلو، صغير، وسط، كبير...) */
+  
   price_options?: PriceOption[] | null;
-  /** نفس الخيارات للعملة الثانية عند التفعيل */
+  
   secondary_price_options?: PriceOption[] | null;
 };
 
@@ -80,14 +80,14 @@ export async function createMenuItem(
         return {
           data: null,
           error:
-            "عند عدم ضبط سعر الصرف في الإعدادات يجب إدخال أسعار العملة الثانية لكل الأحجام.",
+            "Wenn in den Einstellungen kein Wechselkurs festgelegt ist, müsse für alle Bände die Kurse der zweiten Währung eingeben.",
         };
       }
     } else if (typeof input.secondary_price !== "number" || input.secondary_price < 0) {
       return {
         data: null,
         error:
-          "عند عدم ضبط سعر الصرف في الإعدادات يجب إدخال سعر صحيح للعملة الثانية.",
+          "Wenn der Wechselkurs in den Einstellungen nicht festgelegt ist, müsse einen korrekten Preis für die zweite Währung eingeben.",
       };
     }
   }
@@ -138,7 +138,7 @@ export async function updateMenuItem(
     .eq("id", id)
     .maybeSingle();
   if (!existingItem?.restaurant_id) {
-    return { data: null, error: "الصنف غير موجود." };
+    return { data: null, error: "Artikel nicht gefunden." };
   }
   const { data: restaurantSettings } = await supabase
     .from("restaurants")
@@ -170,13 +170,13 @@ export async function updateMenuItem(
           return {
             data: null,
             error:
-              "عند عدم ضبط سعر الصرف في الإعدادات يجب إدخال أسعار العملة الثانية لكل الأحجام.",
+              "Wenn in den Einstellungen kein Wechselkurs festgelegt ist, müsse für alle Bände die Kurse der zweiten Währung eingeben.",
           };
         }
       }
     } else if (input.secondary_price !== undefined) {
       if (input.secondary_price !== null && input.secondary_price < 0) {
-        return { data: null, error: "سعر العملة الثانية غير صالح." };
+        return { data: null, error: "Der Preis der zweiten Währung ist ungültig." };
       }
     }
   }

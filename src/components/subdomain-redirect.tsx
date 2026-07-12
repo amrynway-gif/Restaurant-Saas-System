@@ -2,10 +2,7 @@
 
 import { useEffect } from "react";
 
-/**
- * إذا كانت الصفحة الحالية هي الرئيسية والـ host يشبه نطاق فرعي (مثل almankal.localhost)،
- * نتحقق من API ونوجّه إلى صفحة المنيو لضمان عرض منيو المطعم.
- */
+
 export function SubdomainRedirect() {
   useEffect(() => {
     const hostname = window.location.hostname;

@@ -53,7 +53,7 @@ export function RestaurantWaitersSettingsForm({
       return;
     }
     setEnabled(next);
-    toast.success(next ? "تم تفعيل نظام الويترز." : "تم إيقاف نظام الويترز.");
+    toast.success(next ? "Das Kellnersystem wurde aktiviert." : "Das Kellnersystem wurde gestoppt.");
     router.refresh();
   }
 
@@ -80,7 +80,7 @@ export function RestaurantWaitersSettingsForm({
         },
       ]);
     }
-    toast.success("تمت إضافة الويتر.");
+    toast.success("Das Twitter wurde hinzugefügt.");
     router.refresh();
   }
 
@@ -95,12 +95,12 @@ export function RestaurantWaitersSettingsForm({
       return;
     }
     setWaiters((prev) => prev.map((w) => (w.id === waiter.id ? { ...w, name: t } : w)));
-    toast.success("تم حفظ الاسم.");
+    toast.success("Name gespeichert.");
     router.refresh();
   }
 
   async function remove(waiterId: string) {
-    if (!confirm("حذف هذا الويتر؟ ستُلغى ربطه بالطاولات.")) return;
+    if (!confirm("Dieses Twitter löschen? Die Verknüpfung mit den Tabellen wird aufgehoben.")) return;
     setDeletingId(waiterId);
     const res = await deleteRestaurantWaiter(waiterId);
     setDeletingId(null);
@@ -109,7 +109,7 @@ export function RestaurantWaitersSettingsForm({
       return;
     }
     setWaiters((prev) => prev.filter((w) => w.id !== waiterId));
-    toast.success("تم الحذف.");
+    toast.success("Gelöscht.");
     router.refresh();
   }
 
@@ -118,11 +118,11 @@ export function RestaurantWaitersSettingsForm({
       <div className="flex flex-col gap-3 rounded-lg border border-border/80 bg-muted/20 p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <Label htmlFor="waiters-system" className="text-base font-medium">
-            تفعيل نظام الويترز
+            Aktiviere das Witters-System
           </Label>
           <p className="text-sm text-muted-foreground">
-            عند التفعيل يمكنك تسمية الويترز وربط كل طاولة بويتر، وعرض اسم المسؤول في الطلبات
-            والفلترة حسب الطاولة أو الويتر.
+            Bei der Aktivierung könne die Kellner benennen, jeden Tisch einem Kellner zuordnen und den Namen des Administrators in den Anfragen anzeigen
+Filterung nach Tabelle oder Wasser.
           </p>
         </div>
         <Switch
@@ -135,25 +135,25 @@ export function RestaurantWaitersSettingsForm({
 
       {enabled ? (
         <div className="space-y-4">
-          <p className="text-sm font-medium">أسماء الويترز</p>
+          <p className="text-sm font-medium">Twitter-Namen</p>
           <form onSubmit={handleAdd} className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div className="flex-1 space-y-2">
-              <Label htmlFor="new-waiter-name">إضافة ويتر</Label>
+              <Label htmlFor="new-waiter-name">Twitter hinzufügen</Label>
               <Input
                 id="new-waiter-name"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                placeholder="مثال: أحمد"
+                placeholder="Beispiel: Ahmed"
                 dir="auto"
               />
             </div>
             <Button type="submit" disabled={adding || !newName.trim()}>
-              {adding ? "جاري الإضافة…" : "إضافة"}
+              {adding ? "Hinzufügen..." : "Zusatz"}
             </Button>
           </form>
 
           {waiters.length === 0 ? (
-            <p className="text-sm text-muted-foreground">لم تُضف أسماء بعد. أضف ويتراً أعلاه.</p>
+            <p className="text-sm text-muted-foreground">Noch keine Namen hinzugefügt. Witra oben hinzufügen.</p>
           ) : (
             <ul className="space-y-2">
               {waiters.map((w) => (
@@ -181,7 +181,7 @@ export function RestaurantWaitersSettingsForm({
                     className="shrink-0 text-destructive hover:text-destructive"
                     disabled={deletingId === w.id}
                     onClick={() => void remove(w.id)}
-                    aria-label="حذف"
+                    aria-label="löschen"
                   >
                     <Trash2Icon className="size-4" />
                   </Button>
@@ -191,8 +191,8 @@ export function RestaurantWaitersSettingsForm({
           )}
 
           <p className="text-xs text-muted-foreground">
-            اربط كل طاولة بويتر من صفحة{" "}
-            <span className="font-medium text-foreground">الطاولات ورموز QR</span> بعد حفظ الأسماء هنا.
+            Verknüpfe jede Tabelle mit einer Twitter-Seite{" "}
+            <span className="font-medium text-foreground">Tabellen und QR-Codes</span> Nachdem du die Namen hier gespeichert haben.
           </p>
         </div>
       ) : null}

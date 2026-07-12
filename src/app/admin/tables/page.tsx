@@ -7,8 +7,8 @@ import { TablesClient } from "@/app/owner/tables/tables-client";
 import { headers } from "next/headers";
 
 export const metadata = {
-  title: "الطاولات ورموز QR",
-  description: "إدارة طاولات المطعم وطباعة رموز QR",
+  title: "Tabellen und QR-Codes",
+  description: "Verwalte Restauranttische und drucke QR-Codes",
 };
 
 export default async function AdminRestaurantTablesPage() {
@@ -26,8 +26,8 @@ export default async function AdminRestaurantTablesPage() {
     <div className="space-y-4">
       {error ? (
         <p className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          تعذر تحميل الطاولات: {error}. نفّذ{" "}
-          <code className="rounded bg-muted px-1">supabase/orders-tables-customers.sql</code> في Supabase.
+          Tabellen können nicht geladen werden: {error}. Tun{" "}
+          <code className="rounded bg-muted px-1">supabase/orders-tables-customers.sql</code> Bei Supabase.
         </p>
       ) : null}
       <TablesClient

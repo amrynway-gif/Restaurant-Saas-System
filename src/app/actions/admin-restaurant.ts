@@ -8,7 +8,7 @@ type RestaurantPublicContentPayload = {
   subheadline?: string | null;
   hero_background_url?: string | null;
   footer_note?: string | null;
-  /** عنوان يظهر في فوتر المنيو وصفحة التتبع */
+  
   public_address?: string | null;
   public_maps_url?: string | null;
   public_phone_1?: string | null;
@@ -20,7 +20,7 @@ type RestaurantPublicContentPayload = {
   currency_code?: string | null;
   secondary_currency_enabled?: boolean;
   secondary_currency_code?: string | null;
-  /** وحدات العملة الثانية لكل 1 وحدة من الأساسية */
+  
   secondary_currency_exchange_rate?: number | null;
   menu_title_animation_enabled?: boolean;
   menu_banner_url?: string | null;
@@ -33,7 +33,7 @@ async function assertRestaurantOwner(restaurantId: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { supabase, error: "غير مسجّل الدخول" as string };
+  if (!user) return { supabase, error: "Nicht angemeldet" as string };
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -41,7 +41,7 @@ async function assertRestaurantOwner(restaurantId: string) {
     .eq("id", user.id)
     .single();
   if (!profile || profile.restaurant_id !== restaurantId) {
-    return { supabase, error: "غير مصرح بتعديل هذا المطعم" as string };
+    return { supabase, error: "Dieses Restaurant darf nicht geändert werden" as string };
   }
 
   return { supabase, error: null as string | null };
@@ -55,19 +55,18 @@ function normalizeSocialUrl(raw: string | null | undefined): string | null {
   return `https://${t}`;
 }
 
-/**
- * تحديث شعار المطعم (لصاحب المطعم فقط — يتحقق من أن profile.restaurant_id = restaurantId).
- */
+
 export async function updateRestaurantLogo(
   restaurantId: string,
-  logoUrl: string | null
+  logoUrl: string | null,
+  themeColor?: string | null
 ): Promise<{ error: string | null }> {
   const { supabase, error } = await assertRestaurantOwner(restaurantId);
   if (error) return { error };
 
   const { error: dbError } = await supabase
     .from("restaurants")
-    .update({ logo_url: logoUrl })
+    .update({ logo_url: logoUrl, theme_color: themeColor ?? null })
     .eq("id", restaurantId);
   if (dbError) return { error: dbError.message };
   revalidatePath("/admin");
@@ -76,9 +75,7 @@ export async function updateRestaurantLogo(
   return { error: null };
 }
 
-/**
- * تحديث محتوى الصفحة العامة للمطعم (نصوص الهيرو + الفوتر).
- */
+
 export async function updateRestaurantPublicContent(
   restaurantId: string,
   payload: RestaurantPublicContentPayload
@@ -149,9 +146,7 @@ type LoyaltySettingsPayload = {
   loyalty_point_value_cents: number;
 };
 
-/**
- * إعدادات برنامج النقاط: مبلغ الإنفاق لكسب نقطة واحدة، وقيمة النقطة عند الخصم (بالسنت).
- */
+
 export async function updateRestaurantLoyaltySettings(
   restaurantId: string,
   payload: LoyaltySettingsPayload
@@ -162,10 +157,10 @@ export async function updateRestaurantLoyaltySettings(
   const spend = Math.floor(payload.loyalty_spend_cents_per_point);
   const val = Math.floor(payload.loyalty_point_value_cents);
   if (spend < 1) {
-    return { error: "مبلغ الإنفاق لكسب نقطة يجب أن يعادل 0.01 على الأقل من عملتك" };
+    return { error: "Der zum Sammeln eines Punktes ausgegebene Betrag muss mindestens 0,01 Ihrer Währung betragen" };
   }
   if (val < 1) {
-    return { error: "قيمة النقطة يجب أن تعادل 0.01 على الأقل من عملتك" };
+    return { error: "Der Pip-Wert muss mindestens 0,01 Ihrer Währung entsprechen" };
   }
 
   const { error: dbError } = await supabase
@@ -186,9 +181,7 @@ export async function updateRestaurantLoyaltySettings(
   return { error: null };
 }
 
-/**
- * مقدمة الدولة لأرقام الزبائن (واتساب / اتصال). أرقام فقط بدون +، مثل 966.
- */
+
 export async function updateRestaurantPhoneCountryPrefix(
   restaurantId: string,
   rawPrefix: string | null
@@ -198,7 +191,7 @@ export async function updateRestaurantPhoneCountryPrefix(
 
   const digits = (rawPrefix ?? "").replace(/\D/g, "");
   if (digits.length > 6) {
-    return { error: "المقدمة الدولية طويلة جداً (استخدم أرقام الدولة فقط، مثل 966)" };
+    return { error: "Die internationale Einführung ist zu lang (verwende nur Ländernummern, z. B. 966)" };
   }
 
   const { error: dbError } = await supabase

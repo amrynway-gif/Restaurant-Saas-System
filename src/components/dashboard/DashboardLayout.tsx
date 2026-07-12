@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { BellIcon, PanelLeftIcon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OrderNotificationsBell } from "@/components/orders/order-notifications-bell";
+import { RestaurantThemeInjector } from "@/components/restaurant-theme-injector";
 
 export type NavItem = {
   href: string;
@@ -29,20 +30,22 @@ export type DashboardProfile = {
 };
 
 type DashboardLayoutProps = {
-  /** عنوان الهيدر (اسم المطعم أو "لوحة مالك النظام") */
+  
   title: string;
-  /** مجموعات الروابط في الشريط الجانبي */
+  
   navGroups: NavGroup[];
-  /** محتوى الهيدر من اليمين (مثل قائمة المستخدم / تسجيل الخروج) */
+  
   headerRight?: React.ReactNode;
-  /** رابط معاينة المنيو (اختياري) */
+  
   previewUrl?: string | null;
-  /** شعار المطعم أو العلامة في أعلى الـ Sidebar (اختياري) */
+  
   logoUrl?: string | null;
-  /** بيانات البروفايل في أسفل الـ Sidebar (اختياري) */
+  
   profile?: DashboardProfile | null;
-  /** عند التمرير: جرس طلبات حي (Supabase Realtime) */
+  
   notificationRestaurantId?: string | null;
+  
+  themeColor?: string | null;
   children: React.ReactNode;
 };
 
@@ -141,7 +144,7 @@ function SidebarNavContent({
               </div>
             ) : (
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--brand-light)] text-sm font-semibold text-[var(--brand)]">
-                {(profile.name ?? "؟").charAt(0)}
+                {(profile.name ?? "?").charAt(0)}
               </div>
             )}
             <div className="min-w-0 flex-1">
@@ -169,6 +172,7 @@ export function DashboardLayout({
   logoUrl,
   profile,
   notificationRestaurantId,
+  themeColor,
   children,
 }: DashboardLayoutProps) {
   const pathname = usePathname();
@@ -182,6 +186,7 @@ export function DashboardLayout({
 
   return (
     <div className="flex min-h-svh bg-[var(--bg-base)]">
+      <RestaurantThemeInjector themeColor={themeColor} />
       {/* Desktop Sidebar — hidden on mobile */}
       <aside
         className="sticky top-0 z-20 hidden h-svh w-[var(--sidebar-width)] flex-col border-r border-[var(--border)] bg-[var(--bg-surface)] md:flex"
@@ -199,7 +204,7 @@ export function DashboardLayout({
 
       {/* Main area */}
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Header — DESIGN_SYSTEM: 60px, اسم المطعم يسار، معاينة + ThemeToggle + avatar يمين */}
+        {}
         <header
           className="sticky top-0 z-10 flex h-[var(--header-height)] items-center gap-4 border-b border-[var(--border)] bg-[var(--bg-surface)]/80 px-4 backdrop-blur-[12px] sm:px-6"
           style={{ height: "var(--header-height)" }}
@@ -208,7 +213,7 @@ export function DashboardLayout({
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger
                 className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-surface-2)] hover:text-[var(--text-primary)]"
-                aria-label="فتح القائمة"
+                aria-label="Öffne das Menü"
               >
                 <PanelLeftIcon className="size-5" />
               </SheetTrigger>
@@ -238,7 +243,7 @@ export function DashboardLayout({
                 rel="noopener noreferrer"
                 className="inline-flex h-9 items-center justify-center gap-2 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg-surface)] px-3 text-sm font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-surface-2)] hover:text-[var(--text-primary)]"
               >
-                معاينة المنيو
+                Vorschau des Menüs
               </a>
             )}
             {notificationRestaurantId ? (
@@ -247,7 +252,7 @@ export function DashboardLayout({
               <button
                 type="button"
                 className="flex size-9 items-center justify-center rounded-[var(--radius-md)] text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-surface-2)] hover:text-[var(--text-primary)]"
-                aria-label="الإشعارات"
+                aria-label="Benachrichtigungen"
               >
                 <BellIcon className="size-5" />
               </button>

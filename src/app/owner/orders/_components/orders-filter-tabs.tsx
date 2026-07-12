@@ -15,7 +15,7 @@ type Props = {
 };
 
 const TABS: { key: OrdersFilterValue; label: string }[] = [
-  { key: "all", label: "الكل" },
+  { key: "all", label: "alle" },
   { key: "pending", label: ORDER_STATUS_LABELS.pending },
   { key: "accepted", label: ORDER_STATUS_LABELS.accepted },
   { key: "preparing", label: ORDER_STATUS_LABELS.preparing },
@@ -49,7 +49,7 @@ export function OrdersFilterTabs({ value, onChange, counts, className }: Props) 
                 {count > 0 ? (
                   <span
                     className={cn(
-                      "mr-1.5 inline-flex min-w-[1.25rem] justify-center rounded-full px-1 text-[10px] tabular-nums sm:text-xs",
+                      "ml-1.5 inline-flex min-w-[1.25rem] justify-center rounded-full px-1 text-[10px] tabular-nums sm:text-xs",
                       active ? "bg-primary-foreground/20 text-primary-foreground" : "bg-background/80 text-foreground"
                     )}
                   >

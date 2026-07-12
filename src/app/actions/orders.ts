@@ -60,10 +60,10 @@ export async function listPublicTablesForRestaurant(
 
 export type CreateGuestOrderInput = {
   subdomain: string;
-  /** من رابط QR */
+  
   tableToken: string | null;
   fulfillment: OrderFulfillment;
-  /** عند الطلب من داخل المطعم بدون QR */
+  
   tableId: string | null;
   deliveryAddress: string | null;
   customerPhone: string;
@@ -71,14 +71,14 @@ export type CreateGuestOrderInput = {
     menuItemId: string;
     quantity: number;
     priceOptionLabel: string | null;
-    /** مكوّنات لا يريدها الزبون في الطبق */
+    
     excludedIngredients?: string[];
   }[];
-  /** عدد النقاط المراد استبدالها نقدياً ضمن هذا الطلب (اختياري) */
+  
   loyaltyPointsToRedeem?: number;
 };
 
-/** معاينة رصيد النقاط لصفحة إتمام الطلب من المنيو (بدون تسجيل دخول). */
+
 export async function getCheckoutLoyaltyPreview(input: {
   subdomain: string;
   customerPhone: string;
@@ -95,7 +95,7 @@ export async function getCheckoutLoyaltyPreview(input: {
   const sub = input.subdomain.trim().toLowerCase();
   const phone = normalizePhone(input.customerPhone);
   if (!sub || !phone) {
-    return { ok: false, error: "بيانات غير صالحة" };
+    return { ok: false, error: "Ungültige Daten" };
   }
   try {
     const admin = createAdminClient();
@@ -106,7 +106,7 @@ export async function getCheckoutLoyaltyPreview(input: {
       )
       .ilike("subdomain", sub)
       .maybeSingle();
-    if (rErr || !restaurant) return { ok: false, error: "المطعم غير موجود" };
+    if (rErr || !restaurant) return { ok: false, error: "Das Restaurant existiert nicht" };
 
     const rid = restaurant.id as string;
     await syncLoyaltyProfileForPhoneFromLegacy(rid, phone);
@@ -156,7 +156,7 @@ export async function getCheckoutLoyaltyPreview(input: {
       spendCentsPerPoint,
     };
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "تعذر جلب بيانات الولاء";
+    const msg = e instanceof Error ? e.message : "Treuedaten können nicht abgerufen werden";
     return { ok: false, error: msg };
   }
 }
@@ -179,12 +179,12 @@ export async function createGuestOrder(
   input: CreateGuestOrderInput
 ): Promise<CreateGuestOrderResult> {
   const sub = input.subdomain.trim().toLowerCase();
-  if (!sub) return { ok: false, error: "معرّف المطعم غير صالح" };
+  if (!sub) return { ok: false, error: "Die Restaurant-ID ist ungültig" };
 
   const phone = normalizePhone(input.customerPhone);
-  if (!phone) return { ok: false, error: "رقم الجوال غير صالح (8–15 رقماً)" };
+  if (!phone) return { ok: false, error: "Ungültige Mobiltelefonnummer (8–15 Nummern)" };
 
-  if (!input.items.length) return { ok: false, error: "السلة فارغة" };
+  if (!input.items.length) return { ok: false, error: "Der Korb ist leer" };
 
   let admin;
   try {
@@ -193,7 +193,7 @@ export async function createGuestOrder(
     return {
       ok: false,
       error:
-        "إعدادات الخادم غير مكتملة. تأكد من وجود SUPABASE_SERVICE_ROLE_KEY في بيئة التشغيل.",
+        "Die Servereinstellungen sind unvollständig. Stelle sicher, dass SUPABASE_SERVICE_ROLE_KEY in der Umgebung vorhanden ist.",
     };
   }
 
@@ -206,9 +206,9 @@ export async function createGuestOrder(
     .ilike("subdomain", sub)
     .maybeSingle();
 
-  if (rErr || !restaurant) return { ok: false, error: "المطعم غير موجود" };
+  if (rErr || !restaurant) return { ok: false, error: "Das Restaurant existiert nicht" };
   if (restaurant.status && restaurant.status !== "active" && restaurant.status !== "trial") {
-    return { ok: false, error: "المطعم غير متاح حالياً" };
+    return { ok: false, error: "Das Restaurant ist derzeit nicht verfügbar" };
   }
 
   const restaurantId = restaurant.id as string;
@@ -222,22 +222,22 @@ export async function createGuestOrder(
       .eq("restaurant_id", restaurantId)
       .eq("public_token", input.tableToken.trim())
       .maybeSingle();
-    if (!t) return { ok: false, error: "رابط الطاولة غير صالح" };
+    if (!t) return { ok: false, error: "Der Tabellenlink ist ungültig" };
     tableId = t.id;
     orderWaiterId = (t as { waiter_id?: string | null }).waiter_id ?? null;
     if (input.fulfillment !== "dine_in") {
-      return { ok: false, error: "طلب الطاولة يجب أن يكون للتناول داخل المطعم" };
+      return { ok: false, error: "Die Tischordnung muss für das Essen im Restaurant gelten" };
     }
   } else {
     if (input.fulfillment === "dine_in") {
-      if (!input.tableId) return { ok: false, error: "اختر رقم الطاولة" };
+      if (!input.tableId) return { ok: false, error: "Wähle die Tischnummer" };
       const { data: t } = await admin
         .from("restaurant_tables")
         .select("id, waiter_id")
         .eq("restaurant_id", restaurantId)
         .eq("id", input.tableId)
         .maybeSingle();
-      if (!t) return { ok: false, error: "الطاولة غير صالحة" };
+      if (!t) return { ok: false, error: "Die Tabelle ist ungültig" };
       tableId = t.id;
       orderWaiterId = (t as { waiter_id?: string | null }).waiter_id ?? null;
     }
@@ -246,7 +246,7 @@ export async function createGuestOrder(
   let deliveryAddress: string | null = null;
   if (input.fulfillment === "delivery") {
     const addr = input.deliveryAddress?.trim();
-    if (!addr || addr.length < 5) return { ok: false, error: "عنوان التوصيل مطلوب" };
+    if (!addr || addr.length < 5) return { ok: false, error: "Lieferadresse ist erforderlich" };
     deliveryAddress = addr;
   }
 
@@ -257,7 +257,7 @@ export async function createGuestOrder(
     .eq("restaurant_id", restaurantId)
     .in("id", itemIds);
 
-  if (mErr || !menuRows?.length) return { ok: false, error: "تعذر التحقق من الأصناف" };
+  if (mErr || !menuRows?.length) return { ok: false, error: "Elemente konnten nicht überprüft werden" };
 
   const byId = new Map(menuRows.map((r) => [r.id, r as MenuItem]));
   const lines: {
@@ -271,14 +271,14 @@ export async function createGuestOrder(
 
   for (const row of input.items) {
     const item = byId.get(row.menuItemId);
-    if (!item) return { ok: false, error: "صنف غير موجود" };
-    if (item.is_available === false) return { ok: false, error: `غير متاح: ${item.name}` };
+    if (!item) return { ok: false, error: "Kategorie nicht gefunden" };
+    if (item.is_available === false) return { ok: false, error: `Verfügbar: ${item.name}` };
 
     const exNorm = normalizeExcludedForDb(row.excludedIngredients ?? []);
-    if (!exNorm.ok) return { ok: false, error: "قائمة المكوّنات المستبعدة غير صالحة" };
+    if (!exNorm.ok) return { ok: false, error: "Die Liste der ausgeschlossenen Komponenten ist ungültig" };
 
     const pr = resolveUnitPriceCents(item, row.priceOptionLabel);
-    if (!pr.ok) return { ok: false, error: `اختر حجم السعر لـ ${item.name}` };
+    if (!pr.ok) return { ok: false, error: `Wählen Du Größe A Preis für ${item.name}` };
     const q = Math.min(99, Math.max(1, Math.floor(row.quantity)));
     const unit = pr.cents;
     lines.push({
@@ -301,7 +301,7 @@ export async function createGuestOrder(
       ok: false,
       error:
         rpcErr?.message ??
-        "تعذر تخصيص رقم الطلب. نفّذ ملف supabase/orders-display-tracking.sql في قاعدة البيانات.",
+        "Die Bestellnummer konnte nicht zugeordnet werden. Führe die Datei supabase/orders-display-tracking.sql in der Datenbank aus.",
     };
   }
 
@@ -321,7 +321,7 @@ export async function createGuestOrder(
     .select("id")
     .single();
 
-  if (oErr || !orderRow) return { ok: false, error: oErr?.message ?? "فشل إنشاء الطلب" };
+  if (oErr || !orderRow) return { ok: false, error: oErr?.message ?? "Die Anforderungserstellung ist fehlgeschlagen" };
 
   const orderId = orderRow.id as string;
 
@@ -339,7 +339,7 @@ export async function createGuestOrder(
 
   if (oiErr) {
     await admin.from("orders").delete().eq("id", orderId);
-    return { ok: false, error: oiErr.message ?? "فشل حفظ بنود الطلب" };
+    return { ok: false, error: oiErr.message ?? "Auftragszeilen konnten nicht gespeichert werden" };
   }
 
   const orderTotalCents = lines.reduce((s, l) => s + l.line_total_cents, 0);
@@ -385,7 +385,7 @@ export async function createGuestOrder(
             ok: false,
             error:
               redeemRpc.error?.message ??
-              "تعذر تطبيق خصم النقاط. تحقق من رصيدك أو قلّل عدد النقاط.",
+              "Ein Punkteabzug konnte nicht vorgenommen werden. Überprüfe deinen Kontostand oder reduziere die Anzahl der Punkte.",
           };
         }
         const rr = redeemRpc.data[0] as {
@@ -412,7 +412,7 @@ export async function createGuestOrder(
     }
   }
 
-  // الإنفاق وكسب النقاط يُحتسبان عند وضع الطلب «مكتمل» فقط (finalizeLoyaltyOnOrderCompleted)
+  
 
   const { data: existingPhone } = await admin
     .from("restaurant_customer_phones")
@@ -456,12 +456,12 @@ export async function createGuestOrder(
 
   return { ok: true, orderId, displayNumber, trackingToken };
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "تعذر إرسال الطلب";
+    const msg = e instanceof Error ? e.message : "Die Anfrage konnte nicht gesendet werden";
     return { ok: false, error: msg };
   }
 }
 
-/** يُستدعى عند أول انتقال إلى «مكتمل»: إضافة الإنفاق إلى ملف الزبون + كسب النقاط (مرة واحدة). */
+
 async function finalizeLoyaltyOnOrderCompleted(orderId: string, restaurantId: string): Promise<void> {
   let admin: ReturnType<typeof createAdminClient>;
   try {
@@ -594,7 +594,7 @@ async function finalizeLoyaltyOnOrderCompleted(orderId: string, restaurantId: st
     .update({ completion_accounting_done: true })
     .eq("id", orderId);
   if (flagErr) {
-    /* يتطلب عمود completion_accounting_done — supabase/loyalty-earn-on-order-completed.sql */
+    
   }
 }
 
@@ -649,7 +649,7 @@ async function fetchLoyaltyBalancesForPhones(
   return map;
 }
 
-/** تطبيق أقصى خصم بالنقاط على طلب من لوحة المالك (استبدال فقط؛ الكسب عند اكتمال الطلب). */
+
 export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
   | { ok: true; pointsRedeemed: number; discountCents: number }
   | { ok: false; error: string }
@@ -660,7 +660,7 @@ export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
   try {
     admin = createAdminClient();
   } catch {
-    return { ok: false, error: "إعدادات الخادم غير مكتملة." };
+    return { ok: false, error: "Die Servereinstellungen sind unvollständig." };
   }
 
   const { data: restaurant, error: rErr } = await admin
@@ -668,9 +668,9 @@ export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
     .select("loyalty_program_enabled, loyalty_point_value_cents")
     .eq("id", rid)
     .maybeSingle();
-  if (rErr || !restaurant) return { ok: false, error: "المطعم غير موجود" };
+  if (rErr || !restaurant) return { ok: false, error: "Das Restaurant existiert nicht" };
   if (restaurant.loyalty_program_enabled !== true) {
-    return { ok: false, error: "برنامج الولاء غير مفعّل" };
+    return { ok: false, error: "Das Treueprogramm ist nicht aktiviert" };
   }
   const pointVal = Math.max(1, Math.floor(Number(restaurant.loyalty_point_value_cents ?? 10)));
 
@@ -682,24 +682,24 @@ export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
     .eq("id", orderId)
     .eq("restaurant_id", rid)
     .maybeSingle();
-  if (oErr || !orderRow) return { ok: false, error: "الطلب غير موجود" };
+  if (oErr || !orderRow) return { ok: false, error: "Die Anfrage existiert nicht" };
   if ((orderRow as { status: string }).status === "cancelled") {
-    return { ok: false, error: "لا يمكن تطبيق خصم على طلب ملغى" };
+    return { ok: false, error: "Auf eine stornierte Bestellung kann kein Rabatt gewährt werden" };
   }
   if ((orderRow as { status: string }).status === "completed") {
     return {
       ok: false,
-      error: "لا يمكن تطبيق خصم النقاط بعد اكتمال الطلب. طبّق الخصم قبل وضع الطلب كمكتمل.",
+      error: "Nach Abschluss der Bestellung kann kein Punkterabatt mehr gewährt werden. Wende den Rabatt an, bevor du die Bestellung abschließend aufgeben.",
     };
   }
   const existingDisc = Number((orderRow as { loyalty_discount_cents?: number }).loyalty_discount_cents ?? 0);
   const existingUsed = Number((orderRow as { loyalty_points_used?: number }).loyalty_points_used ?? 0);
   if (existingDisc > 0 || existingUsed > 0) {
-    return { ok: false, error: "تم تطبيق خصم نقاط على هذا الطلب مسبقاً" };
+    return { ok: false, error: "Auf diese Bestellung wurde bereits ein Punkterabatt angewendet" };
   }
 
   const phone = normalizePhone((orderRow as { customer_phone: string }).customer_phone);
-  if (!phone) return { ok: false, error: "رقم الجوال غير صالح" };
+  if (!phone) return { ok: false, error: "Die Handynummer ist ungültig" };
 
   const { data: oiRows } = await admin.from("order_items").select("line_total_cents").eq("order_id", orderId);
   const subtotal = (oiRows ?? []).reduce(
@@ -711,7 +711,7 @@ export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
     Math.floor(Number((orderRow as { owner_discount_cents?: number }).owner_discount_cents ?? 0))
   );
   const redeemBase = Math.max(0, subtotal - ownerDiscPre);
-  if (redeemBase <= 0) return { ok: false, error: "مبلغ الطلب غير صالح بعد الخصم اليدوي" };
+  if (redeemBase <= 0) return { ok: false, error: "Der Bestellbetrag ist nach manuellem Abzug ungültig" };
 
   await syncLoyaltyProfileForPhoneFromLegacy(rid, phone);
 
@@ -723,7 +723,7 @@ export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
     )
     .select("id")
     .single();
-  if (cupErr || !cup) return { ok: false, error: "تعذر تجهيز ملف الزبون" };
+  if (cupErr || !cup) return { ok: false, error: "Kundendatei konnte nicht vorbereitet werden" };
   const customerId = (cup as { id: string }).id;
 
   const { data: accRow } = await admin
@@ -737,7 +737,7 @@ export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
   const maxPointsByOrder = Math.floor(redeemBase / pointVal);
   const redeemPts = Math.min(balance, maxPointsByOrder);
   if (redeemPts <= 0) {
-    return { ok: false, error: "لا يوجد رصيد نقاط كافٍ أو مبلغ الطلب لا يسمح بالاستبدال" };
+    return { ok: false, error: "Wenn der Punktestand oder die Bestellmenge nicht ausreicht, ist eine Einlösung nicht möglich" };
   }
 
   const redeemRpc = await admin.rpc("redeem_loyalty_cash", {
@@ -748,7 +748,7 @@ export async function applyOwnerLoyaltyRedeemToOrder(orderId: string): Promise<
   if (redeemRpc.error || !Array.isArray(redeemRpc.data) || !redeemRpc.data[0]) {
     return {
       ok: false,
-      error: redeemRpc.error?.message ?? "فشل استبدال النقاط",
+      error: redeemRpc.error?.message ?? "Punkte konnten nicht eingelöst werden",
     };
   }
   const rr = redeemRpc.data[0] as {
@@ -920,7 +920,7 @@ export async function listRestaurantOrders(options?: {
     const phones = orderRows.map((row) => String(row.customer_phone ?? ""));
     balanceMap = await fetchLoyaltyBalancesForPhones(admin, rid, phones);
   } catch {
-    /* تجاهل — تعرض القائمة بدون أرصدة */
+    
   }
 
   const result: GuestOrderWithDetails[] = orderRows.map((o) => {
@@ -981,7 +981,7 @@ export async function listRestaurantOrders(options?: {
   return { orders: result, error: null };
 }
 
-/** تعيين أو إلغاء تعيين الويتر على الطلب يدوياً (يُخزَّن في orders.waiter_id) */
+
 export async function updateOrderWaiter(
   orderId: string,
   waiterId: string | null
@@ -997,7 +997,7 @@ export async function updateOrderWaiter(
       .eq("id", waiterId)
       .eq("restaurant_id", rid)
       .maybeSingle();
-    if (!w) return { error: "الويتر غير موجود" };
+    if (!w) return { error: "Der Twitter ist nicht verfügbar" };
   }
 
   const { error } = await supabase
@@ -1025,17 +1025,17 @@ async function assertOrderEditableForStructure(
     .eq("id", orderId)
     .eq("restaurant_id", rid)
     .maybeSingle();
-  if (!o) return { ok: false, error: "الطلب غير موجود" };
+  if (!o) return { ok: false, error: "Die Anfrage existiert nicht" };
   const st = (o as { status: string }).status;
   if (st === "completed" || st === "cancelled") {
-    return { ok: false, error: "لا يمكن تعديل طلب مكتمل أو ملغى" };
+    return { ok: false, error: "Eine abgeschlossene oder stornierte Bestellung kann nicht geändert werden" };
   }
   const lu = Number((o as { loyalty_points_used?: number }).loyalty_points_used ?? 0);
   const ld = Number((o as { loyalty_discount_cents?: number }).loyalty_discount_cents ?? 0);
   if (lu > 0 || ld > 0) {
     return {
       ok: false,
-      error: "لا يمكن تعديل الأصناف أو الخصم اليدوي بعد تطبيق خصم النقاط.",
+      error: "Artikel oder manuelle Rabatte können nach Anwendung des Punkterabatts nicht mehr geändert werden.",
     };
   }
   return { ok: true };
@@ -1079,7 +1079,7 @@ function revalidateOrderPaths() {
   revalidatePath("/admin/orders");
 }
 
-/** ملاحظات داخلية للطاقم — مسموح حتى للطلبات المكتملة ما عدا الملغاة */
+
 export async function updateOrderStaffNotes(
   orderId: string,
   notes: string | null
@@ -1093,9 +1093,9 @@ export async function updateOrderStaffNotes(
     .eq("id", orderId)
     .eq("restaurant_id", rid)
     .maybeSingle();
-  if (!o) return { error: "الطلب غير موجود" };
+  if (!o) return { error: "Die Anfrage existiert nicht" };
   if ((o as { status: string }).status === "cancelled") {
-    return { error: "لا يمكن تعديل طلب ملغى" };
+    return { error: "Eine stornierte Bestellung kann nicht geändert werden" };
   }
   const trimmed = notes?.trim() ?? "";
   const { error } = await supabase
@@ -1119,8 +1119,8 @@ export async function setOrderOwnerDiscount(
   if (!gate.ok) return { error: gate.error };
   const d = Math.max(0, Math.floor(Number(discountCents)));
   const sub = await orderSubtotalCents(supabase, orderId);
-  if (sub <= 0) return { error: "لا يوجد مبلغ أصناف" };
-  if (d > sub) return { error: "الخصم لا يتجاوز مجموع الأصناف" };
+  if (sub <= 0) return { error: "Es gibt keinen Artikelbetrag" };
+  if (d > sub) return { error: "Der Rabatt übersteigt nicht die Gesamtanzahl der Artikel" };
   const { error } = await supabase
     .from("orders")
     .update({ owner_discount_cents: d })
@@ -1149,12 +1149,12 @@ export async function addOrderItemFromMenu(input: {
     .eq("id", input.menuItemId)
     .eq("restaurant_id", rid)
     .maybeSingle();
-  if (!mi) return { error: "الصنف غير موجود" };
+  if (!mi) return { error: "Artikel nicht gefunden" };
   const item = mi as MenuItem;
-  if (item.is_available === false) return { error: "الصنف غير متاح حالياً" };
+  if (item.is_available === false) return { error: "Der Artikel ist derzeit nicht verfügbar" };
 
   const pr = resolveUnitPriceCents(item, input.priceOptionLabel);
-  if (!pr.ok) return { error: "اختر حجم السعر للصنف" };
+  if (!pr.ok) return { error: "Wähle die Preisgröße für den Artikel" };
   const q = Math.min(99, Math.max(1, Math.floor(input.quantity)));
   const unit = pr.cents;
 
@@ -1186,7 +1186,7 @@ export async function updateOrderItemQuantity(
     .select("id, order_id, unit_price_cents")
     .eq("id", orderItemId)
     .maybeSingle();
-  if (!row) return { error: "البند غير موجود" };
+  if (!row) return { error: "Artikel nicht gefunden" };
   const orderId = (row as { order_id: string }).order_id;
 
   const gate = await assertOrderEditableForStructure(supabase, orderId, rid);
@@ -1217,7 +1217,7 @@ export async function removeOrderItem(orderItemId: string): Promise<{ error: str
     .select("id, order_id")
     .eq("id", orderItemId)
     .maybeSingle();
-  if (!row) return { error: "البند غير موجود" };
+  if (!row) return { error: "Artikel nicht gefunden" };
   const orderId = (row as { order_id: string }).order_id;
 
   const gate = await assertOrderEditableForStructure(supabase, orderId, rid);
@@ -1228,7 +1228,7 @@ export async function removeOrderItem(orderItemId: string): Promise<{ error: str
     .select("id", { count: "exact", head: true })
     .eq("order_id", orderId);
   if ((count ?? 0) <= 1) {
-    return { error: "يجب أن يبقى صنف واحد على الأقل في الطلب" };
+    return { error: "Mindestens ein Artikel muss in der Bestellung verbleiben" };
   }
 
   const { error } = await supabase.from("order_items").delete().eq("id", orderItemId);
@@ -1264,7 +1264,7 @@ export async function updateOrderStatus(
     try {
       await finalizeLoyaltyOnOrderCompleted(orderId, rid);
     } catch {
-      /* تجاهل — لا يُعاد فشل تحديث الحالة */
+      
     }
   }
 
@@ -1273,7 +1273,7 @@ export async function updateOrderStatus(
   return { error: null };
 }
 
-/** بند طلب في صفحة التتبع العامة */
+
 export type PublicOrderTrackingItem = {
   id: string;
   menu_item_name: string;
@@ -1283,7 +1283,7 @@ export type PublicOrderTrackingItem = {
   excluded_ingredients?: string[];
 };
 
-/** تتبّع عام للزبون — يُستدعى من صفحة التتبع فقط (بدون تسجيل دخول) */
+
 export type PublicOrderTracking = {
   display_number: number;
   status: OrderStatus;
@@ -1291,7 +1291,7 @@ export type PublicOrderTracking = {
   restaurant_name: string;
   logo_url: string | null;
   menu_title_animation_enabled: boolean;
-  /** فوتر المنيو العام — نفس ما يظهر في صفحة المنيو */
+  
   footer_note: string | null;
   public_address: string | null;
   public_maps_url: string | null;
@@ -1306,18 +1306,18 @@ export type PublicOrderTracking = {
   table_label: string | null;
   customer_phone: string;
   items: PublicOrderTrackingItem[];
-  /** مجموع بنود الطلب قبل خصم النقاط */
+  
   items_subtotal_cents: number;
   loyalty_points_used: number;
   loyalty_discount_cents: number;
-  /** خصم يدوي من المطعم (لا يُعرض للزبون كملاحظات داخلية) */
+  
   owner_discount_cents: number;
-  /** نقاط الولاء المكتسبة من هذا الطلب (بعد اكتماله) */
+  
   loyalty_points_earned_on_order: number;
-  /** المبلغ المستحق بعد خصم النقاط */
+  /** Der fällige Betrag nach Abzug der Punkte */
   total_cents: number;
   currency_code: string;
-  /** عرض العملة الثانية كما في المنيو عند التفعيل */
+  
   secondary_currency_enabled: boolean;
   secondary_currency_code: string | null;
   secondary_exchange_rate: number | null;
@@ -1399,7 +1399,7 @@ export async function getOrderTrackingByToken(
       items_subtotal_cents += r.line_total_cents;
       items.push({
         id: r.id,
-        menu_item_name: nameById.get(r.menu_item_id) ?? "صنف",
+        menu_item_name: nameById.get(r.menu_item_id) ?? "Klassifizieren",
         quantity: r.quantity,
         price_option_label: r.price_option_label,
         line_total_cents: r.line_total_cents,

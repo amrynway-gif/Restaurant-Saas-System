@@ -8,8 +8,8 @@ import { RestaurantPhoneCountryForm } from "@/app/admin/settings/restaurant-phon
 import { RestaurantWaitersSettingsForm } from "@/app/admin/settings/restaurant-waiters-settings-form";
 
 export const metadata = {
-  title: "الإعدادات | لوحة المطعم",
-  description: "إعدادات المطعم",
+  title: "Einstellungen | Restauranttafel",
+  description: "Restauranteinstellungen",
 };
 
 export default async function OwnerSettingsPage() {
@@ -20,30 +20,30 @@ export default async function OwnerSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">الإعدادات</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Einstellungen</h1>
         <p className="text-muted-foreground">
-          إعدادات المطعم والحساب.
+          Restaurant- und Kontoeinstellungen.
         </p>
       </div>
 
       <Card className="border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>المطعم</CardTitle>
-          <CardDescription>المطعم المرتبط بحسابك</CardDescription>
+          <CardTitle>Das Restaurant</CardTitle>
+          <CardDescription>Das mit Ihrem Konto verknüpfte Restaurant</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           <p className="text-sm font-medium">{restaurant?.name ?? "—"}</p>
           <p className="text-xs text-muted-foreground">
-            النطاق الفرعي: <code className="rounded bg-muted px-1">{restaurant?.subdomain ?? "—"}</code>
+            Subdomain: <code className="rounded bg-muted px-1">{restaurant?.subdomain ?? "—"}</code>
           </p>
         </CardContent>
       </Card>
 
       <Card className="border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>شعار المطعم</CardTitle>
+          <CardTitle>Restaurant-Logo</CardTitle>
           <CardDescription>
-            يظهر الشعار في ترويسة صفحة المنيو للعملاء عند زيارة نطاق مطعمك.
+            Das Logo erscheint in der Kopfzeile der Menüseite für Kunden, wenn sie dein Restaurant besuchen.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -58,9 +58,9 @@ export default async function OwnerSettingsPage() {
 
       <Card className="border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>الجوال والواتساب (الطلبات)</CardTitle>
+          <CardTitle>Mobil und WhatsApp (Bestellungen)</CardTitle>
           <CardDescription>
-            حدّد مقدمة الدولة لدمجها مع أرقام الزبائن في قائمة الطلبات — اتصال وواتساب برسالة جاهزة ورابط التتبع.
+            Gib die Ländereinführung an, um sie mit Kundennummern in der Bestellliste zu kombinieren – rufe an und WhatsApp mit einer fertigen Nachricht und einem Tracking-Link.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -75,9 +75,9 @@ export default async function OwnerSettingsPage() {
 
       <Card className="border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>محتوى صفحة المنيو العامة</CardTitle>
+          <CardTitle>Allgemeiner Inhalt der Menüseite</CardTitle>
           <CardDescription>
-            تحكم في نصوص الهيرو والفوتر التي تظهر لعملائك في صفحة المنيو الرئيسية.
+            Steuere die Helden- und Fußzeilentexte, die deinen Kunden auf der Hauptmenüseite angezeigt werden.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -126,10 +126,10 @@ export default async function OwnerSettingsPage() {
 
       <Card className="border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>الويترز والطاولات</CardTitle>
+          <CardTitle>Kellner und Tische</CardTitle>
           <CardDescription>
-            فعّل نظام الويترز لإضافة أسماء الموظفين المسؤولين عن خدمة الطاولات، ثم اربط كل طاولة بويتر
-            من صفحة الطاولات. يظهر اسم الويتر في الطلبات وتتوفر فلاتر حسب الطاولة والويتر.
+            Aktiviere das Kellnersystem, um die Namen der Mitarbeiter hinzuzufügen, die für die Tischbedienung verantwortlich sind, und verknüpfe dann jeden Tisch mit Kellnern
+Von der Tabellenseite. Der Name des Kellners erscheint in Bestellungen und Filter sind nach Tisch und Kellner verfügbar.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -145,10 +145,10 @@ export default async function OwnerSettingsPage() {
 
       <Card className="border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>الولاء والنقاط</CardTitle>
+          <CardTitle>Treue und Punkte</CardTitle>
           <CardDescription>
-            حدّد كم يدفع الزبون لكسب نقطة واحدة، وما قيمة النقطة عند الخصم. يُطبَّق احتساب
-            النقاط على الطلبات الجديدة عند تفعيل البرنامج.
+            Bestimmen Sie, wie viel der Kunde zahlt, um einen Punkt zu sammeln, und welchen Wert der Punkt bei der Ermäßigung hat. Es gilt die Berechnung
+Punkte auf neue Bestellungen bei Aktivierung des Programms.
           </CardDescription>
         </CardHeader>
         <CardContent>

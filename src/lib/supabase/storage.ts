@@ -23,10 +23,7 @@ export async function uploadMenuImage(
   return { url: publicUrl };
 }
 
-/**
- * رفع شعار المطعم إلى نفس الـ bucket (مسار restaurantId/logo.ext).
- * يُستخدم من صفحة إعدادات المطعم.
- */
+
 export async function uploadRestaurantLogo(
   restaurantId: string,
   file: File
@@ -34,7 +31,7 @@ export async function uploadRestaurantLogo(
   const { createClient } = await import("@/lib/supabase/client");
   const supabase = createClient();
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-  if (!/^(jpe?g|png|webp|gif|svg)$/i.test(ext)) return { error: "نوع الملف غير مدعوم. استخدم صورة (jpg, png, webp, gif)." };
+  if (!/^(jpe?g|png|webp|gif|svg|avif|heic|heif)$/i.test(ext)) return { error: "Der Dateityp wird nicht unterstützt. Verwende ein Bild (jpg, png, webp, gif, avif)." };
   const path = `${restaurantId}/logo.${ext}`;
   const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
     cacheControl: "3600",
@@ -47,10 +44,7 @@ export async function uploadRestaurantLogo(
   return { url: publicUrl };
 }
 
-/**
- * رفع صورة الخلفية العريضة للهيرو (صفحة المنيو).
- * المسار: restaurantId/hero-bg.ext
- */
+
 export async function uploadRestaurantHeroBackground(
   restaurantId: string,
   file: File
@@ -58,8 +52,8 @@ export async function uploadRestaurantHeroBackground(
   const { createClient } = await import("@/lib/supabase/client");
   const supabase = createClient();
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-  if (!/^(jpe?g|png|webp|gif)$/i.test(ext))
-    return { error: "نوع الملف غير مدعوم. استخدم صورة (jpg, png, webp, gif)." };
+  if (!/^(jpe?g|png|webp|gif|avif|heic|heif)$/i.test(ext))
+    return { error: "Der Dateityp wird nicht unterstützt. Verwende ein Bild (jpg, png, webp, gif, avif)." };
   const path = `${restaurantId}/hero-bg.${ext}`;
   const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
     cacheControl: "3600",
@@ -72,10 +66,7 @@ export async function uploadRestaurantHeroBackground(
   return { url: publicUrl };
 }
 
-/**
- * رفع بانر ترويجي للمنيو (صورة أو فيديو قصير).
- * المسار: restaurantId/menu-banner.ext
- */
+
 export async function uploadRestaurantMenuBanner(
   restaurantId: string,
   file: File
@@ -87,11 +78,11 @@ export async function uploadRestaurantMenuBanner(
   const ext = file.name.split(".").pop()?.toLowerCase() || "";
   let kind: "image" | "video";
   if (/^(mp4|webm)$/i.test(ext)) kind = "video";
-  else if (/^(jpe?g|png|webp|gif)$/i.test(ext)) kind = "image";
+  else if (/^(jpe?g|png|webp|gif|avif|heic|heif)$/i.test(ext)) kind = "image";
   else {
     return {
       error:
-        "نوع الملف غير مدعوم. استخدم صورة (jpg, png, webp, gif) أو فيديو (mp4, webm).",
+        "Der Dateityp wird nicht unterstützt. Verwende ein Bild (jpg, png, webp, gif, avif) oder ein Video (mp4, webm).",
     };
   }
   const path = `${restaurantId}/menu-banner.${ext}`;

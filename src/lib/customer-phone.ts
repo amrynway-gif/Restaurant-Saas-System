@@ -1,8 +1,4 @@
-/**
- * دمج مقدمة الدولة مع رقم الزبون المخزّن (أرقام فقط كما في الطلبات).
- * إذا كان الرقم يبدأ بالمقدمة نفسها يُعاد كما هو.
- * إذا بدأ بـ 0 يُزال قبل الدمج (صيغة محلية شائعة).
- */
+
 export function normalizeInternationalDigits(
   countryPrefixDigits: string | null | undefined,
   customerStoredDigits: string
@@ -16,7 +12,7 @@ export function normalizeInternationalDigits(
   return prefix + local;
 }
 
-/** عرض بسيط مع بادئة + */
+
 export function formatInternationalPhoneDisplay(digits: string): string {
   const d = digits.replace(/\D/g, "");
   if (!d) return "";
@@ -34,20 +30,20 @@ export function buildPublicOrderTrackingUrl(
   return `${base}${path}`;
 }
 
-/** نص جاهز للزبون عبر واتساب (قبول + تحضير + رقم + رابط التتبع) */
+
 export function buildWhatsAppOrderStaffMessage(params: {
   restaurantName: string;
   displayNumber: number;
   trackingUrl: string;
 }): string {
-  const name = params.restaurantName.trim() || "المطعم";
+  const name = params.restaurantName.trim() || "Das Restaurant";
   return [
-    `مرحباً، تم قبول طلبك في ${name}.`,
+    `Willkommen, es wurde von Dir in Y ${name} angenommen.`,
     "",
-    `رقم الطلب: #${params.displayNumber}`,
-    "طلبك قيد التحضير حالياً.",
+    `Bestellnummer: #${params.displayNumber}`,
+    "Deine Anfrage wird derzeit vorbereitet.",
     "",
-    "🔗 متابعة الطلب:",
+    "🔗 Auftragsverfolgung:",
     params.trackingUrl,
   ].join("\n");
 }
@@ -64,20 +60,20 @@ export function buildTelHref(phoneDigits: string): string {
   return `tel:+${d}`;
 }
 
-/** رسالة واتساب لإبلاغ الزبون برصيد النقاط ورابط صفحة الولاء */
+
 export function buildWhatsAppLoyaltyPointsMessage(params: {
   restaurantName: string;
   customerName?: string | null;
   pointsBalance: number;
   loyaltyPageUrl: string;
 }): string {
-  const place = params.restaurantName.trim() || "المطعم";
-  const who = params.customerName?.trim() || "مرحباً";
+  const place = params.restaurantName.trim() || "Das Restaurant";
+  const who = params.customerName?.trim() || "Willkommen";
   return [
-    `${who}،`,
-    `رصيد نقاطك في برنامج ولاء ${place}: ${params.pointsBalance} نقطة.`,
+    `${who},`,
+    `Überwachen Du Ihren Punkt im Programm Und ${place}: ${params.pointsBalance} in Punkt.`,
     "",
-    "🔗 لمتابعة نقاطك وسجلّك:",
+    "🔗 Um deinen Punkten zu folgen und sie aufzuzeichnen:",
     params.loyaltyPageUrl,
   ].join("\n");
 }

@@ -34,7 +34,7 @@ export async function createRestaurantTable(label: string): Promise<{ error: str
   const profile = await getProfileOrRedirect();
   const rid = profile.restaurant_id!;
   const trimmed = label.trim();
-  if (!trimmed) return { error: "اسم الطاولة مطلوب" };
+  if (!trimmed) return { error: "Tabellenname ist erforderlich" };
 
   const supabase = await createClient();
   const { count } = await supabase
@@ -66,7 +66,7 @@ export async function deleteRestaurantTable(tableId: string): Promise<{ error: s
   return { error: null };
 }
 
-/** ربط طاولة بويتر (أو إلغاء الربط بـ null) — يتطلب عمود waiter_id بعد تشغيل waiters-system.sql */
+
 export async function setRestaurantTableWaiter(
   tableId: string,
   waiterId: string | null
@@ -82,7 +82,7 @@ export async function setRestaurantTableWaiter(
       .eq("id", waiterId)
       .eq("restaurant_id", rid)
       .maybeSingle();
-    if (!w) return { error: "الويتر غير موجود" };
+    if (!w) return { error: "Der Twitter ist nicht verfügbar" };
   }
 
   const { error } = await supabase

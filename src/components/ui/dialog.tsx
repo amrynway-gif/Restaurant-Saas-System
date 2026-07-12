@@ -47,7 +47,7 @@ function DialogContent({
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
-  /** عند true: المحتوى الداخلي يُمرّر والهيدر/الفوتر يبقى ثابتاً (استخدم flex flex-col + overflow في المحتوى) */
+  
   scrollable?: boolean
 }) {
   return (

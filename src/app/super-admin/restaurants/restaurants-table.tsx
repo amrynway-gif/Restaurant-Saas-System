@@ -173,7 +173,7 @@ export function RestaurantsTable({ initialRestaurants }: RestaurantsTableProps) 
                           size="sm"
                           className="h-8 px-2 text-[12px] font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]"
                         >
-                          المنيو العام
+                          Allgemeines Menü
                         </Button>
                       </Link>
                       <Button

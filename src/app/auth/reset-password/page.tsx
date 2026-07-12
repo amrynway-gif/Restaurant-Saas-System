@@ -21,11 +21,11 @@ export default function ResetPasswordPage() {
     setError(null);
 
     if (!password || password.length < 6) {
-      setError("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
+      setError("Das Passwort muss mindestens 6 Zeichen lang sein.");
       return;
     }
     if (password !== passwordConfirm) {
-      setError("كلمتا المرور غير متطابقتين.");
+      setError("Die beiden Passwörter stimmen nicht überein.");
       return;
     }
 
@@ -34,11 +34,11 @@ export default function ResetPasswordPage() {
     setLoading(false);
 
     if (updateErr) {
-      setError(updateErr.message || "فشل تحديث كلمة المرور");
+      setError(updateErr.message || "Die Passwortaktualisierung ist fehlgeschlagen");
       return;
     }
 
-    // بعد النجاح: المستخدم غالباً يكون لسه مسجل دخول بسبب recovery token
+    
     router.replace("/login");
   }
 
@@ -46,15 +46,15 @@ export default function ResetPasswordPage() {
     <div className="flex min-h-[60vh] flex-col items-center justify-center bg-muted/30 px-4">
       <div className="w-full max-w-md space-y-6 rounded-lg border bg-card p-6 shadow-sm">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-semibold">تعيين كلمة مرور جديدة</h1>
+          <h1 className="text-2xl font-semibold">Lege ein neues Passwort fest</h1>
           <p className="text-sm text-muted-foreground">
-            أدخل كلمة مرور جديدة لتكملة عملية إعادة ضبط كلمة المرور.
+            Gib ein neues Passwort ein, um den Vorgang zum Zurücksetzen des Passworts abzuschließen.
           </p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="new-password">كلمة المرور الجديدة</Label>
+            <Label htmlFor="new-password">Neues Passwort</Label>
             <Input
               id="new-password"
               type="password"
@@ -66,7 +66,7 @@ export default function ResetPasswordPage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="new-password-confirm">تأكيد كلمة المرور</Label>
+            <Label htmlFor="new-password-confirm">Passwort bestätigen</Label>
             <Input
               id="new-password-confirm"
               type="password"
@@ -80,7 +80,7 @@ export default function ResetPasswordPage() {
           {error && <p className="text-sm text-destructive">{error}</p>}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "جاري الحفظ…" : "حفظ كلمة المرور"}
+            {loading ? "Sparen..." : "Speichere dein Passwort"}
           </Button>
         </form>
       </div>

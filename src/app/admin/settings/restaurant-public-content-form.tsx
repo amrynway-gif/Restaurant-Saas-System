@@ -214,7 +214,7 @@ export function RestaurantPublicContentForm({
         <input
           ref={heroFileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif"
+          accept="image/*"
           className="hidden"
           onChange={async (e) => {
             const file = e.target.files?.[0];
@@ -310,7 +310,7 @@ export function RestaurantPublicContentForm({
         <input
           ref={bannerFileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
+          accept="image/*,video/*"
           className="hidden"
           onChange={async (e) => {
             const file = e.target.files?.[0];

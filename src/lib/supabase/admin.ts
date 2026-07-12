@@ -1,11 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { ensureEnvLoaded } from "@/lib/load-env";
 
-/**
- * Supabase client with Service Role Key — للاستخدام في السيرفر فقط.
- * يسمح بإنشاء مستخدمين وتعديل كلمات المرور (Admin API).
- * لا تعرّض هذا المفتاح في العميل أبداً.
- */
+
 export function createAdminClient() {
   ensureEnvLoaded();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();

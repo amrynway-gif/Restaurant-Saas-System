@@ -33,7 +33,7 @@ type Props = {
   subdomain: string;
   publicBaseUrl: string;
   restaurantName: string;
-  /** فلاتر الطاولة والويتر تظهر فقط عند تفعيل النظام من الإعدادات */
+  
   waitersSystemEnabled?: boolean;
   tablesForFilter?: { id: string; label: string }[];
   waitersForFilter?: { id: string; name: string }[];
@@ -128,7 +128,7 @@ export function OrdersClient({
 
   async function handleOwnerApplyLoyaltyRedeem(orderId: string) {
     const ok = window.confirm(
-      "تأكيد تطبيق أقصى خصم بالنقاط على هذا الطلب؟ سيتم خصم النقاط من رصيد الزبون تلقائياً."
+      "Bestätigen Sie, dass der maximale Punkterabatt auf diese Bestellung angewendet wurde? Punkte werden automatisch vom Guthaben des Kunden abgezogen."
     );
     if (!ok) return;
     setOwnerRedeemingId(orderId);
@@ -138,7 +138,7 @@ export function OrdersClient({
       toast.error(res.error);
       return;
     }
-    toast.success(`تم تطبيق الخصم على الطلب: ${res.pointsRedeemed} نقطة مستبدَلة.`);
+    toast.success(`Rabatt auf Anzufordern: ${res.pointsRedeemed} ein Punktantrag ersetzt.`);
     router.refresh();
   }
 
@@ -161,7 +161,7 @@ export function OrdersClient({
       toast.error(res.error);
       return;
     }
-    toast.success("تم حفظ الملاحظات.");
+    toast.success("Notizen gespeichert.");
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, staff_notes: notes || null } : o))
     );
@@ -176,7 +176,7 @@ export function OrdersClient({
       toast.error(res.error);
       return;
     }
-    toast.success("تم تحديث الخصم.");
+    toast.success("Der Rabatt wurde aktualisiert.");
     router.refresh();
   }
 
@@ -191,7 +191,7 @@ export function OrdersClient({
       toast.error(res.error);
       return;
     }
-    toast.success("تمت إضافة الصنف.");
+    toast.success("Artikel hinzugefügt.");
     router.refresh();
   }
 
@@ -218,7 +218,7 @@ export function OrdersClient({
       toast.error(res.error);
       return;
     }
-    toast.success("تم حذف الصنف.");
+    toast.success("Der Artikel wurde gelöscht.");
     router.refresh();
   }
 
@@ -248,7 +248,7 @@ export function OrdersClient({
     }
 
     toast.success(
-      waiterId ? "تم تعيين الويتر على الطلب." : "تم الاعتماد على ويتر الطاولة (إن وُجد)."
+      waiterId ? "Das Twitter ist auf Ordnung eingestellt." : "Man verlässt sich auf das Gewicht des Tisches (falls vorhanden)."
     );
     router.refresh();
   }
@@ -260,7 +260,7 @@ export function OrdersClient({
         {waitersSystemEnabled ? (
           <div className="flex w-full max-w-md flex-col gap-2 sm:max-w-none sm:flex-row sm:items-center">
             <label className="sr-only" htmlFor="filter-table">
-              تصفية حسب الطاولة
+              Nach Tabelle filtern
             </label>
             <select
               id="filter-table"
@@ -268,15 +268,15 @@ export function OrdersClient({
               value={tableFilterId}
               onChange={(e) => setTableFilterId(e.target.value)}
             >
-              <option value="">كل الطاولات</option>
+              <option value="">Alle Tische</option>
               {tablesForFilter.map((t) => (
                 <option key={t.id} value={t.id}>
-                  الطاولة: {t.label}
+                  Tisch: {t.label}
                 </option>
               ))}
             </select>
             <label className="sr-only" htmlFor="filter-waiter">
-              تصفية حسب الويتر
+              Nach Twitter filtern
             </label>
             <select
               id="filter-waiter"
@@ -284,7 +284,7 @@ export function OrdersClient({
               value={waiterFilterId}
               onChange={(e) => setWaiterFilterId(e.target.value)}
             >
-              <option value="">كل الويترز</option>
+              <option value="">Alle Gewitter</option>
               {waitersForFilter.map((w) => (
                 <option key={w.id} value={w.id}>
                   {w.name}
@@ -294,7 +294,7 @@ export function OrdersClient({
           </div>
         ) : null}
         <Input
-          placeholder="بحث برقم الطلب أو أرقام الجوال…"
+          placeholder="Suche nach Bestellnummer oder Handynummern..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md"
@@ -305,10 +305,10 @@ export function OrdersClient({
           spellCheck={false}
         />
         <p
-          dir="rtl"
+          dir="ltr"
           className="text-sm text-muted-foreground"
         >
-          <span className="text-foreground/80">المعروض من الطلبات:</span>{" "}
+          <span className="text-foreground/80">Lieferung von Bestellungen:</span>{" "}
           <span
             dir="ltr"
             className="inline-block tabular-nums font-medium text-foreground"
@@ -320,9 +320,9 @@ export function OrdersClient({
       </div>
 
       {orders.length === 0 ? (
-        <p className="text-center text-muted-foreground">لا توجد طلبات بعد.</p>
+        <p className="text-center text-muted-foreground">Es liegen noch keine Anfragen vor.</p>
       ) : filtered.length === 0 ? (
-        <p className="text-center text-muted-foreground">لا توجد طلبات تطابق التصفية.</p>
+        <p className="text-center text-muted-foreground">Es gibt keine Bestellungen, die dem Filter entsprechen.</p>
       ) : (
         <ul className="space-y-4">
           {filtered.map((o) => (

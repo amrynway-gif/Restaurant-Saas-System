@@ -11,9 +11,9 @@ import { MenuPublicFooter } from "@/components/menu-public-footer";
 import { useEffect, useState } from "react";
 
 const FULFILLMENT_LABELS: Record<string, string> = {
-  dine_in: "داخل المطعم",
-  pickup: "استلام من المطعم",
-  delivery: "توصيل",
+  dine_in: "Im Restaurant",
+  pickup: "Abholung vom Restaurant",
+  delivery: "Lieferung",
 };
 
 const TRACK_STEPS: { status: OrderStatus; label: string }[] = [
@@ -100,13 +100,13 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
       <div className="mx-auto max-w-lg px-4 py-8">
         <div className="mb-8 text-center">
           <h2 className="font-mono text-3xl font-bold tabular-nums text-stone-900 dark:text-stone-50">
-            طلب{" "}
+            anzufordern{" "}
             <span dir="ltr" className="tabular-nums">
               #{data.display_number}
             </span>
           </h2>
-          <p className="mt-2 text-sm text-stone-600 dark:text-stone-400" dir="rtl">
-            تم الإنشاء{" "}
+          <p className="mt-2 text-sm text-stone-600 dark:text-stone-400" dir="ltr">
+            Erstellt{" "}
             {new Date(data.created_at).toLocaleString("ar-SA", {
               dateStyle: "medium",
               timeStyle: "short",
@@ -126,7 +126,7 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
               </span>
-              يتحدّث تلقائياً كل بضع ثوانٍ
+              Es spricht alle paar Sekunden automatisch
             </p>
           ) : null}
         </div>
@@ -139,33 +139,33 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
             id="order-details-heading"
             className="mb-3 text-sm font-semibold text-stone-800 dark:text-stone-100"
           >
-            تفاصيل الطلب
+            Bestelldetails
           </h3>
           <dl className="space-y-2 text-sm text-stone-700 dark:text-stone-300">
             <div className="flex flex-wrap justify-between gap-2 border-b border-stone-200/80 pb-2 dark:border-stone-700/80">
-              <dt className="text-stone-500 dark:text-stone-400">حالة الطلب</dt>
+              <dt className="text-stone-500 dark:text-stone-400">Bestellstatus</dt>
               <dd className="font-medium">{ORDER_STATUS_LABELS[data.status]}</dd>
             </div>
             <div className="flex flex-wrap justify-between gap-2 border-b border-stone-200/80 pb-2 dark:border-stone-700/80">
-              <dt className="text-stone-500 dark:text-stone-400">نوع الطلب</dt>
+              <dt className="text-stone-500 dark:text-stone-400">Anfragetyp</dt>
               <dd className="font-medium">
                 {FULFILLMENT_LABELS[data.fulfillment] ?? data.fulfillment}
               </dd>
             </div>
             {data.table_label ? (
               <div className="flex flex-wrap justify-between gap-2 border-b border-stone-200/80 pb-2 dark:border-stone-700/80">
-                <dt className="text-stone-500 dark:text-stone-400">الطاولة</dt>
+                <dt className="text-stone-500 dark:text-stone-400">Der Tisch</dt>
                 <dd className="font-medium">{data.table_label}</dd>
               </div>
             ) : null}
             {data.delivery_address ? (
               <div className="border-b border-stone-200/80 pb-2 dark:border-stone-700/80">
-                <dt className="text-stone-500 dark:text-stone-400">عنوان التوصيل</dt>
+                <dt className="text-stone-500 dark:text-stone-400">Lieferadresse</dt>
                 <dd className="mt-1 font-medium leading-relaxed">{data.delivery_address}</dd>
               </div>
             ) : null}
             <div className="flex flex-wrap justify-between gap-2 border-b border-stone-200/80 pb-2 dark:border-stone-700/80">
-              <dt className="text-stone-500 dark:text-stone-400">رقم الجوال</dt>
+              <dt className="text-stone-500 dark:text-stone-400">Handynummer</dt>
               <dd dir="ltr" className="font-mono font-medium tabular-nums">
                 {data.customer_phone}
               </dd>
@@ -206,8 +206,8 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
                 </div>
                 {line.excluded_ingredients && line.excluded_ingredients.length > 0 ? (
                   <p className="mt-1 text-xs leading-relaxed text-amber-800 dark:text-amber-200/90">
-                    <span className="font-semibold">بدون: </span>
-                    {line.excluded_ingredients.join("، ")}
+                    <span className="font-semibold">ohne: </span>
+                    {line.excluded_ingredients.join(", ")}
                   </p>
                 ) : null}
               </li>
@@ -218,14 +218,14 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
             {data.loyalty_discount_cents > 0 || data.owner_discount_cents > 0 ? (
               <>
                 <div className="flex items-center justify-between gap-2 text-stone-700 dark:text-stone-300">
-                  <span>مجموع الأصناف</span>
+                  <span>Gesamtzahl der Artikel</span>
                   <span dir="ltr" className="tabular-nums">
                     {formatMenuPrice(data.items_subtotal_cents, data.currency_code)}
                   </span>
                 </div>
                 {data.owner_discount_cents > 0 ? (
                   <div className="flex items-center justify-between gap-2 text-sky-800 dark:text-sky-300/90">
-                    <span>خصم من المطعم</span>
+                    <span>Ermäßigung im Restaurant</span>
                     <span dir="ltr" className="tabular-nums">
                       −{formatMenuPrice(data.owner_discount_cents, data.currency_code)}
                     </span>
@@ -234,10 +234,10 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
                 {data.loyalty_discount_cents > 0 ? (
                   <div className="flex items-center justify-between gap-2 text-emerald-800 dark:text-emerald-300/90">
                     <span>
-                      خصم نقاط الولاء
+                      Rabatt auf Treuepunkte
                       {data.loyalty_points_used > 0 ? (
                         <span className="ms-1 tabular-nums" dir="ltr">
-                          ({data.loyalty_points_used} نقطة)
+                          ({data.loyalty_points_used} ein Punkt)
                         </span>
                       ) : null}
                     </span>
@@ -251,8 +251,8 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
             <div className="flex items-center justify-between gap-2 font-semibold text-stone-900 dark:text-stone-50">
               <span>
                 {data.loyalty_discount_cents > 0 || data.owner_discount_cents > 0
-                  ? "المستحق"
-                  : "الإجمالي"}
+                  ? "Das Fällige"
+                  : "Gesamt"}
               </span>
               <div dir="ltr" className="flex flex-col items-end gap-0.5 text-end">
                 <span className="text-lg font-bold tabular-nums">
@@ -279,10 +279,10 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
                 <span dir="ltr" className="tabular-nums">
                   +{data.loyalty_points_earned_on_order}
                 </span>{" "}
-                نقطة مكتسبة من هذا الطلب ضمن برنامج الولاء
+                Für diese Bestellung wird im Rahmen des Treueprogramms ein Punkt gutgeschrieben
               </p>
               <p className="mt-1 text-[11px] text-emerald-800/90 dark:text-emerald-200/80">
-                تمت إضافة النقاط إلى رصيدك المرتبط بهذا الجوال بعد اكتمال الطلب.
+                Nach Abschluss der Bestellung werden Ihrem mit diesem Mobiltelefon verknüpften Guthaben Punkte gutgeschrieben.
               </p>
             </div>
           ) : null}
@@ -294,7 +294,7 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
               {ORDER_STATUS_LABELS.cancelled}
             </p>
             <p className="mt-2 text-sm text-red-700/90 dark:text-red-200/90">
-              لم يعد هذا الطلب نشطاً.
+              Diese Anfrage ist nicht mehr aktiv.
             </p>
           </div>
         ) : (
@@ -326,7 +326,7 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
                     <p className="font-semibold text-stone-900 dark:text-stone-50">{step.label}</p>
                     {current ? (
                       <p className="mt-1 text-xs text-stone-600 dark:text-stone-400">
-                        الحالة الحالية لطلبك
+                        Der aktuelle Status Ihrer Bestellung
                       </p>
                     ) : null}
                   </div>
@@ -337,7 +337,7 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
         )}
 
         <p className="mt-10 text-center text-xs text-stone-500 dark:text-stone-500">
-          هذه الصفحة للاطلاع فقط. للاستفسار تواصل مع المطعم مباشرة.
+          Diese Seite dient nur zu Informationszwecken. Bei Rückfragen wende sich bitte direkt an das Restaurant.
         </p>
       </div>
 

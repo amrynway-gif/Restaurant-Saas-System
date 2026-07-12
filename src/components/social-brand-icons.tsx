@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 const iconWrap = "size-5 shrink-0";
 
-/** أيقونات تعريفية بسيطة — روابط خارجية فقط عند وجود URL */
+
 
 export function FacebookBrandIcon({ className }: { className?: string }) {
   return (

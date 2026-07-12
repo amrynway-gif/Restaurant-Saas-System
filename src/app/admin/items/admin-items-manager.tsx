@@ -37,9 +37,9 @@ type AdminItemsManagerProps = {
   initialItems: MenuItem[];
   secondaryCurrencyEnabled?: boolean;
   secondaryCurrencyCode?: string | null;
-  /** وحدات العملة الثانية لكل 1 وحدة أساسية — عند ضبطه يمكن ترك أسعار ثانوية فارغة ليحسبها النظام */
+  
   secondaryExchangeRate?: number | null;
-  /** رمز عملة المنيو الأساسية لعرض الأسعار في البطاقات */
+  
   primaryCurrencyCode?: string | null;
 };
 
@@ -117,7 +117,7 @@ export function AdminItemsManager({
     if (addForm.priceOptions.length > 0 && filledOptions.length === 0) {
       showMsg(
         "err",
-        "أدخل الحجم والسعر لكل صف، أو احذف كل أحجام الصنف لاستخدام سعر واحد."
+        "Gib für jede Zeile eine Größe und einen Preis ein oder lösche alle Artikelgrößen, um einen einzigen Preis zu verwenden."
       );
       return;
     }
@@ -131,7 +131,7 @@ export function AdminItemsManager({
       }));
       const invalid = opts.find((o) => o.price_cents < 0);
       if (invalid) {
-        showMsg("err", "أدخل أسعاراً صحيحة لجميع الأحجام (مثلاً 25 أو 50.00).");
+        showMsg("err", "Gib gültige Preise für alle Größen ein (z. B. 25 oder 50,00).");
         return;
       }
       const secondaryManual: { label: string; price_cents: number }[] = [];
@@ -139,7 +139,7 @@ export function AdminItemsManager({
         if (!r.secondaryPrice?.trim()) continue;
         const sc = parsePriceToCents(r.secondaryPrice);
         if (sc < 0) {
-          showMsg("err", "أدخل السعر بعملة ورمز العملة الثانية بشكل صحيح أو اترك الحقل فارغاً ليحسبها النظام.");
+          showMsg("err", "Gib den Preis in einer Währung und das Symbol der zweiten Währung korrekt ein oder lasse das Feld leer, damit das System ihn berechnen kann.");
           return;
         }
         secondaryManual.push({ label: r.label.trim(), price_cents: sc });
@@ -148,7 +148,7 @@ export function AdminItemsManager({
         if (secondaryManual.length !== filledOptions.length) {
           showMsg(
             "err",
-            "أدخل السعر بعملة ورمز العملة الثانية لكل الأحجام، أو عِدْ إلى إعدادات المنيو لضبط العملة الثانية."
+            "Gib für alle Größen den Preis in einer Währung und das Symbol der zweiten Währung ein oder kehre zu den Menüeinstellungen zurück, um die zweite Währung festzulegen."
           );
           return;
         }
@@ -160,17 +160,17 @@ export function AdminItemsManager({
     } else {
       priceCents = parsePriceToCents(addForm.price);
       if (priceCents < 0) {
-        showMsg("err", "أدخل سعراً صحيحاً (مثلاً 50.00).");
+        showMsg("err", "Gib einen gültigen Preis ein (z. B. 50,00).");
         return;
       }
       if (secondaryCurrencyEnabled && addForm.secondaryPrice.trim()) {
         const secondary = parsePriceToCents(addForm.secondaryPrice);
         if (secondary < 0) {
-          showMsg("err", "أدخل السعر بعملة ورمز العملة الثانية بشكل صحيح أو اتركه فارغاً ليحسبه النظام.");
+          showMsg("err", "Gib den Preis in einer Währung und das Symbol der zweiten Währung korrekt ein oder lasse das Feld leer, damit das System es berechnen kann.");
           return;
         }
       } else if (secondaryCurrencyEnabled && !hasExchangeRate && !addForm.secondaryPrice.trim()) {
-        showMsg("err", "أدخل السعر بعملة ورمز العملة الثانية أو عِدْ إلى إعدادات المنيو لضبط العملة الثانية.");
+        showMsg("err", "Gib den Preis in einer Währung und das Symbol der zweiten Währung ein oder kehre zu den Menüeinstellungen zurück, um die zweite Währung festzulegen.");
         return;
       }
     }
@@ -205,7 +205,7 @@ export function AdminItemsManager({
       showMsg("err", error);
       return;
     }
-    showMsg("ok", "تمت إضافة الصنف.");
+    showMsg("ok", "Artikel hinzugefügt.");
     setAddForm(emptyForm);
     setAddDialogOpen(false);
     if (data) setItems((prev) => [...prev, data]);
@@ -247,7 +247,7 @@ export function AdminItemsManager({
     if (editForm.priceOptions.length > 0 && filledOptions.length === 0) {
       showMsg(
         "err",
-        "أدخل الحجم والسعر لكل صف، أو احذف كل أحجام الصنف لاستخدام سعر واحد."
+        "Gib für jede Zeile eine Größe und einen Preis ein oder lösche alle Artikelgrößen, um einen einzigen Preis zu verwenden."
       );
       return;
     }
@@ -261,7 +261,7 @@ export function AdminItemsManager({
       }));
       const invalid = opts.find((o) => o.price_cents < 0);
       if (invalid) {
-        showMsg("err", "أدخل أسعاراً صحيحة لجميع الأحجام (مثلاً 25 أو 50.00).");
+        showMsg("err", "Gib gültige Preise für alle Größen ein (z. B. 25 oder 50,00).");
         return;
       }
       const secondaryManual: { label: string; price_cents: number }[] = [];
@@ -269,7 +269,7 @@ export function AdminItemsManager({
         if (!r.secondaryPrice?.trim()) continue;
         const sc = parsePriceToCents(r.secondaryPrice);
         if (sc < 0) {
-          showMsg("err", "أدخل السعر بعملة ورمز العملة الثانية بشكل صحيح أو اترك الحقل فارغاً ليحسبها النظام.");
+          showMsg("err", "Gib den Preis in einer Währung und das Symbol der zweiten Währung korrekt ein oder lasse das Feld leer, damit das System ihn berechnen kann.");
           return;
         }
         secondaryManual.push({ label: r.label.trim(), price_cents: sc });
@@ -278,7 +278,7 @@ export function AdminItemsManager({
         if (secondaryManual.length !== filledOptions.length) {
           showMsg(
             "err",
-            "أدخل السعر بعملة ورمز العملة الثانية لكل الأحجام، أو عِدْ إلى إعدادات المنيو لضبط العملة الثانية."
+            "Gib für alle Größen den Preis in einer Währung und das Symbol der zweiten Währung ein oder kehre zu den Menüeinstellungen zurück, um die zweite Währung festzulegen."
           );
           return;
         }
@@ -290,17 +290,17 @@ export function AdminItemsManager({
     } else {
       priceCents = parsePriceToCents(editForm.price);
       if (priceCents < 0) {
-        showMsg("err", "أدخل سعراً صحيحاً (مثلاً 50.00).");
+        showMsg("err", "Gib einen gültigen Preis ein (z. B. 50,00).");
         return;
       }
       if (secondaryCurrencyEnabled && editForm.secondaryPrice.trim()) {
         const secondary = parsePriceToCents(editForm.secondaryPrice);
         if (secondary < 0) {
-          showMsg("err", "أدخل السعر بعملة ورمز العملة الثانية بشكل صحيح أو اتركه فارغاً ليحسبه النظام.");
+          showMsg("err", "Gib den Preis in einer Währung und das Symbol der zweiten Währung korrekt ein oder lasse das Feld leer, damit das System es berechnen kann.");
           return;
         }
       } else if (secondaryCurrencyEnabled && !hasExchangeRate && !editForm.secondaryPrice.trim()) {
-        showMsg("err", "أدخل السعر بعملة ورمز العملة الثانية أو عِدْ إلى إعدادات المنيو لضبط العملة الثانية.");
+        showMsg("err", "Gib den Preis in einer Währung und das Symbol der zweiten Währung ein oder kehre zu den Menüeinstellungen zurück, um die zweite Währung festzulegen.");
         return;
       }
     }
@@ -333,7 +333,7 @@ export function AdminItemsManager({
       showMsg("err", error);
       return;
     }
-    showMsg("ok", "تم تحديث الصنف.");
+    showMsg("ok", "Der Artikel wurde aktualisiert.");
     setEditingId(null);
     if (data) setItems((prev) => prev.map((i) => (i.id === data.id ? data : i)));
   };
@@ -361,7 +361,7 @@ export function AdminItemsManager({
       setItems(initialItems);
       return;
     }
-    showMsg("ok", "تم حذف الصنف.");
+    showMsg("ok", "Der Artikel wurde gelöscht.");
   };
 
   const getCategoryName = (categoryId: string | null | undefined) => {
@@ -385,18 +385,18 @@ export function AdminItemsManager({
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-[var(--text-muted)]">
-          إضافة وتعديل وحذف الأصناف.
+          Elemente hinzufügen, ändern und löschen.
         </p>
         <Button
           onClick={() => setAddDialogOpen(true)}
           className="gap-2 bg-[var(--brand)] text-[var(--text-inverse)] hover:bg-[var(--brand-dark)]"
         >
           <PlusIcon className="size-4" />
-          إضافة صنف
+          Füge eine Kategorie hinzu
         </Button>
       </div>
 
-      {/* إضافة صنف — نافذة عائمة حديثة مع جسم قابل للتمرير وزرّي حفظ ثابتين */}
+      {}
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
         <DialogContent
           className="max-w-xl border-0 bg-[var(--bg-surface)] shadow-[0_24px_48px_-12px_rgba(15,14,23,0.25)] sm:rounded-2xl"
@@ -405,10 +405,10 @@ export function AdminItemsManager({
         >
           <DialogHeader className="shrink-0 border-b border-[var(--border)] bg-[var(--bg-surface)] px-6 py-5">
             <DialogTitle className="text-xl font-semibold tracking-tight text-[var(--text-primary)]">
-              إضافة صنف جديد
+              Füge eine neue Kategorie hinzu
             </DialogTitle>
             <DialogDescription className="mt-1 text-sm text-[var(--text-muted)]">
-              سيظهر الصنف في منيو المطعم للعملاء بعد الحفظ.
+              Der Artikel wird den Kunden nach dem Speichern auf der Speisekarte des Restaurants angezeigt.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleAddSubmit} className="flex min-h-0 flex-1 flex-col">
@@ -416,18 +416,18 @@ export function AdminItemsManager({
               <div className="space-y-6">
                 <section className="space-y-3">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    معلومات أساسية
+                    Grundlegende Informationen
                   </h3>
                   <div className="space-y-3 rounded-xl bg-[var(--bg-base)]/60 p-4">
                     <div>
                       <Label htmlFor="add-name" className="text-sm font-medium text-[var(--text-primary)]">
-                        اسم الصنف
+                        Artikelname
                       </Label>
                       <Input
                         id="add-name"
                         value={addForm.name}
                         onChange={(e) => setAddForm((f) => ({ ...f, name: e.target.value }))}
-                        placeholder="مثال: كباب لحم"
+                        placeholder="Beispiel: Fleischspiesse"
                         required
                         disabled={adding}
                         className="mt-1.5 h-11 rounded-xl border-[var(--border)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]/20"
@@ -435,7 +435,7 @@ export function AdminItemsManager({
                     </div>
                     <div>
                       <Label htmlFor="add-category" className="text-sm font-medium text-[var(--text-primary)]">
-                        التصنيف
+                        Einstufung
                       </Label>
                       <CategoryPickerField
                         id="add-category"
@@ -455,14 +455,14 @@ export function AdminItemsManager({
 
                 <section className="space-y-3">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    السعر والأحجام
+                    Preis und Größen
                   </h3>
                   <div className="space-y-4 rounded-xl bg-[var(--bg-base)]/60 p-4">
                     {addForm.priceOptions.length === 0 ? (
                       <>
                         <div>
                           <Label htmlFor="add-price" className="text-sm font-medium text-[var(--text-primary)]">
-                            سعر واحد (إن لم تُضف أحجاماً أدناه)
+                            Einzelpreis (es sei denn, du fügen unten Größen hinzu)
                           </Label>
                           <Input
                             id="add-price"
@@ -482,10 +482,10 @@ export function AdminItemsManager({
                               htmlFor="add-secondary-price"
                               className="text-sm font-medium text-[var(--text-primary)]"
                             >
-                              السعر بعملة ورمز العملة الثانية ({secondaryCurrencyCode ?? "—"})
+                              Preis in einer Währung und das zweite Währungssymbol ({secondaryCurrencyCode ?? "—"})
                               {hasExchangeRate ? (
                                 <span className="ms-1 text-xs font-normal text-[var(--text-muted)]">
-                                  (اختياري — يُحسب تلقائياً عند تركه فارغاً)
+                                  (Optional – automatisch berechnet, wenn leer gelassen wird)
                                 </span>
                               ) : null}
                             </Label>
@@ -494,7 +494,7 @@ export function AdminItemsManager({
                               type="number"
                               step="0.01"
                               min="0"
-                              placeholder={hasExchangeRate ? "يُحسب تلقائياً" : "25.00"}
+                              placeholder={hasExchangeRate ? "Automatisch berechnet" : "25.00"}
                               value={addForm.secondaryPrice}
                               onChange={(e) =>
                                 setAddForm((f) => ({ ...f, secondaryPrice: e.target.value }))
@@ -509,8 +509,8 @@ export function AdminItemsManager({
                     <div>
                       <p className="mb-2 text-xs font-medium text-[var(--text-muted)]">
                         {addForm.priceOptions.length === 0
-                          ? "أو أضف عدة أحجام/أوزان (نفر، نصف كيلو، كيلو، صغير، وسط، كبير)"
-                          : "أسعار الأحجام — احذف كل الصفوف لعودة «سعر واحد» أعلاه"}
+                          ? "Oder füge mehrere Größen/Gewichte hinzu (Person, halbes Kilo, Kilo, klein, mittel, groß)"
+                          : "Mengenpreise – Lösche alle Zeilen, um oben „Einzelpreis“ anzuzeigen"}
                       </p>
                       <div className="space-y-3">
                         {addForm.priceOptions.map((row, idx) => (
@@ -520,7 +520,7 @@ export function AdminItemsManager({
                           >
                             <div className="flex items-start gap-2">
                               <Input
-                                placeholder="الحجم أو الوحدة (نفر، نصف كيلو، كبير…)"
+                                placeholder="Größe oder Einheit (Menschen, ein halbes Kilo, groß...)"
                                 value={row.label}
                                 onChange={(e) =>
                                   setAddForm((f) => ({
@@ -545,7 +545,7 @@ export function AdminItemsManager({
                                   }))
                                 }
                                 disabled={adding}
-                                aria-label="إزالة"
+                                aria-label="Entfernung"
                               >
                                 <XIcon className="size-4" />
                               </Button>
@@ -558,7 +558,7 @@ export function AdminItemsManager({
                             >
                               <div className="flex min-w-0 flex-col gap-1.5">
                                 <span className="text-xs font-medium text-[var(--text-muted)]">
-                                  السعر ({primaryCode})
+                                  der Preis ({primaryCode})
                                 </span>
                                 <Input
                                   type="number"
@@ -581,7 +581,7 @@ export function AdminItemsManager({
                               {secondaryCurrencyEnabled ? (
                                 <div className="flex min-w-0 flex-col gap-1.5">
                                   <span className="text-xs font-medium text-[var(--text-muted)]">
-                                    السعر ({secondaryCurrencyCode ?? "—"})
+                                    der Preis ({secondaryCurrencyCode ?? "—"})
                                   </span>
                                   <Input
                                     type="number"
@@ -618,7 +618,7 @@ export function AdminItemsManager({
                           disabled={adding}
                         >
                           <PlusCircleIcon className="size-4" />
-                          إضافة حجم أو سعر
+                          Füge Volumen oder Preis hinzu
                         </Button>
                       </div>
                     </div>
@@ -627,36 +627,42 @@ export function AdminItemsManager({
 
                 <section className="space-y-3">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    الوصف والوسائط
+                    Beschreibung und Medien
                   </h3>
                   <div className="space-y-3 rounded-xl bg-[var(--bg-base)]/60 p-4">
                     <div>
                       <Label htmlFor="add-desc" className="text-sm font-medium text-[var(--text-primary)]">
-                        الوصف (اختياري)
+                        Beschreibung (optional)
                       </Label>
                       <Input
                         id="add-desc"
                         value={addForm.description}
                         onChange={(e) => setAddForm((f) => ({ ...f, description: e.target.value }))}
-                        placeholder="وصف قصير للصنف"
+                        placeholder="Kurze Beschreibung des Artikels"
                         disabled={adding}
                         className="mt-1.5 h-11 rounded-xl border-[var(--border)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]/20"
                       />
                     </div>
                     <div>
                       <Label className="text-sm font-medium text-[var(--text-primary)]">
-                        صورة (اختياري)
+                        Bild (optional)
                       </Label>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) =>
-                          setAddForm((f) => ({ ...f, imageFile: e.target.files?.[0] ?? null }))
-                        }
-                        disabled={adding}
-                        className="mt-1.5 h-11 cursor-pointer rounded-xl border-[var(--border)] bg-[var(--bg-surface)] file:me-3 file:rounded-lg file:border-0 file:bg-[var(--brand)] file:px-4 file:py-2 file:text-sm file:font-medium file:text-[var(--text-inverse)]"
-                      />
-                      <p className="mt-1 text-xs text-[var(--text-muted)]">JPG أو PNG</p>
+                      <div className="mt-1.5 relative inline-block w-full">
+                        <div className="inline-flex w-full cursor-pointer items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--bg-surface)] px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-[var(--bg-surface-2)] text-[var(--text-primary)]">
+                          {addForm.imageFile ? addForm.imageFile.name : "Bild auf dem Mac auswählen..."}
+                        </div>
+                        <input
+                          id="add-item-file"
+                          type="file"
+                          accept="image/*"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          onChange={(e) =>
+                            setAddForm((f) => ({ ...f, imageFile: e.target.files?.[0] ?? null }))
+                          }
+                          disabled={adding}
+                        />
+                      </div>
+                      <p className="mt-1 text-xs text-[var(--text-muted)]">JPG oder PNG</p>
                     </div>
                   </div>
                 </section>
@@ -670,14 +676,14 @@ export function AdminItemsManager({
                 disabled={adding}
                 className="rounded-xl border-[var(--border)] px-5"
               >
-                إلغاء
+                Stornierung
               </Button>
               <Button
                 type="submit"
                 disabled={adding}
                 className="min-w-[120px] rounded-xl bg-[var(--brand)] px-5 text-[var(--text-inverse)] hover:bg-[var(--brand-dark)]"
               >
-                {adding ? "جاري الإضافة…" : "إضافة الصنف"}
+                {adding ? "Hinzufügen..." : "Füge die Kategorie hinzu"}
               </Button>
             </DialogFooter>
           </form>
@@ -688,7 +694,7 @@ export function AdminItemsManager({
       {items.length === 0 ? (
         <Card className="border-[var(--border)] bg-[var(--bg-surface)]">
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <p className="text-[var(--text-muted)]">لا توجد أصناف بعد. أضف صنفاً من الزر أعلاه.</p>
+            <p className="text-[var(--text-muted)]">Es sind noch keine Kategorien vorhanden. Füge über die Schaltfläche oben eine Kategorie hinzu.</p>
           </CardContent>
         </Card>
       ) : (
@@ -798,7 +804,7 @@ export function AdminItemsManager({
                       className="h-9 min-w-[5.5rem] gap-1.5 border-[var(--border)] bg-[var(--bg-surface)] px-3 text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-surface-2)]"
                     >
                       <PencilIcon className="size-3.5" />
-                      تعديل
+                      Änderung
                     </Button>
                     <Button
                       type="button"
@@ -808,19 +814,19 @@ export function AdminItemsManager({
                       className="h-9 min-w-[5.5rem] gap-1.5 px-3 text-xs font-semibold"
                     >
                       <Trash2Icon className="size-3.5" />
-                      حذف
+                      löschen
                     </Button>
                   </div>
                 </div>
                 <div className="flex items-center justify-between border-t border-[var(--border)] px-4 py-3">
                   <span className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
-                    الإتاحة
+                    Verfügbarkeit
                   </span>
                   <Switch
                     checked={item.is_available !== false}
                     onCheckedChange={(checked) => handleAvailabilityChange(item, checked)}
                     disabled={togglingId === item.id}
-                    aria-label={item.is_available !== false ? "متاح — إيقاف" : "غير متاح — تشغيل"}
+                    aria-label={item.is_available !== false ? "Verfügbar – Aus" : "Nicht verfügbar – aktiviert"}
                   />
                 </div>
               </CardContent>
@@ -829,7 +835,7 @@ export function AdminItemsManager({
         </div>
       )}
 
-      {/* تعديل الصنف — نفس التصميم مع جسم قابل للتمرير وأزرار ثابتة */}
+      {}
       <Dialog open={!!editingId} onOpenChange={() => setEditingId(null)}>
         <DialogContent
           className="max-w-xl border-0 bg-[var(--bg-surface)] shadow-[0_24px_48px_-12px_rgba(15,14,23,0.25)] sm:rounded-2xl"
@@ -838,10 +844,10 @@ export function AdminItemsManager({
         >
           <DialogHeader className="shrink-0 border-b border-[var(--border)] bg-[var(--bg-surface)] px-6 py-5">
             <DialogTitle className="text-xl font-semibold tracking-tight text-[var(--text-primary)]">
-              تعديل الصنف
+              Ändere die Kategorie
             </DialogTitle>
             <DialogDescription className="mt-1 text-sm text-[var(--text-muted)]">
-              عدّل البيانات ثم احفظ. التغييرات تظهر فوراً في المنيو.
+              Bearbeite die Daten und speichere sie anschließend. Änderungen werden sofort im Menü angezeigt.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleEditSubmit} className="flex min-h-0 flex-1 flex-col">
@@ -849,12 +855,12 @@ export function AdminItemsManager({
               <div className="space-y-6">
                 <section className="space-y-3">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    معلومات أساسية
+                    Grundlegende Informationen
                   </h3>
                   <div className="space-y-3 rounded-xl bg-[var(--bg-base)]/60 p-4">
                     <div>
                       <Label htmlFor="edit-name" className="text-sm font-medium text-[var(--text-primary)]">
-                        اسم الصنف
+                        Artikelname
                       </Label>
                       <Input
                         id="edit-name"
@@ -867,7 +873,7 @@ export function AdminItemsManager({
                     </div>
                     <div>
                       <Label htmlFor="edit-category" className="text-sm font-medium text-[var(--text-primary)]">
-                        التصنيف
+                        Einstufung
                       </Label>
                       <CategoryPickerField
                         id="edit-category"
@@ -887,14 +893,14 @@ export function AdminItemsManager({
 
                 <section className="space-y-3">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    السعر والأحجام
+                    Preis und Größen
                   </h3>
                   <div className="space-y-4 rounded-xl bg-[var(--bg-base)]/60 p-4">
                     {editForm.priceOptions.length === 0 ? (
                       <>
                         <div>
                           <Label htmlFor="edit-price" className="text-sm font-medium text-[var(--text-primary)]">
-                            سعر واحد (إن لم تُضف أحجاماً أدناه)
+                            Einzelpreis (es sei denn, du fügen unten Größen hinzu)
                           </Label>
                           <Input
                             id="edit-price"
@@ -913,10 +919,10 @@ export function AdminItemsManager({
                               htmlFor="edit-secondary-price"
                               className="text-sm font-medium text-[var(--text-primary)]"
                             >
-                              السعر بعملة ورمز العملة الثانية ({secondaryCurrencyCode ?? "—"})
+                              Preis in einer Währung und das zweite Währungssymbol ({secondaryCurrencyCode ?? "—"})
                               {hasExchangeRate ? (
                                 <span className="ms-1 text-xs font-normal text-[var(--text-muted)]">
-                                  (اختياري — يُحسب تلقائياً عند تركه فارغاً)
+                                  (Optional – automatisch berechnet, wenn leer gelassen wird)
                                 </span>
                               ) : null}
                             </Label>
@@ -925,7 +931,7 @@ export function AdminItemsManager({
                               type="number"
                               step="0.01"
                               min="0"
-                              placeholder={hasExchangeRate ? "يُحسب تلقائياً" : undefined}
+                              placeholder={hasExchangeRate ? "Automatisch berechnet" : undefined}
                               value={editForm.secondaryPrice}
                               onChange={(e) =>
                                 setEditForm((f) => ({ ...f, secondaryPrice: e.target.value }))
@@ -940,8 +946,8 @@ export function AdminItemsManager({
                     <div>
                       <p className="mb-2 text-xs font-medium text-[var(--text-muted)]">
                         {editForm.priceOptions.length === 0
-                          ? "أو عدة أحجام/أوزان (نفر، نصف كيلو، كيلو، صغير، وسط، كبير)"
-                          : "أسعار الأحجام — احذف كل الصفوف لعودة «سعر واحد» أعلاه"}
+                          ? "Oder mehrere Größen/Gewichte (Person, halbes Kilo, Kilo, klein, mittel, groß)"
+                          : "Mengenpreise – Lösche alle Zeilen, um oben „Einzelpreis“ anzuzeigen"}
                       </p>
                       <div className="space-y-3">
                         {editForm.priceOptions.map((row, idx) => (
@@ -951,7 +957,7 @@ export function AdminItemsManager({
                           >
                             <div className="flex items-start gap-2">
                               <Input
-                                placeholder="الحجم أو الوحدة (نفر، نصف كيلو، كبير…)"
+                                placeholder="Größe oder Einheit (Menschen, ein halbes Kilo, groß...)"
                                 value={row.label}
                                 onChange={(e) =>
                                   setEditForm((f) => ({
@@ -976,7 +982,7 @@ export function AdminItemsManager({
                                   }))
                                 }
                                 disabled={savingEdit}
-                                aria-label="إزالة"
+                                aria-label="Entfernung"
                               >
                                 <XIcon className="size-4" />
                               </Button>
@@ -989,7 +995,7 @@ export function AdminItemsManager({
                             >
                               <div className="flex min-w-0 flex-col gap-1.5">
                                 <span className="text-xs font-medium text-[var(--text-muted)]">
-                                  السعر ({primaryCode})
+                                  der Preis ({primaryCode})
                                 </span>
                                 <Input
                                   type="number"
@@ -1012,7 +1018,7 @@ export function AdminItemsManager({
                               {secondaryCurrencyEnabled ? (
                                 <div className="flex min-w-0 flex-col gap-1.5">
                                   <span className="text-xs font-medium text-[var(--text-muted)]">
-                                    السعر ({secondaryCurrencyCode ?? "—"})
+                                    der Preis ({secondaryCurrencyCode ?? "—"})
                                   </span>
                                   <Input
                                     type="number"
@@ -1049,7 +1055,7 @@ export function AdminItemsManager({
                           disabled={savingEdit}
                         >
                           <PlusCircleIcon className="size-4" />
-                          إضافة حجم أو سعر
+                          Füge Volumen oder Preis hinzu
                         </Button>
                       </div>
                     </div>
@@ -1058,12 +1064,12 @@ export function AdminItemsManager({
 
                 <section className="space-y-3">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    الوصف والوسائط
+                    Beschreibung und Medien
                   </h3>
                   <div className="space-y-3 rounded-xl bg-[var(--bg-base)]/60 p-4">
                     <div>
                       <Label htmlFor="edit-desc" className="text-sm font-medium text-[var(--text-primary)]">
-                        الوصف (اختياري)
+                        Beschreibung (optional)
                       </Label>
                       <Input
                         id="edit-desc"
@@ -1075,17 +1081,23 @@ export function AdminItemsManager({
                     </div>
                     <div>
                       <Label className="text-sm font-medium text-[var(--text-primary)]">
-                        صورة (استبدال الحالية)
+                        Bild (aktuelles ersetzen)
                       </Label>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) =>
-                          setEditForm((f) => ({ ...f, imageFile: e.target.files?.[0] ?? null }))
-                        }
-                        disabled={savingEdit}
-                        className="mt-1.5 h-11 cursor-pointer rounded-xl border-[var(--border)] bg-[var(--bg-surface)] file:me-3 file:rounded-lg file:border-0 file:bg-[var(--brand)] file:px-4 file:py-2 file:text-sm file:font-medium file:text-[var(--text-inverse)]"
-                      />
+                      <div className="mt-1.5 relative inline-block w-full">
+                        <div className="inline-flex w-full cursor-pointer items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--bg-surface)] px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-[var(--bg-surface-2)] text-[var(--text-primary)]">
+                          {editForm.imageFile ? editForm.imageFile.name : "Neues Bild auswählen..."}
+                        </div>
+                        <input
+                          id="edit-item-file"
+                          type="file"
+                          accept="image/*"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          onChange={(e) =>
+                            setEditForm((f) => ({ ...f, imageFile: e.target.files?.[0] ?? null }))
+                          }
+                          disabled={savingEdit}
+                        />
+                      </div>
                     </div>
                   </div>
                 </section>
@@ -1099,14 +1111,14 @@ export function AdminItemsManager({
                 disabled={savingEdit}
                 className="rounded-xl border-[var(--border)] px-5"
               >
-                إلغاء
+                Stornierung
               </Button>
               <Button
                 type="submit"
                 disabled={savingEdit}
                 className="min-w-[120px] rounded-xl bg-[var(--brand)] px-5 text-[var(--text-inverse)] hover:bg-[var(--brand-dark)]"
               >
-                {savingEdit ? "جاري الحفظ…" : "حفظ التعديلات"}
+                {savingEdit ? "Sparen..." : "Änderungen speichern"}
               </Button>
             </DialogFooter>
           </form>
@@ -1117,16 +1129,16 @@ export function AdminItemsManager({
       <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <DialogContent className="border-[var(--border)] bg-[var(--bg-surface)]">
           <DialogHeader>
-            <DialogTitle>حذف الصنف؟</DialogTitle>
+            <DialogTitle>Artikel löschen?</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-[var(--text-muted)]">لا يمكن التراجع عن هذا الإجراء.</p>
+          <p className="text-sm text-[var(--text-muted)]">Diese Aktion kann nicht rückgängig gemacht werden.</p>
           <DialogFooter>
             <Button
               variant="outline"
               onClick={() => setDeleteId(null)}
               className="border-[var(--border)]"
             >
-              إلغاء
+              Stornierung
             </Button>
             <Button
               variant="destructive"
@@ -1134,7 +1146,7 @@ export function AdminItemsManager({
               disabled={deleting}
               className="bg-[var(--danger-bg)] text-[var(--danger)] border-[var(--danger)] hover:bg-[var(--danger)]/10"
             >
-              {deleting ? "جاري الحذف…" : "حذف"}
+              {deleting ? "Löschen..." : "löschen"}
             </Button>
           </DialogFooter>
         </DialogContent>

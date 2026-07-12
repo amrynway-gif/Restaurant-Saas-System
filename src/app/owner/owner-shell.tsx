@@ -31,11 +31,15 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { OrderNotificationsBell } from "@/components/orders/order-notifications-bell";
 
+import { RestaurantThemeInjector } from "@/components/restaurant-theme-injector";
+
 type OwnerShellProps = {
   restaurantName: string;
   restaurantId: string;
   subdomain: string | null;
   livePreviewUrl: string | null;
+  logoUrl?: string | null;
+  themeColor?: string | null;
   children: React.ReactNode;
 };
 
@@ -44,12 +48,15 @@ export function OwnerShell({
   restaurantId,
   subdomain,
   livePreviewUrl,
+  logoUrl,
+  themeColor,
   children,
 }: OwnerShellProps) {
   const pathname = usePathname();
 
   return (
     <SidebarProvider>
+      <RestaurantThemeInjector themeColor={themeColor} />
       <Sidebar
         className="border-r border-sidebar-border bg-sidebar/95 backdrop-blur supports-[backdrop-filter]:bg-sidebar/80"
         style={{ position: "sticky", top: 0, height: "100vh" }}
@@ -61,7 +68,7 @@ export function OwnerShell({
                 render={
                   <Link href="/owner" className="flex items-center gap-2">
                     <LayoutDashboardIcon className="size-5" />
-                    <span>نظرة عامة</span>
+                    <span>Überblick</span>
                   </Link>
                 }
                 isActive={pathname === "/owner"}
@@ -72,7 +79,7 @@ export function OwnerShell({
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>إدارة القائمة</SidebarGroupLabel>
+            <SidebarGroupLabel>Listenverwaltung</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -80,7 +87,7 @@ export function OwnerShell({
                     render={
                       <Link href="/owner/items" className="flex items-center gap-2">
                         <UtensilsCrossedIcon className="size-5" />
-                        <span>أصناف القائمة</span>
+                        <span>Menüpunkte</span>
                       </Link>
                     }
                     isActive={pathname.startsWith("/owner/items")}
@@ -91,7 +98,7 @@ export function OwnerShell({
                     render={
                       <Link href="/owner/categories" className="flex items-center gap-2">
                         <FolderIcon className="size-5" />
-                        <span>التصنيفات</span>
+                        <span>Kategorien</span>
                       </Link>
                     }
                     isActive={pathname.startsWith("/owner/categories")}
@@ -101,7 +108,7 @@ export function OwnerShell({
             </SidebarGroupContent>
           </SidebarGroup>
           <SidebarGroup>
-            <SidebarGroupLabel>الطلبات والطاولات</SidebarGroupLabel>
+            <SidebarGroupLabel>Bestellungen und Tische</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -109,7 +116,7 @@ export function OwnerShell({
                     render={
                       <Link href="/owner/orders" className="flex items-center gap-2">
                         <ClipboardListIcon className="size-5" />
-                        <span>الطلبات</span>
+                        <span>Anfragen</span>
                       </Link>
                     }
                     isActive={pathname.startsWith("/owner/orders")}
@@ -120,7 +127,7 @@ export function OwnerShell({
                     render={
                       <Link href="/owner/customers" className="flex items-center gap-2">
                         <UsersIcon className="size-5" />
-                        <span>العملاء والولاء</span>
+                        <span>Kunden und Loyalität</span>
                       </Link>
                     }
                     isActive={pathname.startsWith("/owner/customers")}
@@ -131,7 +138,7 @@ export function OwnerShell({
                     render={
                       <Link href="/owner/tables" className="flex items-center gap-2">
                         <QrCodeIcon className="size-5" />
-                        <span>الطاولات و QR</span>
+                        <span>Tabellen und QR</span>
                       </Link>
                     }
                     isActive={pathname.startsWith("/owner/tables")}
@@ -141,7 +148,7 @@ export function OwnerShell({
             </SidebarGroupContent>
           </SidebarGroup>
           <SidebarGroup>
-            <SidebarGroupLabel>الإعدادات</SidebarGroupLabel>
+            <SidebarGroupLabel>Einstellungen</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -149,7 +156,7 @@ export function OwnerShell({
                     render={
                       <Link href="/owner/settings" className="flex items-center gap-2">
                         <SettingsIcon className="size-5" />
-                        <span>الإعدادات</span>
+                        <span>Einstellungen</span>
                       </Link>
                     }
                     isActive={pathname.startsWith("/owner/settings")}
@@ -164,8 +171,8 @@ export function OwnerShell({
         <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <SidebarTrigger className="md:hidden" />
           <h1 className="text-lg font-semibold text-foreground truncate">{restaurantName}</h1>
-          <span className="hidden text-sm text-muted-foreground sm:inline">لوحة المطعم</span>
-          <div className="ml-auto flex items-center gap-1">
+          <span className="hidden text-sm text-muted-foreground sm:inline">Restauranttafel</span>
+          <div className="mr-auto flex items-center gap-1">
             <OrderNotificationsBell restaurantId={restaurantId} variant="owner" />
             {livePreviewUrl && (
               <a
@@ -175,13 +182,13 @@ export function OwnerShell({
                 className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 <SmartphoneIcon className="size-4" />
-                معاينة المنيو
+                Vorschau des Menüs
               </a>
             )}
             <ThemeToggle />
             <form action="/auth/signout" method="POST">
               <Button type="submit" variant="ghost" size="sm">
-                تسجيل الخروج
+                Abmelden
               </Button>
             </form>
           </div>

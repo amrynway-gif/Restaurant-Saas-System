@@ -5,7 +5,7 @@ import { createEdgeSupabaseClient } from "@/lib/supabase/middleware";
 const RESTAURANT_HEADERS = {
   ID: "x-restaurant-id",
   SUBDOMAIN: "x-restaurant-subdomain",
-  /** الـ host الأصلي (مثل mankal.localhost:3000) لاستخدامه في صفحة تسجيل الدخول إن لم تُقرأ الهيدرات الأخرى */
+  
   ORIGINAL_HOST: "x-original-host",
 } as const;
 
@@ -80,28 +80,28 @@ export async function middleware(request: NextRequest) {
     requestHeaders.set(RESTAURANT_HEADERS.SUBDOMAIN, restaurant.subdomain);
     requestHeaders.set(RESTAURANT_HEADERS.ORIGINAL_HOST, request.nextUrl.host);
 
-    // [subdomain].localhost:3000/admin/* → لوحة تحكم المطعم: نفس المسار مع headers لمعرفة المطعم
+    
     if (pathname.startsWith("/admin")) {
       return NextResponse.rewrite(new URL(pathname + url.search, request.url), {
         request: { headers: requestHeaders },
       });
     }
 
-    // [subdomain].localhost:3000/login → تسجيل دخول صاحب المطعم (اسم مستخدم + كلمة مرور)
+    
     if (pathname === "/login" || pathname.startsWith("/login/")) {
       return NextResponse.rewrite(new URL(pathname + url.search, request.url), {
         request: { headers: requestHeaders },
       });
     }
 
-    // [subdomain].localhost:3000/owner/* → نفس الفكرة (للتوافق)
+    
     if (pathname.startsWith("/owner")) {
       return NextResponse.rewrite(new URL(pathname + url.search, request.url), {
         request: { headers: requestHeaders },
       });
     }
 
-    // جذر النطاق الفرعي (almankal.localhost:3000/) → عرض منيو المطعم كموقع مستقل
+    
     if (pathname === "/") {
       url.pathname = `/menu/${encodeURIComponent(restaurant.subdomain)}`;
       return NextResponse.rewrite(new URL(url.pathname + url.search, request.url), {
@@ -109,7 +109,7 @@ export async function middleware(request: NextRequest) {
       });
     }
 
-    // أي مسار آخر على النطاق الفرعي (مثل /about) → عرض المنيو
+    
     url.pathname = `/menu/${encodeURIComponent(restaurant.subdomain)}`;
     return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
   } catch {

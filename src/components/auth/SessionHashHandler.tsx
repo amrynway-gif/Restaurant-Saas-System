@@ -8,7 +8,7 @@ function parseHashParams(hash: string): Record<string, string> {
   const raw = hash.startsWith("#") ? hash.slice(1) : hash;
   if (!raw) return {};
 
-  // URLSearchParams يتعامل مع قيم مشفّرة بشكل تلقائي
+  
   const params = new URLSearchParams(raw);
   const out: Record<string, string> = {};
   for (const [k, v] of params.entries()) out[k] = v;
@@ -31,7 +31,7 @@ export function SessionHashHandler() {
     const refreshToken = params["refresh_token"];
     const type = params["type"];
 
-    // عند وجود error في الـ hash بدون tokens، نرجع المستخدم للـ login.
+    
     const hashError = params["error"];
     if (hashError && !accessToken) {
       window.history.replaceState({}, "", window.location.pathname + window.location.search);
@@ -50,7 +50,7 @@ export function SessionHashHandler() {
     supabase.auth
       .setSession({ access_token: accessToken, refresh_token: refreshToken })
       .then(({ error }) => {
-        // إزالة التوكنات من الـ URL بعد ضبط الجلسة
+        
         window.history.replaceState({}, "", window.location.pathname + window.location.search);
         if (error) {
           router.replace(`/login?error=${encodeURIComponent(error.message || "auth_error")}`);
@@ -62,7 +62,7 @@ export function SessionHashHandler() {
           return;
         }
 
-        // أي تدفق آخر: فقط للـ login
+        
         router.replace("/login");
       })
       .catch((e) => {

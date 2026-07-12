@@ -86,7 +86,7 @@ export function SuperAdminShell({ children }: { children: React.ReactNode }) {
           <span className="text-sm font-medium text-muted-foreground">
             System Owner
           </span>
-          <div className="ml-auto flex items-center gap-1">
+          <div className="mr-auto flex items-center gap-1">
             <ThemeToggle />
             <form action="/auth/signout" method="POST">
               <Button type="submit" variant="ghost" size="sm">

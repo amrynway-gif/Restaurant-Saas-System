@@ -1,5 +1,5 @@
-/** فصل المكوّنات المذكورة من الزبون (فاصلة إنجليزية أو عربية) */
-const SPLIT = /[,،]+/;
+
+const SPLIT = /[,,]+/;
 
 export function parseExcludedIngredients(raw: string): string[] {
   const trimmed = raw.trim();
@@ -13,7 +13,7 @@ export function parseExcludedIngredients(raw: string): string[] {
   return out;
 }
 
-/** للتحقق من السيرفر */
+
 export function normalizeExcludedForDb(input: unknown): { ok: true; value: string[] } | { ok: false } {
   if (input == null) return { ok: true, value: [] };
   if (!Array.isArray(input)) return { ok: false };

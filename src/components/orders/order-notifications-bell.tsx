@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 type Props = {
   restaurantId: string;
-  /** لون/ثيم يطابق لوحة المطعم */
+  
   variant?: "dashboard" | "owner";
 };
 
@@ -40,9 +40,9 @@ export function OrderNotificationsBell({ restaurantId, variant = "dashboard" }: 
         (payload) => {
           const row = payload.new as { id?: string; display_number?: number } | null;
           const num = row?.display_number;
-          toast.success("طلب جديد", {
+          toast.success("Neue Ordnung", {
             description:
-              typeof num === "number" ? `رقم الطلب #${num}` : "وصل طلباً جديداً إلى المنيو",
+              typeof num === "number" ? `Anzufordern Nummer #${num}` : "Eine neue Bestellung ist im Menü eingetroffen",
           });
           if (pathname?.includes("/orders")) {
             router.refresh();
@@ -67,7 +67,7 @@ export function OrderNotificationsBell({ restaurantId, variant = "dashboard" }: 
     <button
       type="button"
       className={bellClass}
-      aria-label="الإشعارات — طلبات جديدة"
+      aria-label="Benachrichtigungen – neue Anfragen"
       onClick={() => {
         setBadge(0);
         if (!onOrdersPage) router.push(pathname?.startsWith("/owner") ? "/owner/orders" : "/admin/orders");

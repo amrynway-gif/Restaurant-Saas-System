@@ -50,7 +50,7 @@ function mapLegacyCustomerRow(r: {
 export async function listRestaurantCustomers(): Promise<{
   customers: RestaurantCustomerPhone[];
   error: string | null;
-  /** true إن كانت قاعدة البيانات قديمة ولم تُضف أعمدة الولاء بعد */
+  
   loyaltyColumnsMissing: boolean;
 }> {
   const profile = await getProfileOrRedirect();
@@ -118,11 +118,8 @@ async function publicSiteBaseUrlFromHeaders(): Promise<string> {
   }
 }
 
-/**
- * يملأ customer_profiles + loyalty_accounts من restaurant_customer_phones
- * حتى يظهر الجدول الاحترافي لكل العملاء الحاليين (وليس فقط من طلبات جديدة).
- */
-/** يحدّث صف `restaurant_customer_phones` ليطابق حساب الولاء الجديد (للعرض في الجدول القديم). */
+
+
 export async function mirrorLoyaltyAccountToLegacyPhoneRow(
   restaurantId: string,
   customerId: string
@@ -158,7 +155,7 @@ export async function mirrorLoyaltyAccountToLegacyPhoneRow(
     .eq("phone_normalized", phone);
 }
 
-/** مزامنة عميل واحد من restaurant_customer_phones → profiles + loyalty_accounts (للمسار العام مثل المنيو). */
+
 export async function syncLoyaltyProfileForPhoneFromLegacy(
   restaurantId: string,
   phoneNormalized: string
@@ -358,9 +355,9 @@ export async function listLoyaltyDashboardCustomers(): Promise<{
 }
 
 export async function generateCustomerMagicLink(customerId: string): Promise<{
-  /** رابط مطلق للنسخ أو الإرسال */
+  
   url: string | null;
-  /** مسار نسبي */
+  
   path: string | null;
   error: string | null;
 }> {
@@ -377,7 +374,7 @@ export async function generateCustomerMagicLink(customerId: string): Promise<{
     .eq("id", customerId)
     .eq("restaurant_id", rid)
     .maybeSingle();
-  if (customerErr || !customer) return { url: null, path: null, error: "العميل غير موجود" };
+  if (customerErr || !customer) return { url: null, path: null, error: "Der Kunde existiert nicht" };
 
   const { error } = await admin.from("customer_public_links").insert({
     restaurant_id: rid,
@@ -394,7 +391,7 @@ export async function generateCustomerMagicLink(customerId: string): Promise<{
   return { url, path, error: null };
 }
 
-/** إدراج إشعار برصيد النقاط مع رابط عام (للطابور ثم الإرسال عبر المعالج أو مزود خارجي). */
+
 export async function enqueueCustomerPointsNotification(customerId: string): Promise<{
   queued: boolean;
   previewMessage: string;
@@ -406,7 +403,7 @@ export async function enqueueCustomerPointsNotification(customerId: string): Pro
 
   const linkRes = await generateCustomerMagicLink(customerId);
   if (linkRes.error || !linkRes.url) {
-    return { queued: false, previewMessage: "", error: linkRes.error ?? "تعذر إنشاء الرابط" };
+    return { queued: false, previewMessage: "", error: linkRes.error ?? "Der Link konnte nicht erstellt werden" };
   }
 
   const { data: cust } = await admin
@@ -465,7 +462,7 @@ export async function redeemCustomerCashPoints(
     .eq("restaurant_id", rid)
     .maybeSingle();
   if (customerErr || !customer) {
-    return { pointsRedeemed: 0, discountCents: 0, newBalance: 0, error: "العميل غير موجود" };
+    return { pointsRedeemed: 0, discountCents: 0, newBalance: 0, error: "Der Kunde existiert nicht" };
   }
 
   const oid = orderId?.trim() ? orderId.trim() : null;
@@ -481,7 +478,7 @@ export async function redeemCustomerCashPoints(
       pointsRedeemed: 0,
       discountCents: 0,
       newBalance: 0,
-      error: rpc.error?.message ?? "فشل الاستبدال النقدي",
+      error: rpc.error?.message ?? "Der Bargeldumtausch ist fehlgeschlagen",
     };
   }
   const row = rpc.data[0] as {
@@ -521,7 +518,7 @@ export async function redeemCustomerReward(
     .eq("restaurant_id", rid)
     .maybeSingle();
   if (customerErr || !customer) {
-    return { pointsSpent: 0, newBalance: 0, redemptionId: null, error: "العميل غير موجود" };
+    return { pointsSpent: 0, newBalance: 0, redemptionId: null, error: "Der Kunde existiert nicht" };
   }
 
   const rpc = await admin.rpc("redeem_loyalty_reward", {
@@ -534,7 +531,7 @@ export async function redeemCustomerReward(
       pointsSpent: 0,
       newBalance: 0,
       redemptionId: null,
-      error: rpc.error?.message ?? "فشل استبدال المكافأة",
+      error: rpc.error?.message ?? "Das Einlösen der Prämie ist fehlgeschlagen",
     };
   }
   const row = rpc.data[0] as {
@@ -571,7 +568,7 @@ export async function getLoyaltyPortalByToken(token: string): Promise<{
   error: string | null;
 }> {
   const raw = token.trim();
-  if (!raw) return { customer: null, transactions: [], rewards: [], error: "الرابط غير صالح" };
+  if (!raw) return { customer: null, transactions: [], rewards: [], error: "Der Link ist ungültig" };
   const admin = createAdminClient();
   const tokenHash = sha256Hex(raw);
 
@@ -580,10 +577,10 @@ export async function getLoyaltyPortalByToken(token: string): Promise<{
     .select("restaurant_id, customer_id, expires_at, is_revoked")
     .eq("token_hash", tokenHash)
     .maybeSingle();
-  if (linkErr || !link) return { customer: null, transactions: [], rewards: [], error: "الرابط غير موجود" };
-  if (link.is_revoked) return { customer: null, transactions: [], rewards: [], error: "تم إلغاء هذا الرابط" };
+  if (linkErr || !link) return { customer: null, transactions: [], rewards: [], error: "Der Link existiert nicht" };
+  if (link.is_revoked) return { customer: null, transactions: [], rewards: [], error: "Dieser Link wurde gelöscht" };
   if (new Date(link.expires_at).getTime() < Date.now()) {
-    return { customer: null, transactions: [], rewards: [], error: "انتهت صلاحية الرابط" };
+    return { customer: null, transactions: [], rewards: [], error: "Der Link ist abgelaufen" };
   }
 
   await admin
@@ -699,7 +696,7 @@ export async function upsertRestaurantReward(input: {
     optional_stock:
       input.optionalStock == null ? null : Math.max(0, Math.floor(input.optionalStock)),
   };
-  if (!payload.title) return { error: "عنوان المكافأة مطلوب" };
+  if (!payload.title) return { error: "Bonusadresse erforderlich" };
 
   if (input.id) {
     const { error } = await admin

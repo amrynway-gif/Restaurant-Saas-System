@@ -42,8 +42,8 @@ export function AdminDashboardCharts({ stats }: { stats: Stats }) {
     <div className="grid gap-6 md:grid-cols-2">
       <Card className="overflow-hidden border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>المطاعم</CardTitle>
-          <CardDescription>الإجمالي مقابل النشطة</CardDescription>
+          <CardTitle>Restaurants</CardTitle>
+          <CardDescription>Brutto vs. aktiv</CardDescription>
         </CardHeader>
         <CardContent className="h-[240px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -69,8 +69,8 @@ export function AdminDashboardCharts({ stats }: { stats: Stats }) {
 
       <Card className="overflow-hidden border-border/50 bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle>حالة المطاعم</CardTitle>
-          <CardDescription>نشط مقابل أخرى</CardDescription>
+          <CardTitle>Status von Restaurants</CardTitle>
+          <CardDescription>Aktiv vs. andere</CardDescription>
         </CardHeader>
         <CardContent className="h-[240px]">
           {pieData.length > 0 ? (
@@ -102,7 +102,7 @@ export function AdminDashboardCharts({ stats }: { stats: Stats }) {
             </ResponsiveContainer>
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-              لا توجد بيانات مطاعم بعد
+              Es liegen noch keine Restaurantdaten vor
             </div>
           )}
         </CardContent>

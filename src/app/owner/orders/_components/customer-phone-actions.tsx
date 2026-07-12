@@ -20,7 +20,7 @@ type Props = {
   subdomain: string;
   publicBaseUrl: string;
   restaurantName: string;
-  /** إن لم تُعرَف المقدمة الدولية */
+  
   showPrefixHint?: boolean;
   className?: string;
 };
@@ -60,7 +60,7 @@ export function CustomerPhoneActions({
           )}
         >
           <PhoneIcon className="size-3.5" aria-hidden />
-          اتصال
+          Kommunikation
         </a>
         <a
           href={waHref}
@@ -72,12 +72,12 @@ export function CustomerPhoneActions({
           )}
         >
           <MessageCircleIcon className="size-3.5" aria-hidden />
-          واتساب
+          WhatsApp
         </a>
       </div>
       {missingPrefix ? (
         <p className="text-[11px] text-amber-700 dark:text-amber-300">
-          نصيحة: أضف «مقدمة الدولة» من الإعدادات لضبط رقم واتساب والاتصال بشكل صحيح.
+          Tipp: Füge „Ländereinführung“ in den Einstellungen hinzu, um die WhatsApp-Nummer und den Kontakt korrekt festzulegen.
         </p>
       ) : null}
     </div>

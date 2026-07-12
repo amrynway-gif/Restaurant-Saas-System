@@ -11,8 +11,8 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { LoyaltyDashboardClient } from "@/components/loyalty/loyalty-dashboard-client";
 
 export const metadata = {
-  title: "العملاء والولاء | لوحة المطعم",
-  description: "إجمالي المشتريات والنقاط لكل زبون",
+  title: "Kunden und Loyalität | Restauranttafel",
+  description: "Gesamteinkäufe und Punkte pro Kunde",
 };
 
 export default async function OwnerCustomersPage() {
@@ -36,10 +36,10 @@ export default async function OwnerCustomersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">العملاء والولاء</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Kunden und Loyalität</h1>
         <p className="text-muted-foreground">
-          قائمة بأرقام الجوال التي طلبت من المنيو، مرتبة حسب إجمالي المشتريات. تُستخدم لاحقاً
-          للحملات والاستهداف وفق إعدادات النقاط في الإعدادات.
+          Eine Liste der aus dem Menü angeforderten Mobiltelefonnummern, geordnet nach Gesamtkäufen. Später verwendet
+Für Kampagnen und Targeting gemäß den Punkteeinstellungen in den Einstellungen.
         </p>
       </div>
 
@@ -48,36 +48,36 @@ export default async function OwnerCustomersPage() {
           className="rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-3 text-sm text-amber-950 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-50"
           role="status"
         >
-          <p className="font-medium">قاعدة البيانات تحتاج تحديثاً لأعمدة المشتريات والنقاط</p>
+          <p className="font-medium">Die Datenbank muss für die Spalten „Käufe“ und „Punkte“ aktualisiert werden</p>
           <p className="mt-2 text-xs leading-relaxed opacity-90">
-            افتح Supabase → SQL → انسخ محتوى الملف{" "}
+            Öffne Supabase → SQL → Kopiere den Dateiinhalt{" "}
             <code className="rounded bg-background/80 px-1.5 py-0.5 font-mono text-[11px]">
               supabase/FIX-customer-phones-loyalty-columns.sql
             </code>{" "}
-            والصقه وشغّل Run. بعدها أعد تحميل الصفحة لتظهر المبالغ والنقاط الحقيقية.
+            Füge es ein und führe „Ausführen“ aus. Lade dann die Seite neu, um die tatsächlichen Beträge und Punkte anzuzeigen.
           </p>
         </div>
       ) : null}
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">قيمة النقطة في الجدول</CardTitle>
+          <CardTitle className="text-base">Punktwert in der Tabelle</CardTitle>
           <CardDescription>
-            عمود «قيمة الرصيد (تقدير)» = رصيد النقاط × قيمة النقطة التي حددتها في إعدادات الولاء.
-            يُحدَّث احتساب النقاط الجديدة من الطلبات حسب نفس الإعدادات.
+            Spalte „Guthabenwert (geschätzt)“ = Punkteguthaben x Punktwert, de in den Treueeinstellungen angegeben haben. 
+Die Berechnung neuer Punkte aus Bestellungen wird entsprechend den gleichen Einstellungen aktualisiert.
           </CardDescription>
         </CardHeader>
       </Card>
 
       {error ? (
         <p className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          تعذر تحميل العملاء: {error}. تأكد من تنفيذ ملفات SQL للطلبات والعملاء والولاء في Supabase.
+          Clients können nicht geladen werden: {error}. Stelle die Implementierung von SQL-Dateien für Bestellungen, Kunden und Treue in Supabase sicher.
         </p>
       ) : (
         <div className="space-y-6">
           {dashboardRes.error || rewardsRes.error || notificationsRes.error ? (
             <p className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-              تعذر تحميل لوحة الولاء الاحترافية:{" "}
+              Das Profil für professionelle Treueprogramme konnte nicht geladen werden:{" "}
               {dashboardRes.error ?? rewardsRes.error ?? notificationsRes.error}
             </p>
           ) : (
@@ -88,7 +88,7 @@ export default async function OwnerCustomersPage() {
               phoneCountryPrefix={restaurant?.phone_country_prefix ?? null}
               subdomain={restaurant?.subdomain ?? ""}
               publicBaseUrl={publicBaseUrl}
-              restaurantName={restaurant?.name ?? "المطعم"}
+              restaurantName={restaurant?.name ?? "Das Restaurant"}
               currencyCode={currencyCode}
               pointValueCents={pointValueCents}
               secondaryCurrencyCode={
@@ -105,7 +105,7 @@ export default async function OwnerCustomersPage() {
             />
           )}
           <div>
-            <h2 className="mb-2 text-lg font-semibold">ملخص المشتريات (العرض السابق)</h2>
+            <h2 className="mb-2 text-lg font-semibold">Zusammenfassung der Käufe (vorherige Ansicht)</h2>
             <CustomersClient
               customers={customers}
               currencyCode={currencyCode}

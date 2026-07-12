@@ -10,15 +10,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const identified = await getIdentifiedRestaurant();
   if (!identified) {
     return {
-      title: "لوحة المطعم",
-      description: "إدارة القائمة والمطعم",
+      title: "Restauranttafel",
+      description: "Menü- und Restaurantmanagement",
     };
   }
   const { data: restaurant } = await getRestaurantBySubdomain(identified.subdomain);
   const logoUrl = restaurant?.logo_url?.trim();
   return {
-    title: restaurant ? `لوحة المطعم — ${restaurant.name}` : "لوحة المطعم",
-    description: "إدارة القائمة والمطعم",
+    title: restaurant ? `Restauranttafel — ${restaurant.name}` : "Restauranttafel",
+    description: "Menü- und Restaurantmanagement",
     ...(logoUrl
       ? {
           icons: {
@@ -63,6 +63,8 @@ export default async function OwnerLayout({
       restaurantId={restaurantId}
       subdomain={subdomain}
       livePreviewUrl={livePreviewUrl}
+      logoUrl={profileRestaurant?.logo_url ?? null}
+      themeColor={profileRestaurant?.theme_color ?? null}
     >
       {children}
     </OwnerShell>

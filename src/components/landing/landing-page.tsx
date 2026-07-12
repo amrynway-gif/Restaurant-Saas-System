@@ -27,7 +27,7 @@ export function LandingPage() {
   const [yearly, setYearly] = useState(true);
 
   return (
-    <div className="min-h-screen bg-bg-base" dir="rtl">
+    <div className="min-h-screen bg-bg-base" dir="ltr">
       <SubdomainRedirect />
 
       {/* Nav */}
@@ -42,28 +42,28 @@ export function LandingPage() {
             <span className="flex size-8 items-center justify-center rounded-lg bg-brand text-white">
               <UtensilsCrossed className="size-4" />
             </span>
-            منيو
+            Speisekarte
           </span>
           <nav className="flex items-center gap-4">
             <a
               href="#features"
               className="text-sm text-text-secondary hover:text-text-primary"
             >
-              الميزات
+              Merkmale
             </a>
             <a
               href="#pricing"
               className="text-sm text-text-secondary hover:text-text-primary"
             >
-              الأسعار
+              Preise
             </a>
             <Link href="/login">
               <Button variant="ghost" size="sm">
-                تسجيل الدخول
+                Login
               </Button>
             </Link>
             <Link href="/login">
-              <Button size="sm">ابدأ الآن</Button>
+              <Button size="sm">Beginne jetzt</Button>
             </Link>
           </nav>
         </div>
@@ -82,7 +82,7 @@ export function LandingPage() {
             className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-1.5 text-sm font-medium text-brand"
           >
             <Sparkles className="size-4" />
-            منصة استضافة المطاعم والمنيو الرقمي
+            Restaurant-Hosting und digitale Menüplattform
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
@@ -90,9 +90,9 @@ export function LandingPage() {
             transition={{ delay: 0.2, duration: 0.45 }}
             className="text-4xl font-bold leading-tight tracking-tight text-text-primary md:text-5xl lg:text-6xl"
           >
-            منيو مطعمك على الهواء
+            Deine Restaurantkarte ist live
             <br />
-            <span className="text-brand">كود QR واحد. زبائن أكثر.</span>
+            <span className="text-brand">Ein QR-Code. Mehr Kunden.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -100,7 +100,7 @@ export function LandingPage() {
             transition={{ delay: 0.35, duration: 0.4 }}
             className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary"
           >
-            استضف صفحة المنيو، لوحة تحكم بسيطة، ورمز QR يفتح المنيو أمام زبائنك فوراً. ابدأ من اليوم بدون تعقيد.
+            Hoste eine Menüseite, ein einfaches Bedienfeld und einen QR-Code, der deinen Kunden das Menü sofort öffnet. Starte noch heute ohne Komplikationen.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -111,12 +111,12 @@ export function LandingPage() {
             <Link href="/signup">
               <Button size="lg" className="gap-2">
                 <ChevronLeft className="size-4" />
-                إنشاء حساب المطعم
+                Erstelle ein Restaurantkonto
               </Button>
             </Link>
             <Link href="#pricing">
               <Button variant="outline" size="lg">
-                عرض الخطط والأسعار
+                Pläne und Preise anzeigen
               </Button>
             </Link>
           </motion.div>
@@ -134,7 +134,7 @@ export function LandingPage() {
             variants={fadeUp}
             className="text-center text-3xl font-bold text-text-primary md:text-4xl"
           >
-            كل ما تحتاجه لإدارة منيو مطعمك
+            Alles, was du brauchst, um die Speisekarte deines Restaurants zu verwalten
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -143,29 +143,29 @@ export function LandingPage() {
             transition={{ duration: 0.4 }}
             className="mx-auto mt-4 max-w-2xl text-center text-text-secondary"
           >
-            من صفحة منيو واحدة إلى نظام كامل للطاولات والطلبات والولاء — اختر ما يناسب حجم مطعمك.
+            Von einer einfachen Speisekarten-Seite bis hin zu einem kompletten System für Tische, Bestellungen und Kundenbindung — Wähle, was zur Größe deines Restaurants passt.
           </motion.p>
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: QrCode,
-                title: "رمز QR للمطعم",
-                desc: "كود واحد يفتح المنيو للزبائن من هواتفهم دون تطبيقات.",
+                title: "Restaurant-QR-Code",
+                desc: "Biete deinen Kunden eine digitale Speisekarte an, ohne zusätzliche Apps herunterladen zu müssen.",
               },
               {
                 icon: LayoutDashboard,
-                title: "لوحة تحكم أساسية",
-                desc: "إدارة المنيو، التصنيفات، والأصناف من مكان واحد.",
+                title: "Entsperren Du ein einfaches Bedienfeld",
+                desc: "Verwalte deine Speisekarten, Kategorien und Artikel von überall aus.",
               },
               {
                 icon: Globe,
-                title: "دومين خاص (الخطة الاحترافية)",
-                desc: "عنوانك الخاص مثل menu.restaurant.com لتعزيز الهوية.",
+                title: "Privatplan (ein professioneller Plan)",
+                desc: "Nutze deine eigene Domain, wie z.B. menu.restaurant.com, um deine Marke zu stärken.",
               },
               {
                 icon: Store,
-                title: "للسلاسل (الخطة الأعلى)",
-                desc: "إدارة عدة فروع، منيو متقدم، وتعقيدات احترافية.",
+                title: "Für Serie A (Plan A oben)",
+                desc: "Verwaltung mehrerer Niederlassungen, hohe Geschwindigkeit, Komplexität und Professionalität.",
               },
             ].map((item, i) => (
               <motion.div
@@ -198,7 +198,7 @@ export function LandingPage() {
             variants={fadeUp}
             className="text-center text-3xl font-bold text-text-primary md:text-4xl"
           >
-            خطط اشتراك تناسب كل مطعم
+            Abonnement-Pläne, die zu jedem Restaurant passen
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -206,7 +206,7 @@ export function LandingPage() {
             viewport={{ once: true }}
             className="mx-auto mt-4 max-w-xl text-center text-text-secondary"
           >
-            أول شهر مجاناً للخطة الأساسية والاحترافية — دون إدخال فيزا أو بطاقة بنكية. ادفع شهرياً أو وفر مع الاشتراك السنوي.
+            Erster Monat kostenlos für den Basic- und Pro-Plan — ohne Kreditkarte. Bezahle monatlich oder spare mit dem Jahresabo.
           </motion.p>
 
           {/* Toggle */}
@@ -227,7 +227,7 @@ export function LandingPage() {
                     : "text-text-secondary hover:text-text-primary"
                 )}
               >
-                شهري
+                Monatlich
               </button>
               <button
                 type="button"
@@ -239,9 +239,9 @@ export function LandingPage() {
                     : "text-text-secondary hover:text-text-primary"
                 )}
               >
-                <span>سنوي</span>
+                <span>Jährlich</span>
                 <span className="rounded bg-brand/20 px-1.5 py-0.5 text-xs">
-                  توفير
+                  Sparen
                 </span>
               </button>
             </div>
@@ -257,28 +257,28 @@ export function LandingPage() {
               className="flex flex-col rounded-2xl border border-border bg-bg-base p-6 shadow-sm"
             >
               <h3 className="text-lg font-semibold text-text-primary">
-                الأساسية
+                Basic
               </h3>
               <p className="mt-1 text-sm text-text-secondary">
-                للمطاعم الصغيرة — منيو ولوحة تحكم و QR
+                Für kleine Restaurants — Speisekarte, Dashboard und QR
               </p>
               <div className="mt-6">
                 <p className="rounded-lg bg-success-bg px-2 py-1 text-sm font-medium text-success">
-                  أول شهر مجاناً — دون إدخال فيزا أو بطاقة بنكية
+                  Erster Monat kostenlos — ohne Kreditkarte
                 </p>
                 <p className="mt-2 flex items-baseline gap-1 text-text-secondary">
                   <span className="text-3xl font-bold text-text-primary">
                     ${yearly ? "5" : "8"}
                   </span>
-                  <span className="text-text-muted">/شهر</span>
+                  <span className="text-text-muted">/Monat</span>
                   {yearly && (
-                    <span className="mr-2 text-xs text-text-muted">
-                      (بعد التجربة — مدفوعة سنوياً)
+                    <span className="ml-2 text-xs text-text-muted">
+                      (Nach der Testphase — jährlich abgerechnet)
                     </span>
                   )}
                   {!yearly && (
-                    <span className="mr-2 text-xs text-text-muted">
-                      بعد انتهاء الشهر المجاني
+                    <span className="ml-2 text-xs text-text-muted">
+                      Nach Ablauf des Gratismonats
                     </span>
                   )}
                 </p>
@@ -286,20 +286,20 @@ export function LandingPage() {
               <ul className="mt-6 flex-1 space-y-3 text-sm text-text-secondary">
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  صفحة المنيو الرقمية
+                  Digitale Speisekarten-Seite
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  لوحة تحكم أساسية
+                  Basis-Dashboard
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  استخراج QR للمطعم وتصفحه من الزبائن
+                  QR-Code erstellen und von Kunden scannen lassen
                 </li>
               </ul>
               <Link href="/signup" className="mt-6 block">
                 <Button variant="outline" className="w-full">
-                  ابدأ بالأساسية
+                  Starte mit Basic
                 </Button>
               </Link>
             </motion.div>
@@ -313,31 +313,31 @@ export function LandingPage() {
               className="relative flex flex-col rounded-2xl border-2 border-brand bg-bg-base p-6 shadow-lg ring-2 ring-brand/20"
             >
               <span className="absolute -top-3 right-1/2 translate-x-1/2 rounded-full bg-brand px-3 py-1 text-xs font-medium text-white">
-                الأكثر طلباً
+                Am beliebtesten
               </span>
               <h3 className="text-lg font-semibold text-text-primary">
-                الاحترافية
+                Pro
               </h3>
               <p className="mt-1 text-sm text-text-secondary">
-                دومين خاص، QR للطاولات، طلب أونلاين، ولاء وزبائن
+                Eigene Domain, Tisch-QRs, Online-Bestellungen, Kundenbindung
               </p>
               <div className="mt-6">
                 <p className="rounded-lg bg-success-bg px-2 py-1 text-sm font-medium text-success">
-                  أول شهر مجاناً — دون إدخال فيزا أو بطاقة بنكية
+                  Erster Monat kostenlos — ohne Kreditkarte
                 </p>
                 <p className="mt-2 flex items-baseline gap-1 text-text-secondary">
                   <span className="text-3xl font-bold text-brand">
                     ${yearly ? "10" : "15"}
                   </span>
-                  <span className="text-text-muted">/شهر</span>
+                  <span className="text-text-muted">/Monat</span>
                   {yearly && (
-                    <span className="mr-2 text-xs text-text-muted">
-                      (بعد التجربة — مدفوعة سنوياً)
+                    <span className="ml-2 text-xs text-text-muted">
+                      (Nach der Testphase — jährlich abgerechnet)
                     </span>
                   )}
                   {!yearly && (
-                    <span className="mr-2 text-xs text-text-muted">
-                      بعد انتهاء الشهر المجاني
+                    <span className="ml-2 text-xs text-text-muted">
+                      Nach Ablauf des Gratismonats
                     </span>
                   )}
                 </p>
@@ -345,40 +345,40 @@ export function LandingPage() {
               <ul className="mt-6 flex-1 space-y-3 text-sm text-text-secondary">
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  صفحة المنيو الرقمية
+                  Digitale Speisekarten-Seite
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  لوحة تحكم أساسية
+                  Basis-Dashboard
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  استخراج QR للمطعم وتصفحه من الزبائن
+                  QR-Code erstellen und von Kunden scannen lassen
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  دومين خاص
+                  Eigene Domain
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  QR لكل طاولة
+                  QR für jeden Tisch
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  طلب الطلبات من الصفحة للزبون
+                  Online-Bestellungen für Kunden
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  نظام ولاء للزبائن
+                  Kundenbindungssystem
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  قاعدة بيانات للزبائن المحتملين
-                  <span className="text-xs text-text-muted">(قريباً)</span>
+                  Kundendatenbank
+                  <span className="text-xs text-text-muted">(fast)</span>
                 </li>
               </ul>
               <Link href="/signup" className="mt-6 block">
-                <Button className="w-full">اختر الاحترافية</Button>
+                <Button className="w-full">Starte mit Pro</Button>
               </Link>
             </motion.div>
 
@@ -391,72 +391,72 @@ export function LandingPage() {
               className="flex flex-col rounded-2xl border border-border bg-bg-base p-6 shadow-sm"
             >
               <h3 className="text-lg font-semibold text-text-primary">
-                السلاسل
+                Enterprise
               </h3>
               <p className="mt-1 text-sm text-text-secondary">
-                للسلاسل والفروع — تعقيدات أكثر ومنيو متقدم
+                Für Ketten und Filialen — mehr Funktionen und erweiterte Speisekarte
               </p>
               <div className="mt-6 flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-text-primary">
                   ${yearly ? "20" : "30"}
                 </span>
-                <span className="text-text-muted">/شهر</span>
+                <span className="text-text-muted">/Monat</span>
                 {yearly && (
-                  <span className="mr-2 text-xs text-text-muted">
-                    (مدفوعة سنوياً)
+                  <span className="ml-2 text-xs text-text-muted">
+                    (Jährlich abgerechnet)
                   </span>
                 )}
               </div>
               <ul className="mt-6 flex-1 space-y-3 text-sm text-text-secondary">
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  صفحة المنيو الرقمية
+                  Digitale Speisekarten-Seite
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  لوحة تحكم أساسية
+                  Basis-Dashboard
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  استخراج QR للمطعم وتصفحه من الزبائن
+                  QR-Code erstellen und von Kunden scannen lassen
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  دومين خاص
+                  Eigene Domain
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  QR لكل طاولة
+                  QR für jeden Tisch
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  طلب الطلبات من الصفحة للزبون
+                  Online-Bestellungen für Kunden
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  نظام ولاء للزبائن
+                  Kundenbindungssystem
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  قاعدة بيانات للزبائن المحتملين
-                  <span className="text-xs text-text-muted">(قريباً)</span>
+                  Kundendatenbank
+                  <span className="text-xs text-text-muted">(fast)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  موجه للسلاسل والفروع
+                  Für Ketten und Filialen
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  تعقيدات وإعدادات متقدمة
+                  Erweiterte Einstellungen und Rechte
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  تصاميم منيو متقدمة
+                  Erweiterte Speisekarten-Designs
                 </li>
               </ul>
               <Link href="/signup" className="mt-6 block">
                 <Button variant="outline" className="w-full">
-                  للسلاسل
+                  Für Ketten
                 </Button>
               </Link>
             </motion.div>
@@ -473,7 +473,7 @@ export function LandingPage() {
             viewport={{ once: true }}
             className="text-3xl font-bold text-text-primary md:text-4xl"
           >
-            جاهز لرفع منيو مطعمك؟
+            Bereit, dein Restaurant zu digitalisieren?
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -482,7 +482,7 @@ export function LandingPage() {
             transition={{ delay: 0.1 }}
             className="mt-4 text-text-secondary"
           >
-            أنشئ حسابك في دقائق وابدأ باستقبال الطلبات عبر QR.
+            Erstelle dein Konto in wenigen Minuten und erhalte Bestellungen per QR-Code.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -494,12 +494,12 @@ export function LandingPage() {
             <Link href="/signup">
               <Button size="lg" className="gap-2">
                 <ChevronLeft className="size-4" />
-                إنشاء حساب المطعم
+                Erstelle ein Restaurantkonto
               </Button>
             </Link>
             <Link href="/menu/albaraka">
               <Button variant="outline" size="lg">
-                معاينة منيو تجريبي
+                Demo-Speisekarte ansehen
               </Button>
             </Link>
           </motion.div>
@@ -511,14 +511,14 @@ export function LandingPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 sm:flex-row">
           <span className="flex items-center gap-2 text-sm text-text-muted">
             <UtensilsCrossed className="size-4" />
-            منيو — منصة استضافة المطاعم والمنيو الرقمي
+            Menü – Restaurant-Hosting und digitale Menüplattform
           </span>
           <div className="flex gap-6 text-sm text-text-muted">
             <Link href="/login" className="hover:text-text-primary">
-              تسجيل الدخول
+              Login
             </Link>
             <a href="#pricing" className="hover:text-text-primary">
-              الأسعار
+              Preise
             </a>
           </div>
         </div>

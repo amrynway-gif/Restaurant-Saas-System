@@ -57,20 +57,7 @@ export async function getSuperAdminProfileOrRedirect(): Promise<Profile> {
   return profile;
 }
 
-/**
- * Same as getSuperAdminProfileOrRedirect, but controls which login form is shown:
- * - loginMode="username" redirects to /login?mode=username
- * - loginMode="email" redirects to /login?mode=email
- */
-export async function getSuperAdminProfileOrRedirectWithLoginMode(
-  loginMode: "username" | "email"
-): Promise<Profile> {
-  const session = await getSession();
-  if (!session) redirect(`/login?mode=${loginMode}`);
-  const profile = await getProfile();
-  if (!profile || profile.role !== SUPER_ADMIN_ROLE) redirect("/owner");
-  return profile;
-}
+
 
 /** For /admin on subdomain (restaurant owner): requires session + profile with restaurant_id = tenantId. */
 export async function getProfileForRestaurantAdminOrRedirect(
@@ -89,37 +76,24 @@ export async function isSuperAdmin(profile: Profile | null): Promise<boolean> {
   return profile?.role === SUPER_ADMIN_ROLE;
 }
 
-/**
- * بعد تسجيل الزائر بـ (username + password) ننشئ له بروفايلاً باسم المستخدم والبريد الداخلي.
- * يُستدعى من العميل بعد signUp مباشرة.
- */
-export async function createProfileAfterSignup(
-  username: string
-): Promise<{ error: string | null }> {
+
+export async function createProfileAfterSignup(): Promise<{ error: string | null }> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "يجب تسجيل الدخول أولاً" };
+  if (!user || !user.email) return { error: "Du müssen sich zuerst anmelden" };
 
-  const raw = username?.trim();
-  if (!raw || raw.length < 3) return { error: "اسم المستخدم 3 أحرف على الأقل" };
-  const lower = raw.toLowerCase();
-  if (!USERNAME_REGEX.test(lower))
-    return { error: "اسم المستخدم: حروف إنجليزية صغيرة، أرقام، شرطة أو شرطة سفلية فقط (3–30 حرفاً)" };
-
-  const login_email = getPlaceholderEmail(raw);
   const admin = createAdminClient();
   const { error } = await admin.from("profiles").upsert(
     {
       id: user.id,
-      username: lower,
-      login_email,
+      login_email: user.email,
       role: "owner",
     },
     { onConflict: "id" }
   );
-  if (error) return { error: error.message || "فشل إنشاء الملف الشخصي" };
+  if (error) return { error: error.message || "Die Profilerstellung ist fehlgeschlagen" };
   revalidatePath("/complete-profile");
   return { error: null };
 }
@@ -146,10 +120,7 @@ export async function setProfileRestaurant(
   return { error: null };
 }
 
-/**
- * إنشاء مطعم جديد وربط الحساب به (للزائر الجديد — شهر تجريبي بدون تدخل المالك).
- * يستخدم Admin لتفادي RLS على restaurants و profiles.
- */
+
 export async function createRestaurantAndLink(payload: {
   name: string;
   subdomain: string;
@@ -158,16 +129,16 @@ export async function createRestaurantAndLink(payload: {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "يجب تسجيل الدخول أولاً" };
+  if (!user) return { error: "Du müssen sich zuerst anmelden" };
 
   const name = payload.name?.trim();
   const subRaw = payload.subdomain?.trim().toLowerCase();
-  if (!name || name.length < 2) return { error: "اسم المطعم يجب أن يكون حرفين على الأقل" };
-  if (!subRaw) return { error: "النطاق الفرعي مطلوب" };
+  if (!name || name.length < 2) return { error: "Der Restaurantname muss mindestens zwei Buchstaben haben" };
+  if (!subRaw) return { error: "Subdomain erforderlich" };
   if (subRaw.length < SUBDOMAIN_MIN || subRaw.length > SUBDOMAIN_MAX)
-    return { error: `النطاق الفرعي بين ${SUBDOMAIN_MIN} و ${SUBDOMAIN_MAX} حرفاً` };
+    return { error: `Subdomain zwischen ${SUBDOMAIN_MIN} und ${SUBDOMAIN_MAX} Buchstaben A` };
   if (!SUBDOMAIN_REGEX.test(subRaw))
-    return { error: "النطاق الفرعي: حروف إنجليزية صغيرة، أرقام وشرطة فقط" };
+    return { error: "Subdomain: Nur Kleinbuchstaben, Zahlen und Bindestriche" };
 
   const admin = createAdminClient();
   const { data: existing } = await admin
@@ -175,7 +146,7 @@ export async function createRestaurantAndLink(payload: {
     .select("id")
     .ilike("subdomain", subRaw)
     .maybeSingle();
-  if (existing) return { error: "النطاق الفرعي مستخدم لمطعم آخر. اختر غيره." };
+  if (existing) return { error: "Die Subdomain wird für ein anderes Restaurant verwendet. Wähle ein anderes." };
 
   const { data: newRestaurant, error: insertErr } = await admin
     .from("restaurants")
@@ -186,8 +157,8 @@ export async function createRestaurantAndLink(payload: {
     })
     .select("id")
     .single();
-  if (insertErr) return { error: insertErr.message || "فشل إنشاء المطعم" };
-  if (!newRestaurant?.id) return { error: "فشل إنشاء المطعم" };
+  if (insertErr) return { error: insertErr.message || "Der Restaurantbetrieb scheiterte" };
+  if (!newRestaurant?.id) return { error: "Der Restaurantbetrieb scheiterte" };
 
   const { error: profileErr } = await admin.from("profiles").upsert(
     {
@@ -198,20 +169,20 @@ export async function createRestaurantAndLink(payload: {
     },
     { onConflict: "id" }
   );
-  if (profileErr) return { error: profileErr.message || "فشل ربط الحساب بالمطعم" };
+  if (profileErr) return { error: profileErr.message || "Das Konto konnte nicht mit dem Restaurant verknüpft werden" };
 
   revalidatePath("/owner");
   revalidatePath("/complete-profile");
   return { error: null };
 }
 
-/** جلب المطعم حسب النطاق الفرعي (للاستخدام في صفحة تسجيل الدخول). */
+
 export async function getRestaurantBySubdomain(
   subdomain: string
 ): Promise<{ id: string; subdomain: string } | null> {
   const key = subdomain.trim().toLowerCase();
   if (!key) return null;
-  // محاولة باستخدام Admin أولاً (تجاوز RLS) حتى يعمل تسجيل الدخول بدون جلسة
+  
   try {
     const admin = createAdminClient();
     const { data, error } = await admin
@@ -221,7 +192,7 @@ export async function getRestaurantBySubdomain(
       .maybeSingle();
     if (!error && data) return { id: data.id, subdomain: data.subdomain };
   } catch {
-    // إن لم يتوفر Admin (مثلاً عدم وجود SERVICE_ROLE_KEY) نستخدم العميل العادي
+    
   }
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -235,99 +206,54 @@ export async function getRestaurantBySubdomain(
 
 export async function getRestaurantForProfile(profile: Profile) {
   if (!profile.restaurant_id) return null;
-  const supabase = await createClient();
-  const { data } = await supabase
+  const admin = createAdminClient();
+  const { data: restData } = await admin
     .from("restaurants")
     .select(
-      "id, name, subdomain, logo_url, headline, subheadline, hero_background_url, footer_note, public_address, public_maps_url, public_phone_1, public_phone_2, public_phone_3, social_facebook_url, social_instagram_url, social_tiktok_url, currency_code, secondary_currency_enabled, secondary_currency_code, secondary_currency_exchange_rate, menu_title_animation_enabled, menu_banner_url, menu_banner_kind, menu_banner_caption, loyalty_program_enabled, loyalty_spend_cents_per_point, loyalty_point_value_cents, phone_country_prefix, waiters_system_enabled"
+      "id, name, subdomain, logo_url, theme_color, headline, subheadline, hero_background_url, footer_note, public_address, public_maps_url, public_phone_1, public_phone_2, public_phone_3, social_facebook_url, social_instagram_url, social_tiktok_url, currency_code, secondary_currency_enabled, secondary_currency_code, secondary_currency_exchange_rate, menu_title_animation_enabled, menu_banner_url, menu_banner_kind, menu_banner_caption, loyalty_program_enabled, loyalty_spend_cents_per_point, loyalty_point_value_cents, phone_country_prefix, waiters_system_enabled"
     )
     .eq("id", profile.restaurant_id)
     .single();
-  return data;
+  return restData;
 }
 
-/**
- * تسجيل دخول صاحب المطعم باسم المستخدم وكلمة المرور (عبر الدومين الفرعي).
- * يستخدم restaurantId من الـ headers (يُستدعى من صفحة /login على الساب دومين).
- * نستخدم Admin لقراءة login_email لأن RLS تمنع القراءة قبل تسجيل الدخول.
- */
-export async function signInWithUsernamePassword(
-  restaurantId: string,
-  username: string,
+
+export async function signInWithEmailAndPassword(
+  email: string,
   password: string
-): Promise<{ error: string | null }> {
-  const uname = username.trim().toLowerCase();
-  if (!uname || !password) return { error: "اسم المستخدم وكلمة المرور مطلوبان" };
-
-  let profile: { login_email: string } | null = null;
-  try {
-    const admin = createAdminClient();
-    const { data } = await admin
-      .from("profiles")
-      .select("login_email")
-      .eq("restaurant_id", restaurantId)
-      .eq("role", "owner")
-      .eq("username", uname)
-      .maybeSingle();
-    profile = data;
-  } catch {
-    return { error: "تسجيل الدخول غير متاح حالياً. تأكد من إعداد SUPABASE_SERVICE_ROLE_KEY." };
-  }
-
-  if (!profile?.login_email) return { error: "اسم المستخدم أو كلمة المرور غير صحيحة" };
+): Promise<{ error: string | null; redirectUrl?: string }> {
+  if (!email || !password) return { error: "E-Mail und Passwort sind erforderlich" };
 
   const supabase = await createClient();
   const { error: signInError } = await supabase.auth.signInWithPassword({
-    email: profile.login_email,
+    email,
     password,
   });
-  if (signInError) return { error: "اسم المستخدم أو كلمة المرور غير صحيحة" };
-  return { error: null };
-}
 
-/**
- * تسجيل دخول مالك النظام (super_admin) باسم المستخدم وكلمة المرور عبر الدومين الرئيسي.
- * نستخدم Admin لقراءة login_email لأن RLS تمنع القراءة قبل تسجيل الدخول.
- */
-export async function signInSuperAdminWithUsernamePassword(
-  username: string,
-  password: string
-): Promise<{ error: string | null }> {
-  const uname = username.trim().toLowerCase();
-  if (!uname || !password) return { error: "اسم المستخدم وكلمة المرور مطلوبان" };
+  if (signInError) return { error: signInError.message || "Falsche E-Mail-Adresse oder falsches Passwort" };
 
-  let profile: { login_email: string | null } | null = null;
-  try {
-    const admin = createAdminClient();
-    const { data } = await admin
-      .from("profiles")
-      .select("login_email")
-      .eq("role", "super_admin")
-      .eq("username", uname)
-      .maybeSingle();
-    profile = data;
-  } catch {
-    return { error: "تسجيل الدخول غير متاح حالياً. تأكد من إعداد SUPABASE_SERVICE_ROLE_KEY." };
+  const profile = await getProfile();
+  if (profile?.role === "super_admin") {
+    return { error: null, redirectUrl: "/admin" };
   }
 
-  try {
-    if (!profile?.login_email) return { error: "لم يتم العثور على super_admin أو login_email غير مضبوط" };
-
-    const supabase = await createClient();
-    const resolvedEmail = profile.login_email.trim();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: resolvedEmail,
-      password,
-    });
-
-    if (signInError) return { error: signInError.message || "فشل تسجيل الدخول" };
-    return { error: null };
-  } catch (e: any) {
-    return { error: e?.message || "فشل تسجيل الدخول" };
+  if (profile?.role === "owner" && profile.restaurant_id) {
+    const restaurant = await getRestaurantForProfile(profile);
+    if (restaurant?.subdomain) {
+      const headersList = await import("next/headers").then(m => m.headers());
+      const host = headersList.get("host") ?? "";
+      const proto = headersList.get("x-forwarded-proto") ?? "http";
+      const { buildTenantPublicSiteUrl } = await import("@/lib/tenant-public-url");
+      const url = buildTenantPublicSiteUrl(restaurant.subdomain, host, proto);
+      if (url) {
+        return { error: null, redirectUrl: url + "/admin" };
+      }
+    }
   }
+
+  return { error: null, redirectUrl: "/admin" };
 }
 
-/** Owner dashboard stats: categories, menu items, طلبات قيد الانتظار (إن وُجد جدول الطلبات). */
 export async function getOwnerDashboardStats(restaurantId: string): Promise<{
   categoriesCount: number;
   menuItemsCount: number;

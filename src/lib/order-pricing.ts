@@ -4,7 +4,7 @@ export type ResolvePriceResult =
   | { ok: true; cents: number }
   | { ok: false; needsOption: true };
 
-/** يحدد سعر الوحدة بالسنت من الصنف وخيار الحجم إن وُجد */
+
 export function resolveUnitPriceCents(
   item: MenuItem,
   priceOptionLabel?: string | null

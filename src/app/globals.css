@@ -16,7 +16,7 @@
   --bg-surface-2: #f1eff9;
   --bg-overlay: #eceaf6;
 
-  /* Brand — لون رئيسي واحد فقط */
+  
   --brand: #5b4cf5;
   --brand-light: #ede9ff;
   --brand-dark: #4035c8;
@@ -111,7 +111,7 @@
 }
 
 [data-theme="dark"] {
-  /* ===== DARK MODE — خلفيات عميقة Slate-950 لمظهر Premium ===== */
+  
 
   /* Backgrounds — Slate-950 deep, not pure black */
   --bg-base: #020617;
@@ -119,22 +119,22 @@
   --bg-surface-2: #1e293b;
   --bg-overlay: #334155;
 
-  /* Brand — بنفسجي للعناصر الرئيسية (Dashboard، أزرار CTA) */
+  
   --brand: #8b5cf6;
   --brand-light: #2e1065;
   --brand-dark: #a78bfa;
 
-  /* لون العنصر النشط في القائمة (صفحة محددة مثل المنتجات) — أخضر مريح */
+  
   --sidebar-active: #10b981;
   --sidebar-active-bg: #064e3b;
 
-  /* Text — أبيض ناعم ورمادي فاتح */
+  
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
   --text-inverse: #0f172a;
 
-  /* Borders — حدود خفيفة غير مزعجة */
+  
   --border: #334155;
   --border-strong: #475569;
 
@@ -148,7 +148,7 @@
   --info: #60a5fa;
   --info-bg: #0c4a6e;
 
-  /* Shadows — ظلال ناعمة */
+  
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.4);
@@ -396,7 +396,7 @@
   animation: menuRestaurantTitleGlow 2.85s ease-in-out infinite;
 }
 
-/* منيو عام — نفس التأثير بلون أوضح على خلفية فاتحة */
+
 @keyframes menuRestaurantTitleGlowLight {
   0%,
   26% {
@@ -445,7 +445,7 @@
   }
 }
 
-/* ========== لوحة الطلبات — وميض خفيف للحالات النشطة (مستجد / مقبول / تحضير) ========== */
+
 @keyframes orderCardPulsePending {
   0%,
   100% {

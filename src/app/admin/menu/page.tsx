@@ -8,11 +8,11 @@ import { getCategories, getMenuItems } from "@/app/actions/admin-items";
 import { AdminItemsManager } from "@/app/admin/items/admin-items-manager";
 
 export const metadata = {
-  title: "أصناف المنيو | لوحة المطعم",
-  description: "إدارة أصناف المنيو",
+  title: "Menüpunkte | Restauranttafel",
+  description: "Menüpunkte verwalten",
 };
 
-/** صفحة لوحة المطعم فقط — عند الدخول بدون subdomain نوجّه إلى /admin */
+
 export default async function AdminMenuPage() {
   const tenant = await getIdentifiedRestaurant();
   if (!tenant) redirect("/admin");
@@ -29,7 +29,7 @@ export default async function AdminMenuPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-[32px] font-bold leading-tight text-[var(--text-primary)]">
-          أصناف المنيو
+          Menüpunkte
         </h1>
       </div>
       <AdminItemsManager

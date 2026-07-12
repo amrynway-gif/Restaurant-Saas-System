@@ -4,11 +4,11 @@ import { getAllRestaurants } from "@/app/actions/super-admin";
 import { RestaurantsTable } from "./restaurants-table";
 
 export const metadata = {
-  title: "المطاعم | لوحة مالك النظام",
-  description: "إدارة جميع المطاعم",
+  title: "Restaurants | Systembesitzer-Panel",
+  description: "Verwalte alle Restaurants",
 };
 
-/** صفحة Super Admin فقط — عند الدخول من subdomain نوجّه إلى /admin */
+
 export default async function AdminRestaurantsPage() {
   const tenant = await getIdentifiedRestaurant();
   if (tenant) redirect("/admin");
@@ -21,9 +21,9 @@ export default async function AdminRestaurantsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">المطاعم</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Restaurants</h1>
         <p className="text-muted-foreground">
-          عرض وإدارة جميع المطاعم. إضافة مطاعم جديدة وإنشاء مستخدم وكلمة مرور لصاحب كل مطعم.
+          Alle Restaurants anzeigen und verwalten. Füge neue Restaurants hinzu und erstelle einen Benutzer und ein Passwort für den Besitzer jedes Restaurants.
         </p>
       </div>
       <RestaurantsTable

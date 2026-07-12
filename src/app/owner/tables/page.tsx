@@ -7,8 +7,8 @@ import { buildTenantPublicSiteUrl } from "@/lib/tenant-public-url";
 import { TablesClient } from "./tables-client";
 
 export const metadata = {
-  title: "الطاولات ورموز QR | لوحة المطعم",
-  description: "إدارة طاولات المطعم وطباعة رموز QR",
+  title: "Tabellen und QR-Codes | Restauranttafel",
+  description: "Verwalte Restauranttische und drucke QR-Codes",
 };
 
 export default async function OwnerTablesPage() {
@@ -26,8 +26,8 @@ export default async function OwnerTablesPage() {
     <div className="space-y-4">
       {error ? (
         <p className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          تعذر تحميل الطاولات: {error}. إن لم تكن قد شغّلت ملف SQL لإنشاء الجداول، نفّذ{" "}
-          <code className="rounded bg-muted px-1">supabase/orders-tables-customers.sql</code> في Supabase.
+          Tabellen können nicht geladen werden: {error}. Wenn du die SQL-Datei zum Erstellen der Tabellen nicht ausgeführt haben, führe sie aus{" "}
+          <code className="rounded bg-muted px-1">supabase/orders-tables-customers.sql</code> Bei Supabase.
         </p>
       ) : null}
       <TablesClient

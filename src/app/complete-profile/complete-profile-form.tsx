@@ -30,31 +30,31 @@ export function CompleteProfileForm() {
   }
 
   return (
-    <div className="space-y-6" dir="rtl">
+    <div className="space-y-6" dir="ltr">
       <form onSubmit={handleSubmit} className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          أنشئ مطعمك واحصل على أول شهر مجاناً — دون إدخال بطاقة بنكية. بعدها يمكنك الاشتراك من لوحة التحكم.
+          Erstelle dein Restaurant und erhalten deinen ersten Monat kostenlos – ohne Eingabe einer Bankkarte. Dann könne über das Control Panel ein Abonnement abschließen.
         </p>
         <div className="space-y-2">
-          <Label htmlFor="restaurant-name">اسم المطعم</Label>
+          <Label htmlFor="restaurant-name">Restaurantname</Label>
           <Input
             id="restaurant-name"
             type="text"
-            placeholder="مثال: مطعم النخيل"
+            placeholder="Beispiel: Al Nakheel Restaurant"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
             minLength={2}
             disabled={loading}
-            className="text-right"
+            className="text-left"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="restaurant-subdomain">النطاق الفرعي (لرابط المنيو)</Label>
+          <Label htmlFor="restaurant-subdomain">Subdomain (für Menü-Link)</Label>
           <Input
             id="restaurant-subdomain"
             type="text"
-            placeholder="مثال: alnakhil"
+            placeholder="Beispiel: alnakhil"
             value={subdomain}
             onChange={(e) =>
               setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))
@@ -63,16 +63,16 @@ export function CompleteProfileForm() {
             minLength={2}
             maxLength={63}
             disabled={loading}
-            className="font-mono text-right"
+            className="font-mono text-left"
           />
           <p className="text-xs text-muted-foreground">
-            حروف إنجليزية صغيرة، أرقام وشرطة فقط. سيكون منيو مطعمك متاحاً على:
-            subdomain.yourdomain.com
+            Nur Kleinbuchstaben, Zahlen und Bindestriche. Dein Restaurantmenü ist verfügbar unter:
+subdomain.ihredomain.com
           </p>
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "جاري الإنشاء…" : "إنشاء المطعم والدخول للوحة التحكم"}
+          {loading ? "Bauarbeiten laufen…" : "Erstelle das Restaurant und melde dich im Control Panel an"}
         </Button>
       </form>
     </div>

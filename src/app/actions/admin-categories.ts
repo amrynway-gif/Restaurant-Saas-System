@@ -71,7 +71,7 @@ export async function deleteCategory(
     .eq("restaurant_id", restaurantId)
     .maybeSingle();
   if (!row) {
-    return { error: "التصنيف غير موجود أو لا يتبع مطعمك." };
+    return { error: "Die Bewertung existiert nicht oder gehört nicht zu Ihrem Restaurant." };
   }
 
   const { error: unlinkErr } = await supabase
@@ -91,7 +91,7 @@ export async function deleteCategory(
   if (!deleted?.length) {
     return {
       error:
-        "لم يُحذف التصنيف. نفّذ في Supabase ملف supabase/rls-categories-owner.sql لمنح صاحب المطعم صلاحية الحذف.",
+        "Die Kategorie wurde nicht gelöscht. Führe in Supabase die Datei supabase/rls-categories-owner.sql aus, um dem Restaurantbesitzer die Löschberechtigung zu erteilen.",
     };
   }
 

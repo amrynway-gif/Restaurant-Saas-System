@@ -31,21 +31,21 @@ export function RestaurantPhoneCountryForm({ restaurantId, initialPrefix }: Prop
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="phone-country-prefix">مقدمة الدولة للجوال</Label>
+        <Label htmlFor="phone-country-prefix">Staatliche Einführung in den Mobilfunk</Label>
         <Input
           id="phone-country-prefix"
           dir="ltr"
           inputMode="numeric"
           autoComplete="off"
-          placeholder="مثال: 966 أو 963 (بدون +)"
+          placeholder="Beispiel: 966 oder 963 (ohne +)"
           value={prefix}
           onChange={(e) => setPrefix(e.target.value.replace(/\D/g, ""))}
           className="max-w-xs font-mono"
         />
         <p className="text-xs text-muted-foreground leading-relaxed">
-          أدخل رمز الاتصال الدولي لبلدك فقط (أرقام). يُدمَج تلقائياً مع رقم الزبون في قائمة الطلبات لعرض{" "}
-          <strong>اتصال</strong> و<strong>واتساب</strong> برسالة تتضمن قبول الطلب، التحضير، رقم الطلب، ورابط
-          متابعة الطلب. اترك الحقل فارغاً إذا كانت أرقام الزبائن مخزّنة أصلاً بالصيغة الدولية الكاملة.
+          Gib nur die internationale Vorwahl (Nummern) Ihres Landes ein. Du wird automatisch mit der Kundennummer in der Bestellliste kombiniert und angezeigt{" "}
+          <strong>Kommunikation</strong> Und<strong>WhatsApp</strong> Mit einer Nachricht, die die Annahme des Antrags, die Vorbereitung, die Antragsnummer und einen Link enthält
+Gehe der Anfrage nach. Lasse das Feld leer, wenn Kundennummern ursprünglich im vollständigen internationalen Format gespeichert wurden.
         </p>
       </div>
       {error ? (
@@ -54,10 +54,10 @@ export function RestaurantPhoneCountryForm({ restaurantId, initialPrefix }: Prop
         </p>
       ) : null}
       {success ? (
-        <p className="text-sm text-emerald-600 dark:text-emerald-400">تم الحفظ.</p>
+        <p className="text-sm text-emerald-600 dark:text-emerald-400">Gespeichert.</p>
       ) : null}
       <Button type="submit" disabled={loading}>
-        {loading ? "جاري الحفظ…" : "حفظ"}
+        {loading ? "Sparen..." : "speichern"}
       </Button>
     </form>
   );

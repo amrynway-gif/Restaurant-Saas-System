@@ -16,8 +16,8 @@ import { CustomersClient } from "@/components/loyalty/customers-client";
 import { LoyaltyDashboardClient } from "@/components/loyalty/loyalty-dashboard-client";
 
 export const metadata = {
-  title: "العملاء والولاء",
-  description: "إجمالي المشتريات والنقاط",
+  title: "Kunden und Loyalität",
+  description: "Gesamteinkäufe und Punkte",
 };
 
 export default async function AdminCustomersPage() {
@@ -44,9 +44,9 @@ export default async function AdminCustomersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">العملاء والولاء</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Kunden und Loyalität</h1>
         <p className="text-muted-foreground">
-          قائمة بأرقام الجوال التي طلبت من المنيو، مرتبة حسب إجمالي المشتريات.
+          Eine Liste der aus dem Menü angeforderten Mobiltelefonnummern, geordnet nach Gesamtkäufen.
         </p>
       </div>
 
@@ -55,9 +55,9 @@ export default async function AdminCustomersPage() {
           className="rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-3 text-sm text-amber-950 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-50"
           role="status"
         >
-          <p className="font-medium">قاعدة البيانات تحتاج تحديثاً لأعمدة المشتريات والنقاط</p>
+          <p className="font-medium">Die Datenbank muss für die Spalten „Käufe“ und „Punkte“ aktualisiert werden</p>
           <p className="mt-2 text-xs leading-relaxed opacity-90">
-            Supabase → SQL — نفّذ الملف{" "}
+            Supabase → SQL – Führe die Datei aus{" "}
             <code className="rounded bg-background/80 px-1.5 py-0.5 font-mono text-[11px]">
               supabase/FIX-customer-phones-loyalty-columns.sql
             </code>
@@ -67,22 +67,22 @@ export default async function AdminCustomersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">قيمة النقطة في الجدول</CardTitle>
+          <CardTitle className="text-base">Punktwert in der Tabelle</CardTitle>
           <CardDescription>
-            عمود «قيمة الرصيد (تقدير)» = رصيد النقاط × قيمة النقطة من إعدادات الولاء.
+            Spalte „Guthabenwert (Schätzung)“ = Punkteguthaben x Punktwert aus den Treueeinstellungen.
           </CardDescription>
         </CardHeader>
       </Card>
 
       {error ? (
         <p className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          تعذر تحميل العملاء: {error}. تأكد من تنفيذ ملفات SQL في Supabase.
+          Clients können nicht geladen werden: {error}. Stelle sicher, dass die SQL-Dateien in Supabase ausgeführt werden.
         </p>
       ) : (
         <div className="space-y-6">
           {dashboardRes.error || rewardsRes.error || notificationsRes.error ? (
             <p className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-              تعذر تحميل لوحة الولاء الاحترافية:{" "}
+              Das Profil für professionelle Treueprogramme konnte nicht geladen werden:{" "}
               {dashboardRes.error ?? rewardsRes.error ?? notificationsRes.error}
             </p>
           ) : (
@@ -93,7 +93,7 @@ export default async function AdminCustomersPage() {
               phoneCountryPrefix={restaurant?.phone_country_prefix ?? null}
               subdomain={restaurant?.subdomain ?? ""}
               publicBaseUrl={publicBaseUrl}
-              restaurantName={restaurant?.name ?? "المطعم"}
+              restaurantName={restaurant?.name ?? "Das Restaurant"}
               currencyCode={currencyCode}
               pointValueCents={pointValueCents}
               secondaryCurrencyCode={
@@ -110,7 +110,7 @@ export default async function AdminCustomersPage() {
             />
           )}
           <div>
-            <h2 className="mb-2 text-lg font-semibold">ملخص المشتريات (العرض السابق)</h2>
+            <h2 className="mb-2 text-lg font-semibold">Zusammenfassung der Käufe (vorherige Ansicht)</h2>
             <CustomersClient
               customers={customers}
               currencyCode={currencyCode}

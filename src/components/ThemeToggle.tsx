@@ -11,7 +11,7 @@ export function ThemeToggle() {
       type="button"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       className="theme-toggle-btn"
-      aria-label="تبديل السمة"
+      aria-label="Thema umschalten"
     >
       {resolvedTheme === "dark" ? (
         <SunIcon className="size-[18px]" />

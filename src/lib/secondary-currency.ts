@@ -1,9 +1,6 @@
 import type { MenuItem } from "@/lib/types/database";
 
-/**
- * سعر الصرف: عدد وحدات العملة الثانية (الكاملة) مقابل 1 وحدة من العملة الأساسية (الكاملة).
- * مثال: 1 USD = 3.7 ILS → القيمة 3.7
- */
+
 export function secondaryCentsFromPrimaryCents(
   primaryCents: number,
   secondaryPerPrimaryUnit: number
@@ -12,9 +9,7 @@ export function secondaryCentsFromPrimaryCents(
   return Math.round(primaryCents * secondaryPerPrimaryUnit);
 }
 
-/**
- * يحدد سعر الوحدة بالعملة الثانية (بالسنت): يدوي إن وُجد، وإلا بالصرف عند توفره.
- */
+
 export function resolveSecondaryUnitCents(
   item: MenuItem,
   primaryCents: number,

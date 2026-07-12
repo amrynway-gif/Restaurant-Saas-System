@@ -1,16 +1,16 @@
 import type { OrderStatus } from "@/lib/types/database";
 
-/** تسميات عربية للحالات */
+
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
-  pending: "مستجد",
-  accepted: "مقبول",
-  preparing: "قيد التحضير",
-  ready: "جاهز",
-  completed: "مكتمل",
-  cancelled: "ملغى",
+  pending: "Neu",
+  accepted: "akzeptabel",
+  preparing: "In Vorbereitung",
+  ready: "bereit",
+  completed: "vollständig",
+  cancelled: "Abgesagt",
 };
 
-/** ترتيب سير العمل للأزرار السريعة */
+
 export const ORDER_STATUS_FLOW: OrderStatus[] = [
   "pending",
   "accepted",
@@ -19,7 +19,7 @@ export const ORDER_STATUS_FLOW: OrderStatus[] = [
   "completed",
 ];
 
-/** ألوان الواجهة: حدود وخلفية خفيفة (Tailwind classes) */
+
 export function orderStatusCardClasses(status: OrderStatus): string {
   switch (status) {
     case "pending":
@@ -58,7 +58,7 @@ export function orderStatusBadgeClasses(status: OrderStatus): string {
   }
 }
 
-/** الخطوة التالية المنطقية في التشغيل (للزر السريع) */
+
 export function nextOperationalStatus(current: OrderStatus): OrderStatus | null {
   if (current === "cancelled" || current === "completed") return null;
   const i = ORDER_STATUS_FLOW.indexOf(current);

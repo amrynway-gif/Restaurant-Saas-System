@@ -48,11 +48,11 @@ export async function updateRestaurantSubdomain(
   newSubdomain: string
 ): Promise<{ error: string | null }> {
   const subRaw = newSubdomain?.trim().toLowerCase().replace(/\s+/g, "-") ?? "";
-  if (!subRaw) return { error: "النطاق الفرعي مطلوب" };
+  if (!subRaw) return { error: "Subdomain erforderlich" };
   if (subRaw.length < SUBDOMAIN_MIN || subRaw.length > SUBDOMAIN_MAX) {
-    return { error: `النطاق الفرعي بين ${SUBDOMAIN_MIN} و ${SUBDOMAIN_MAX} حرفاً` };
+    return { error: `Subdomain zwischen ${SUBDOMAIN_MIN} und ${SUBDOMAIN_MAX} Buchstaben A` };
   }
-  if (!SUBDOMAIN_REGEX.test(subRaw)) return { error: "النطاق الفرعي: حروف إنجليزية صغيرة، أرقام وشرطة فقط" };
+  if (!SUBDOMAIN_REGEX.test(subRaw)) return { error: "Subdomain: Nur Kleinbuchstaben, Zahlen und Bindestriche" };
 
   const supabase = await createClient();
 
@@ -63,7 +63,7 @@ export async function updateRestaurantSubdomain(
     .neq("id", restaurantId)
     .maybeSingle();
 
-  if (existing) return { error: "النطاق الفرعي مستخدم لمطعم آخر" };
+  if (existing) return { error: "Die Subdomain wird für ein anderes Restaurant verwendet" };
 
   const { error: updateErr } = await supabase
     .from("restaurants")
@@ -109,7 +109,7 @@ export async function createRestaurant(
 export async function deleteRestaurant(
   id: string
 ): Promise<{ error: string | null }> {
-  // Super admin: احذف التبعيات أولاً لتجنب مشاكل قيود المفاتيح الأجنبية
+  
   const admin = createAdminClient();
 
   const { error: menuItemsErr } = await admin.from("menu_items").delete().eq("restaurant_id", id);

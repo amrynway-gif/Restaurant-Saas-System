@@ -9,8 +9,8 @@ import { getCategoriesForRestaurant } from "@/app/actions/admin-categories";
 import { OrdersClient } from "@/app/owner/orders/orders-client";
 
 export const metadata = {
-  title: "الطلبات",
-  description: "طلبات الزبائن من المنيو",
+  title: "Anfragen",
+  description: "Kundenwünsche aus der Speisekarte",
 };
 
 export default async function AdminRestaurantOrdersPage() {
@@ -45,17 +45,17 @@ export default async function AdminRestaurantOrdersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">الطلبات</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Anfragen</h1>
         <p className="text-muted-foreground">
-          الطلبات الواردة من المنيو العام (QR أو روابط السوشيال). حدّث حالة الطلب حسب سير العمل في مطعمك.
-          يظهر ملخص المبلغ ويمكنك <span className="font-medium text-foreground">تطبيق خصم بالنقاط</span> من هنا
-          عند توفر رصيد للزبون (برنامج الولاء مفعّل).
+          Anfragen, die über das allgemeine Menü (QR oder soziale Links) eingehen. Aktualisiere den Bestellstatus entsprechend dem Arbeitsablauf in Ihrem Restaurant. 
+Die Betragsübersicht erscheint und du können... <span className="font-medium text-foreground">Antrag auf Punkterabatt</span> Von hier
+Wenn der Kunde ein Guthaben hat (das Treueprogramm ist aktiviert).
         </p>
       </div>
       {error ? (
         <p className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          تعذر تحميل الطلبات: {error}. نفّذ ملف{" "}
-          <code className="rounded bg-muted px-1">supabase/orders-tables-customers.sql</code> إن لم يكن مفعّلاً.
+          Bestellungen können nicht geladen werden: {error}. Datei ausführen{" "}
+          <code className="rounded bg-muted px-1">supabase/orders-tables-customers.sql</code> Wenn es nicht aktiviert ist.
         </p>
       ) : (
         <OrdersClient
@@ -75,7 +75,7 @@ export default async function AdminRestaurantOrdersPage() {
           phoneCountryPrefix={restaurant?.phone_country_prefix ?? null}
           subdomain={restaurant?.subdomain ?? ""}
           publicBaseUrl={publicBaseUrl}
-          restaurantName={restaurant?.name ?? "المطعم"}
+          restaurantName={restaurant?.name ?? "Das Restaurant"}
           waitersSystemEnabled={restaurant?.waiters_system_enabled === true}
           tablesForFilter={tablesForFilter}
           waitersForFilter={waitersForFilter}

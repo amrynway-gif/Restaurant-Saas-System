@@ -4,11 +4,11 @@ import { ensureEnvLoaded } from "@/lib/load-env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 
-// Supabase يرفض نطاقات مثل `.local` لإرسال رسائل الاسترجاع/التفعيل.
-// استخدم نطاقاً صالحاً (placeholder) بدلًا من `owners.local`.
+
+
 const OWNER_EMAIL_DOMAIN = "owners.example.com";
 
-/** يرجع null إذا كل المتغيرات موجودة، أو اسم المتغير الناقص. */
+
 function getMissingEnv(): string | null {
   ensureEnvLoaded();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
@@ -22,29 +22,25 @@ function hasServiceRoleKey(): boolean {
   return getMissingEnv() === null;
 }
 
-/**
- * إنشاء أو تحديث بيانات دخول صاحب المطعم (اسم مستخدم + كلمة مرور).
- * إن وُجد مالك للمطعم سابقاً يُحدَّث فقط اسم المستخدم وكلمة المرور.
- * يُستدعى من لوحة Super Admin فقط (يُفترض التحقق من الصلاحية في الـ layout).
- */
+
 export async function createOrUpdateOwnerCredentials(
   restaurantId: string,
   username: string,
   password: string
 ): Promise<{ error: string | null }> {
   const uname = username.trim().toLowerCase();
-  if (!uname) return { error: "اسم المستخدم مطلوب" };
-  if (!password || password.length < 6) return { error: "كلمة المرور 6 أحرف على الأقل" };
+  if (!uname) return { error: "Benutzername erforderlich" };
+  if (!password || password.length < 6) return { error: "Das Passwort ist mindestens 6 Zeichen lang" };
 
   const missing = getMissingEnv();
   if (missing) {
     return {
-      error: `إضافة ${missing} في .env.local ثم أعد تشغيل السيرفر (npm run dev).`,
+      error: `Fügen Du ${missing} in Y .env.local hinzu und starten Du dann den Server neu (npm run dev).`,
     };
   }
   const admin = createAdminClient();
 
-  // هل يوجد مالك لهذا المطعم؟
+  
   const { data: existing } = await admin
     .from("profiles")
     .select("id, login_email")
@@ -75,7 +71,7 @@ export async function createOrUpdateOwnerCredentials(
     return { error: null };
   }
 
-  // إنشاء مستخدم جديد في Auth وربطه بالملف
+  
   const loginEmail = `owner-${restaurantId}@${OWNER_EMAIL_DOMAIN}`;
   const { data: newUser, error: createError } = await admin.auth.admin.createUser({
     email: loginEmail,
@@ -83,7 +79,7 @@ export async function createOrUpdateOwnerCredentials(
     email_confirm: true,
   });
   if (createError) return { error: createError.message };
-  if (!newUser.user) return { error: "فشل إنشاء المستخدم" };
+  if (!newUser.user) return { error: "Die Benutzererstellung ist fehlgeschlagen" };
 
   const { error: insertError } = await admin.from("profiles").insert({
     id: newUser.user.id,
@@ -102,19 +98,17 @@ export async function createOrUpdateOwnerCredentials(
   return { error: null };
 }
 
-/**
- * تغيير كلمة مرور صاحب المطعم فقط.
- */
+
 export async function updateOwnerPassword(
   restaurantId: string,
   newPassword: string
 ): Promise<{ error: string | null }> {
-  if (!newPassword || newPassword.length < 6) return { error: "كلمة المرور 6 أحرف على الأقل" };
+  if (!newPassword || newPassword.length < 6) return { error: "Das Passwort ist mindestens 6 Zeichen lang" };
 
   const missing = getMissingEnv();
   if (missing) {
     return {
-      error: `إضافة ${missing} في .env.local ثم أعد تشغيل السيرفر (npm run dev).`,
+      error: `Fügen Du ${missing} in Y .env.local hinzu und starten Du dann den Server neu (npm run dev).`,
     };
   }
   const admin = createAdminClient();
@@ -124,7 +118,7 @@ export async function updateOwnerPassword(
     .eq("restaurant_id", restaurantId)
     .eq("role", "owner")
     .maybeSingle();
-  if (!profile) return { error: "لا يوجد مستخدم مرتبط بهذا المطعم" };
+  if (!profile) return { error: "Mit diesem Restaurant ist kein Benutzer verknüpft" };
 
   const { error } = await admin.auth.admin.updateUserById(profile.id, {
     password: newPassword,
@@ -135,9 +129,7 @@ export async function updateOwnerPassword(
   return { error: null };
 }
 
-/**
- * جلب بيانات مالك المطعم (للعرض في لوحة Super Admin).
- */
+
 export async function getOwnerByRestaurantId(restaurantId: string): Promise<{
   username: string | null;
   profileId: string | null;
@@ -154,9 +146,7 @@ export async function getOwnerByRestaurantId(restaurantId: string): Promise<{
   return { username: data.username ?? null, profileId: data.id };
 }
 
-/**
- * جلب أسماء مستخدمي الدخول لعدة مطاعم دفعة واحدة (لجدول المطاعم).
- */
+
 export async function getOwnersByRestaurantIds(
   restaurantIds: string[]
 ): Promise<Record<string, string | null>> {

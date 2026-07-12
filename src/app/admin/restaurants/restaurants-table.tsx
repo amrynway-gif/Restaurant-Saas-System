@@ -99,7 +99,7 @@ export function RestaurantsTable({
   }
 
   async function handleDelete(id: string, name: string) {
-    if (!confirm(`حذف المطعم "${name}"؟ لا يمكن التراجع.`)) return;
+    if (!confirm(`löschen Das Restaurant "${name}"? A Y kann A zurückgeben.`)) return;
     const result = await deleteRestaurant(id);
     if (!result.error) setRestaurants((prev) => prev.filter((r) => r.id !== id));
   }
@@ -108,7 +108,7 @@ export function RestaurantsTable({
     if (!ownerDialogRestaurant) return;
     setOwnerSubmitError(null);
     if (ownerPassword !== ownerPasswordConfirm) {
-      setOwnerSubmitError("كلمة المرور غير متطابقة");
+      setOwnerSubmitError("Passwort stimmt nicht überein");
       return;
     }
     setOwnerLoading(true);
@@ -133,7 +133,7 @@ export function RestaurantsTable({
     if (!passwordDialogRestaurant) return;
     setPasswordSubmitError(null);
     if (newPassword !== newPasswordConfirm) {
-      setPasswordSubmitError("كلمة المرور غير متطابقة");
+      setPasswordSubmitError("Passwort stimmt nicht überein");
       return;
     }
     setPasswordLoading(true);
@@ -173,17 +173,17 @@ export function RestaurantsTable({
   return (
     <Card className="border-border/50 bg-card/80 backdrop-blur">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle>جميع المطاعم</CardTitle>
+        <CardTitle>Alle Restaurants</CardTitle>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
             <PlusIcon className="size-4" />
-            إضافة مطعم جديد
+            Füge ein neues Restaurant hinzu
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>إضافة مطعم</DialogTitle>
+              <DialogTitle>Füge ein Restaurant hinzu</DialogTitle>
               <DialogDescription>
-                إضافة مطعم جديد. يمكنك لاحقاً ربط مالك من صفحة إكمال الملف أو من قاعدة البيانات.
+                Füge ein neues Restaurant hinzu. Du können einen Eigentümer später über die Dateivervollständigungsseite oder über die Datenbank verknüpfen.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -191,46 +191,46 @@ export function RestaurantsTable({
                 <p className="text-sm text-destructive">{error}</p>
               )}
               <div className="grid gap-2">
-                <Label htmlFor="name">الاسم</Label>
+                <Label htmlFor="name">der Name</Label>
                 <Input
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="مثال: مطعم البركة"
+                  placeholder="Beispiel: Al Baraka Restaurant"
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="subdomain">النطاق الفرعي</Label>
+                <Label htmlFor="subdomain">Subdomain</Label>
                 <Input
                   id="subdomain"
                   value={subdomain}
                   onChange={(e) => setSubdomain(e.target.value.toLowerCase().replace(/\s+/g, "-"))}
-                  placeholder="مثال: albaraka"
+                  placeholder="Beispiel: Albaraka"
                 />
                 <p className="text-xs text-muted-foreground">
-                  يظهر المنيو للعملاء على: {subdomain || "subdomain"}.yourdomain.com
+                  Das Menü erscheint für Kunden unter: {subdomain || "subdomain"}.yourdomain.com
                 </p>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="status">الحالة</Label>
+                <Label htmlFor="status">der Zustand</Label>
                 <select
                   id="status"
                   value={status}
                   onChange={(e) => setStatus(e.target.value as "active" | "suspended" | "trial")}
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
-                  <option value="active">نشط</option>
-                  <option value="trial">تجريبي</option>
-                  <option value="suspended">موقوف</option>
+                  <option value="active">aktiv</option>
+                  <option value="trial">Experimental-</option>
+                  <option value="suspended">Ausgesetzt</option>
                 </select>
               </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setOpen(false)}>
-                إلغاء
+                Stornierung
               </Button>
               <Button onClick={handleCreate} disabled={loading || !name.trim() || !subdomain.trim()}>
-                {loading ? "جاري الإضافة…" : "إضافة"}
+                {loading ? "Hinzufügen..." : "Zusatz"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -240,18 +240,18 @@ export function RestaurantsTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>الاسم</TableHead>
-              <TableHead>النطاق الفرعي</TableHead>
-              <TableHead>الحالة</TableHead>
-              <TableHead>مستخدم الدخول</TableHead>
-              <TableHead className="w-[140px]">إجراءات</TableHead>
+              <TableHead>der Name</TableHead>
+              <TableHead>Subdomain</TableHead>
+              <TableHead>der Zustand</TableHead>
+              <TableHead>Benutzer anmelden</TableHead>
+              <TableHead className="w-[140px]">Verfahren</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {restaurants.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-muted-foreground">
-                  لا توجد مطاعم بعد. أضف واحداً من الأعلى.
+                  Es gibt noch keine Restaurants. Füge eine von oben hinzu.
                 </TableCell>
               </TableRow>
             ) : (
@@ -264,7 +264,7 @@ export function RestaurantsTable({
                       <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{r.subdomain}</code>
                     </TableCell>
                     <TableCell>
-                      <span>{r.status === "active" ? "نشط" : r.status === "trial" ? "تجريبي" : "موقوف"}</span>
+                      <span>{r.status === "active" ? "aktiv" : r.status === "trial" ? "Experimental-" : "Ausgesetzt"}</span>
                     </TableCell>
                     <TableCell>
                       {username ? (
@@ -291,17 +291,17 @@ export function RestaurantsTable({
                         >
                           <DialogTrigger className="inline-flex h-8 items-center gap-1 rounded-md px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground">
                             <UserPlusIcon className="size-4" />
-                            {username ? "تعديل" : "إنشاء مستخدم"}
+                            {username ? "Änderung" : "Erstelle einen Benutzer"}
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-md">
                             <DialogHeader>
                               <DialogTitle>
-                                {username ? "تعديل مستخدم الدخول" : "إنشاء مستخدم الدخول"}
+                                {username ? "Anmeldebenutzer ändern" : "Erstelle einen Login-Benutzer"}
                               </DialogTitle>
                               <DialogDescription>
                                 {username
-                                  ? `تعديل اسم المستخدم أو كلمة المرور لصاحب مطعم "${r.name}".`
-                                  : `إنشاء اسم مستخدم وكلمة مرور لصاحب مطعم "${r.name}". سيتسنى له الدخول من نطاق المطعم (مثل ${r.subdomain}.localhost) باسم المستخدم وكلمة المرور.`}
+                                  ? `Änderung Benutzername A und Passwort Thief Ein Restaurantbesitzer"${r.name}".`
+                                  : `Konstruktion Ein Benutzername und ein Passwort. Ein Dieb, der ein Restaurant liebt"${r.name}". Du können sich von einer Das Restaurant-Domäne aus (z. B. ${r.subdomain}.localhost) mit Benutzername und Passwort anmelden.`}
                               </DialogDescription>
                             </DialogHeader>
                             <form
@@ -316,19 +316,19 @@ export function RestaurantsTable({
                                   <p className="text-sm text-destructive">{ownerSubmitError}</p>
                                 )}
                                 <div className="grid gap-2">
-                                  <Label htmlFor="owner-username">اسم المستخدم</Label>
+                                  <Label htmlFor="owner-username">Benutzername</Label>
                                   <Input
                                     id="owner-username"
                                     value={ownerUsername}
                                     onChange={(e) => setOwnerUsername(e.target.value)}
-                                    placeholder="مثال: admin"
+                                    placeholder="Beispiel: Administrator"
                                     dir="ltr"
                                     className="font-mono"
                                   />
                                 </div>
                                 <div className="grid gap-2">
                                   <Label htmlFor="owner-password">
-                                    {username ? "كلمة مرور جديدة (اتركها فارغة للإبقاء)" : "كلمة المرور"}
+                                    {username ? "Neues Passwort (zum Behalten leer lassen)" : "Passwort"}
                                   </Label>
                                   <Input
                                     id="owner-password"
@@ -339,7 +339,7 @@ export function RestaurantsTable({
                                   />
                                 </div>
                                 <div className="grid gap-2">
-                                  <Label htmlFor="owner-password-confirm">تأكيد كلمة المرور</Label>
+                                  <Label htmlFor="owner-password-confirm">Passwort bestätigen</Label>
                                   <Input
                                     id="owner-password-confirm"
                                     type="password"
@@ -355,7 +355,7 @@ export function RestaurantsTable({
                                   variant="outline"
                                   onClick={() => setOwnerDialogRestaurant(null)}
                                 >
-                                  إلغاء
+                                  Stornierung
                                 </Button>
                                 <Button
                                   type="submit"
@@ -366,7 +366,7 @@ export function RestaurantsTable({
                                     (ownerPassword.length > 0 && ownerPassword !== ownerPasswordConfirm)
                                   }
                                 >
-                                  {ownerLoading ? "جاري الحفظ…" : username ? "حفظ" : "إنشاء"}
+                                  {ownerLoading ? "Sparen..." : username ? "speichern" : "Konstruktion"}
                                 </Button>
                               </DialogFooter>
                             </form>
@@ -382,13 +382,13 @@ export function RestaurantsTable({
                           >
                             <DialogTrigger className="inline-flex h-8 items-center gap-1 rounded-md px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground">
                               <KeyRoundIcon className="size-4" />
-                              تغيير كلمة المرور
+                              Kennwort ändern
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md">
                               <DialogHeader>
-                                <DialogTitle>تغيير كلمة المرور</DialogTitle>
+                                <DialogTitle>Kennwort ändern</DialogTitle>
                                 <DialogDescription>
-                                  تعيين كلمة مرور جديدة لصاحب مطعم "{r.name}" (مستخدم: {username}).
+                                  Lege ein neues Passwort für einen Restaurantbesitzer fest{r.name}" (Benutzer: {username}).
                                 </DialogDescription>
                               </DialogHeader>
                               <div className="grid gap-4 py-4">
@@ -396,7 +396,7 @@ export function RestaurantsTable({
                                   <p className="text-sm text-destructive">{passwordSubmitError}</p>
                                 )}
                                 <div className="grid gap-2">
-                                  <Label htmlFor="new-password">كلمة المرور الجديدة</Label>
+                                  <Label htmlFor="new-password">Neues Passwort</Label>
                                   <Input
                                     id="new-password"
                                     type="password"
@@ -406,7 +406,7 @@ export function RestaurantsTable({
                                   />
                                 </div>
                                 <div className="grid gap-2">
-                                  <Label htmlFor="new-password-confirm">تأكيد كلمة المرور</Label>
+                                  <Label htmlFor="new-password-confirm">Passwort bestätigen</Label>
                                   <Input
                                     id="new-password-confirm"
                                     type="password"
@@ -421,7 +421,7 @@ export function RestaurantsTable({
                                   variant="outline"
                                   onClick={() => setPasswordDialogRestaurant(null)}
                                 >
-                                  إلغاء
+                                  Stornierung
                                 </Button>
                                 <Button
                                   onClick={handleChangePassword}
@@ -432,7 +432,7 @@ export function RestaurantsTable({
                                     newPassword !== newPasswordConfirm
                                   }
                                 >
-                                  {passwordLoading ? "جاري الحفظ…" : "حفظ"}
+                                  {passwordLoading ? "Sparen..." : "speichern"}
                                 </Button>
                               </DialogFooter>
                             </DialogContent>
@@ -445,7 +445,7 @@ export function RestaurantsTable({
                             size="sm"
                             className="h-8 px-2 text-[12px] font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]"
                           >
-                            المنيو العام
+                            Allgemeines Menü
                           </Button>
                         </Link>
                         <Dialog
@@ -462,13 +462,13 @@ export function RestaurantsTable({
                           }}
                         >
                           <DialogTrigger className="inline-flex h-8 items-center gap-1 rounded-md px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground">
-                            تعديل النطاق
+                            Umfang bearbeiten
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-md">
                             <DialogHeader>
-                              <DialogTitle>تعديل النطاق الفرعي</DialogTitle>
+                              <DialogTitle>Subdomain bearbeiten</DialogTitle>
                               <DialogDescription>
-                                تعيين نطاق جديد للمطعم "{r.name}". سيؤثر على رابط المنيو العام.
+                                Lege eine neue Domain für das Restaurant fest{r.name}". Dies wirkt sich auf den allgemeinen Menülink aus.
                               </DialogDescription>
                             </DialogHeader>
 
@@ -477,7 +477,7 @@ export function RestaurantsTable({
                                 <p className="text-sm text-destructive">{subdomainSubmitError}</p>
                               )}
                               <div className="grid gap-2">
-                                <Label htmlFor="new-subdomain">النطاق الفرعي الجديد</Label>
+                                <Label htmlFor="new-subdomain">Neue Subdomain</Label>
                                 <Input
                                   id="new-subdomain"
                                   value={newSubdomain}
@@ -486,13 +486,13 @@ export function RestaurantsTable({
                                       e.target.value.toLowerCase().replace(/\s+/g, "-")
                                     )
                                   }
-                                  placeholder="مثال: albaraka"
+                                  placeholder="Beispiel: Albaraka"
                                   dir="ltr"
                                   className="font-mono"
                                 />
                               </div>
                               <p className="text-xs text-muted-foreground">
-                                المنيو سيكون متاحاً عند: <code>{newSubdomain || r.subdomain}.localhost</code>
+                                Die Speisekarte ist erhältlich unter: <code>{newSubdomain || r.subdomain}.localhost</code>
                               </p>
                             </div>
 
@@ -503,7 +503,7 @@ export function RestaurantsTable({
                                   setSubdomainDialogRestaurant(null);
                                 }}
                               >
-                                إلغاء
+                                Stornierung
                               </Button>
                               <Button
                                 onClick={handleChangeSubdomain}
@@ -511,7 +511,7 @@ export function RestaurantsTable({
                                   subdomainLoading || !newSubdomain.trim() || newSubdomain.trim() === r.subdomain
                                 }
                               >
-                                {subdomainLoading ? "جاري الحفظ…" : "حفظ"}
+                                {subdomainLoading ? "Sparen..." : "speichern"}
                               </Button>
                             </DialogFooter>
                           </DialogContent>

@@ -14,7 +14,7 @@ import { DashboardLayout, type NavGroup } from "@/components/dashboard/Dashboard
 
 type AdminRestaurantShellProps = {
   restaurantName: string;
-  /** لاشتراك إشعارات الطلبات الفورية */
+  
   restaurantId: string | null;
   livePreviewUrl: string | null;
   logoUrl?: string | null;
@@ -25,25 +25,25 @@ type AdminRestaurantShellProps = {
 function getRestaurantNavGroups(): NavGroup[] {
   return [
     {
-      label: "إدارة القائمة",
+      label: "Listenverwaltung",
       items: [
-        { href: "/admin", label: "نظرة عامة", icon: <LayoutDashboardIcon /> },
-        { href: "/admin/menu", label: "أصناف المنيو", icon: <UtensilsCrossedIcon /> },
-        { href: "/admin/categories", label: "التصنيفات", icon: <FolderIcon /> },
+        { href: "/admin", label: "Überblick", icon: <LayoutDashboardIcon /> },
+        { href: "/admin/menu", label: "Menüpunkte", icon: <UtensilsCrossedIcon /> },
+        { href: "/admin/categories", label: "Kategorien", icon: <FolderIcon /> },
       ],
     },
     {
-      label: "الطلبات والطاولات",
+      label: "Bestellungen und Tische",
       items: [
-        { href: "/admin/orders", label: "الطلبات", icon: <ClipboardListIcon /> },
-        { href: "/admin/customers", label: "العملاء والولاء", icon: <UsersIcon /> },
-        { href: "/admin/tables", label: "الطاولات و QR", icon: <QrCodeIcon /> },
+        { href: "/admin/orders", label: "Anfragen", icon: <ClipboardListIcon /> },
+        { href: "/admin/customers", label: "Kunden und Loyalität", icon: <UsersIcon /> },
+        { href: "/admin/tables", label: "Tabellen und QR", icon: <QrCodeIcon /> },
       ],
     },
     {
-      label: "الإعدادات",
+      label: "Einstellungen",
       items: [
-        { href: "/admin/settings", label: "الإعدادات", icon: <SettingsIcon /> },
+        { href: "/admin/settings", label: "Einstellungen", icon: <SettingsIcon /> },
       ],
     },
   ];
@@ -68,7 +68,7 @@ export function AdminRestaurantShell({
       headerRight={
         <form action="/auth/signout" method="POST">
           <Button type="submit" variant="ghost" size="sm">
-            تسجيل الخروج
+            Abmelden
           </Button>
         </form>
       }

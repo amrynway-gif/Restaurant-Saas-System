@@ -3,15 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { signInWithEmailAndPassword } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-/**
- * تسجيل دخول لوحة إدارة النظام (Super Admin فقط).
- * يستخدم البريد الإلكتروني وكلمة المرور.
- */
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -23,69 +19,68 @@ export function LoginForm() {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    const supabase = createClient();
-    const { error: err } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    setLoading(false);
-    if (err) {
-      setError(err.message);
+
+    const result = await signInWithEmailAndPassword(email, password);
+
+    if (result.error) {
+      setError(result.error);
+      setLoading(false);
       return;
     }
-    router.push("/admin");
-    router.refresh();
+
+    if (result.redirectUrl) {
+      window.location.href = result.redirectUrl;
+    } else {
+      router.push("/admin");
+      router.refresh();
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="email">البريد الإلكتروني</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="admin@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-          disabled={loading}
-        />
+    <form onSubmit={handleSubmit} className="space-y-6" dir="ltr">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="email">E-Mail</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="name@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            disabled={loading}
+            className="text-left"
+          />
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Passwort</Label>
+          </div>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+            disabled={loading}
+            className="text-left"
+          />
+        </div>
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">كلمة المرور</Label>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-          disabled={loading}
-        />
-      </div>
-      {error && <p className="text-sm text-destructive">{error}</p>}
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "جاري الدخول…" : "تسجيل الدخول"}
+
+      {error && <div className="text-sm font-medium text-destructive bg-destructive/10 p-3 rounded-md">{error}</div>}
+
+      <Button type="submit" className="w-full h-11" disabled={loading}>
+        {loading ? "Anmelden..." : "Login"}
       </Button>
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full"
-        disabled={loading}
-        onClick={() => {
-          window.location.href = "/login?mode=username";
-        }}
-      >
-        تسجيل الدخول عبر اسم المستخدم
-      </Button>
-      <p className="text-center text-xs text-muted-foreground">
-        <Link href="/" className="underline hover:text-foreground">
-          العودة للرئيسية
+
+      <p className="text-center text-sm text-muted-foreground mt-6">
+        Hast du noch kein Konto?{" "}
+        <Link href="/signup" className="underline font-medium hover:text-foreground">
+          Erstelle jetzt dein Konto
         </Link>
-      </p>
-      <p className="text-center text-xs text-muted-foreground border-t pt-3 mt-3">
-        صاحب مطعم؟ ادخل من رابط مطعمك (مثل: نطاق-مطعمك.yourdomain.com/login) باسم المستخدم وكلمة المرور.
       </p>
     </form>
   );

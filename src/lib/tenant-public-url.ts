@@ -1,9 +1,4 @@
-/**
- * رابط الموقع العام للمطعم (المنيو، QR).
- *
- * عند فتح لوحة التحكم من النطاق الفرعي (مثل alking.resturant.app)، تكون قيمة
- * `Host` هي بالفعل `subdomain` + النطاق الأساسي — لا نكرر الـ subdomain في الرابط.
- */
+
 export function buildTenantPublicSiteUrl(
   subdomain: string | null | undefined,
   hostHeader: string,

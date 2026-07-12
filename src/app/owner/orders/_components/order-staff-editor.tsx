@@ -15,14 +15,8 @@ import { MinusIcon, PlusIcon, SearchIcon, Trash2Icon, XIcon } from "lucide-react
 const UNCATEGORIZED_FILTER = "__uncat__";
 
 function foldForSearch(s: string): string {
-  return s
-    .trim()
-    .toLowerCase()
-    .replace(/[أإآٱ]/g, "ا")
-    .replace(/ة/g, "ه")
-    .replace(/ى/g, "ي")
-    .replace(/ؤ/g, "و")
-    .replace(/ئ/g, "ي");
+  if (!s) return "";
+  return s.toLowerCase().trim();
 }
 
 function parseMajorToCents(raw: string): number | null {
@@ -45,7 +39,7 @@ function previewPriceLine(m: MenuItem, currencyCode: string): string {
     const minC = Math.min(...cents);
     const maxC = Math.max(...cents);
     if (minC === maxC) return formatMenuPrice(minC, currencyCode);
-    return `من ${formatMenuPrice(minC, currencyCode)}`;
+    return `Von ${formatMenuPrice(minC, currencyCode)}`;
   }
   return formatMenuPrice(m.price, currencyCode);
 }
@@ -53,7 +47,7 @@ function previewPriceLine(m: MenuItem, currencyCode: string): string {
 type Props = {
   order: GuestOrderWithDetails;
   currencyCode: string;
-  /** إن وُجد نص، يُعطّل تعديل الأصناف والخصم اليدوي */
+  
   structureEditBlocked: string | null;
   menuItems: MenuItem[];
   categories: Category[];
@@ -185,9 +179,9 @@ export function OrderStaffEditor({
   return (
     <div className="space-y-4 rounded-xl border border-border/80 bg-muted/20 p-3 text-sm">
       <div>
-        <p className="text-xs font-semibold text-foreground">ملاحظات داخلية (للطاقم فقط)</p>
+        <p className="text-xs font-semibold text-foreground">Interne Notizen (nur für die Besatzung)</p>
         <p className="mb-2 text-[11px] text-muted-foreground">
-          لا تظهر في صفحة تتبّع الزبون العامة.
+          Es erscheint nicht auf der allgemeinen Kundenverfolgungsseite.
         </p>
         <Textarea
           value={notesDraft}
@@ -205,19 +199,19 @@ export function OrderStaffEditor({
           disabled={savingKey === "notes" || (notesDraft.trim() === (order.staff_notes ?? "").trim())}
           onClick={() => void submitNotes()}
         >
-          {savingKey === "notes" ? "جاري الحفظ…" : "حفظ الملاحظات"}
+          {savingKey === "notes" ? "Sparen..." : "Notizen speichern"}
         </Button>
       </div>
 
       <div className="border-t border-border/60 pt-3">
-        <p className="text-xs font-semibold text-foreground">خصم خاص (من المطعم)</p>
+        <p className="text-xs font-semibold text-foreground">Sonderrabatt (im Restaurant)</p>
         {structureEditBlocked ? (
           <p className="mt-1 text-[11px] text-muted-foreground">{structureEditBlocked}</p>
         ) : (
           <>
             <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end">
               <div className="flex-1 space-y-1">
-                <label className="text-[11px] text-muted-foreground">المبلغ ({currencyCode})</label>
+                <label className="text-[11px] text-muted-foreground">Menge({currencyCode})</label>
                 <Input
                   dir="ltr"
                   className="tabular-nums"
@@ -232,18 +226,18 @@ export function OrderStaffEditor({
                 disabled={savingKey === "discount"}
                 onClick={() => void submitDiscount()}
               >
-                {savingKey === "discount" ? "…" : "تطبيق الخصم"}
+                {savingKey === "discount" ? "…" : "Rabattantrag"}
               </Button>
             </div>
             <p className="mt-1 text-[11px] text-muted-foreground">
-              الحد أقصى = مجموع الأصناف الحالي. يُطرح قبل خصم الولاء عند الحساب.
+              max = aktuelle Summe der Artikel. Wird vor dem Treueabzug auf dem Konto abgezogen.
             </p>
           </>
         )}
       </div>
 
       <div className="border-t border-border/60 pt-3">
-        <p className="text-xs font-semibold text-foreground">أصناف الطلب</p>
+        <p className="text-xs font-semibold text-foreground">Artikel bestellen</p>
         {structureEditBlocked ? (
           <p className="mt-1 text-[11px] text-muted-foreground">{structureEditBlocked}</p>
         ) : null}
@@ -254,11 +248,11 @@ export function OrderStaffEditor({
               className="flex flex-wrap items-center gap-2 rounded-lg border border-border/50 bg-background/60 px-2 py-2"
             >
               <span className="min-w-0 flex-1 text-sm font-medium">
-                {i.menu_item_name ?? "صنف"}
+                {i.menu_item_name ?? "Klassifizieren"}
                 {i.price_option_label ? ` (${i.price_option_label})` : ""}
               </span>
               <div className="flex items-center gap-1">
-                <span className="text-[11px] text-muted-foreground">الكمية</span>
+                <span className="text-[11px] text-muted-foreground">Menge</span>
                 <Input
                   type="number"
                   min={1}
@@ -279,8 +273,8 @@ export function OrderStaffEditor({
               </span>
               {i.excluded_ingredients && i.excluded_ingredients.length > 0 ? (
                 <p className="w-full basis-full text-[11px] leading-relaxed text-amber-800 dark:text-amber-200">
-                  <span className="font-semibold">بدون: </span>
-                  {i.excluded_ingredients.join("، ")}
+                  <span className="font-semibold">ohne: </span>
+                  {i.excluded_ingredients.join(", ")}
                 </p>
               ) : null}
               <Button
@@ -289,7 +283,7 @@ export function OrderStaffEditor({
                 variant="ghost"
                 className="h-8 w-8 shrink-0 text-destructive"
                 disabled={!canStructure || order.items.length <= 1 || savingKey === `d-${i.id}`}
-                aria-label="حذف الصنف"
+                aria-label="Artikel löschen"
                 onClick={() => void onRemoveItem(i.id)}
               >
                 <Trash2Icon className="size-4" />
@@ -301,9 +295,9 @@ export function OrderStaffEditor({
         {canStructure ? (
           <div className="mt-3 space-y-3 rounded-xl border border-dashed border-border/70 bg-background/50 p-3 shadow-inner">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-semibold text-foreground">إضافة من المنيو</p>
+              <p className="text-xs font-semibold text-foreground">Ergänzung aus dem Menü</p>
               {addSearch.trim() !== deferredSearch.trim() ? (
-                <span className="text-[10px] text-muted-foreground">جاري البحث…</span>
+                <span className="text-[10px] text-muted-foreground">Suche...</span>
               ) : null}
             </div>
 
@@ -313,7 +307,7 @@ export function OrderStaffEditor({
                 aria-hidden
               />
               <Input
-                placeholder="ابحث بالاسم أو الوصف…"
+                placeholder="Suche nach Name oder Beschreibung..."
                 value={addSearch}
                 onChange={(e) => setAddSearch(e.target.value)}
                 className="h-10 ps-9 pe-9"
@@ -327,7 +321,7 @@ export function OrderStaffEditor({
                 <button
                   type="button"
                   className="absolute top-1/2 end-2 -translate-y-1/2 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-                  aria-label="مسح البحث"
+                  aria-label="Suche löschen"
                   onClick={() => setAddSearch("")}
                 >
                   <XIcon className="size-4" />
@@ -338,7 +332,7 @@ export function OrderStaffEditor({
             <div
               className="flex flex-wrap gap-2 sm:flex-nowrap sm:overflow-x-auto sm:pb-1 sm:[-ms-overflow-style:none] sm:[scrollbar-width:none] sm:[&::-webkit-scrollbar]:hidden"
               role="tablist"
-              aria-label="تصفية حسب التصنيف"
+              aria-label="Nach Kategorie filtern"
             >
               <button
                 type="button"
@@ -352,7 +346,7 @@ export function OrderStaffEditor({
                 )}
                 onClick={() => setCategoryFilter(null)}
               >
-                الكل
+                alle
               </button>
               {sortedCategories.map((c) => (
                 <button
@@ -384,7 +378,7 @@ export function OrderStaffEditor({
                   )}
                   onClick={() => setCategoryFilter(UNCATEGORIZED_FILTER)}
                 >
-                  بدون تصنيف
+                  Keine Klassifizierung
                 </button>
               ) : null}
             </div>
@@ -392,7 +386,7 @@ export function OrderStaffEditor({
             <div className="max-h-[min(52vh,420px)] overflow-y-auto overscroll-contain rounded-lg border border-border/40 bg-muted/15 p-2">
               {filteredMenuGrid.length === 0 ? (
                 <p className="py-8 text-center text-xs text-muted-foreground">
-                  لا توجد أصناف تطابق التصفية. جرّب تصنيفاً آخر أو امسح البحث.
+                  Es gibt keine Artikel, die Ihrem Filter entsprechen. Versuche es mit einer anderen Kategorie oder lösche die Suche.
                 </p>
               ) : (
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -428,7 +422,7 @@ export function OrderStaffEditor({
                           )}
                           {unavailable ? (
                             <span className="absolute start-1 top-1 rounded bg-black/65 px-1.5 py-0.5 text-[9px] font-semibold text-white">
-                              غير متوفر
+                              nicht verfügbar
                             </span>
                           ) : null}
                         </div>
@@ -469,14 +463,14 @@ export function OrderStaffEditor({
                     <p className="text-sm font-semibold leading-tight">{selectedAdd.name}</p>
                     {needsOption && selectedAdd.price_options ? (
                       <div className="space-y-1">
-                        <label className="text-[10px] text-muted-foreground">الحجم / السعر</label>
+                        <label className="text-[10px] text-muted-foreground">Größe/Preis</label>
                         <select
                           className="h-9 w-full max-w-full rounded-md border border-input bg-background px-2 text-xs"
                           value={pickOption}
                           onChange={(e) => setPickOption(e.target.value)}
                         >
                           {selectedAdd.price_options.length > 1 ? (
-                            <option value="">— اختر —</option>
+                            <option value="">- wählen -</option>
                           ) : null}
                           {selectedAdd.price_options.map((o) => (
                             <option key={o.label} value={o.label}>
@@ -487,14 +481,14 @@ export function OrderStaffEditor({
                       </div>
                     ) : null}
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-[10px] text-muted-foreground">الكمية</span>
+                      <span className="text-[10px] text-muted-foreground">Menge</span>
                       <div className="flex items-center gap-1 rounded-lg border border-input bg-background">
                         <Button
                           type="button"
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 shrink-0"
-                          aria-label="نقص الكمية"
+                          aria-label="Mangel an Quantität"
                           onClick={() =>
                             setAddQty(String(Math.max(1, (Math.floor(Number(addQty)) || 1) - 1)))
                           }
@@ -515,7 +509,7 @@ export function OrderStaffEditor({
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 shrink-0"
-                          aria-label="زيادة الكمية"
+                          aria-label="Erhöhe die Menge"
                           onClick={() =>
                             setAddQty(String(Math.min(99, (Math.floor(Number(addQty)) || 1) + 1)))
                           }
@@ -537,7 +531,7 @@ export function OrderStaffEditor({
                       setAddQty("1");
                     }}
                   >
-                    إلغاء
+                    Stornierung
                   </Button>
                   <Button
                     type="button"
@@ -553,13 +547,13 @@ export function OrderStaffEditor({
                     }
                     onClick={() => void handleAdd()}
                   >
-                    {savingKey === "add" ? "جاري الإضافة…" : "إضافة للطلب"}
+                    {savingKey === "add" ? "Hinzufügen..." : "Zur Bestellung hinzufügen"}
                   </Button>
                 </div>
               </div>
             ) : (
               <p className="text-[11px] text-muted-foreground">
-                اختر صنفاً من الشبكة أعلاه لضبط الكمية والحجم ثم أضفه للطلب.
+                Wähle im obigen Raster einen Artikel aus, um die Menge und Größe anzupassen, und füge ihn dann der Bestellung hinzu.
               </p>
             )}
           </div>

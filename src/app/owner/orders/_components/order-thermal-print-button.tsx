@@ -12,7 +12,7 @@ export function printThermalOrderReceipt(
 ) {
   const html = buildThermalOrderReceiptHtml(order, opts);
   const iframe = document.createElement("iframe");
-  iframe.setAttribute("title", "طباعة إيصال حراري");
+  iframe.setAttribute("title", "Thermobon ausdrucken");
   iframe.setAttribute("aria-hidden", "true");
   iframe.style.cssText =
     "position:fixed;inset-inline-end:0;inset-block-end:0;width:0;height:0;border:0;opacity:0;pointer-events:none;";
@@ -21,7 +21,7 @@ export function printThermalOrderReceipt(
   const win = iframe.contentWindow;
   if (!doc || !win) {
     iframe.remove();
-    toast.error("تعذّر تهيئة الطباعة.");
+    toast.error("Der Druck kann nicht initialisiert werden.");
     return;
   }
   doc.open();
@@ -37,7 +37,7 @@ export function printThermalOrderReceipt(
       win.focus();
       win.print();
     } catch {
-      toast.error("تعذّر إرسال الطلب للطابعة.");
+      toast.error("Die Anfrage konnte nicht an den Drucker gesendet werden.");
     }
     setTimeout(cleanup, 900);
   };
@@ -50,7 +50,7 @@ type BtnProps = {
   restaurantName: string;
   currencyCode: string;
   className?: string;
-  /** زر مدمج في البطاقة */
+  
   compact?: boolean;
 };
 
@@ -96,10 +96,10 @@ export function OrderThermalPrintButton({
         <Printer className="size-4" strokeWidth={2.25} />
       </span>
       <span className="relative text-start leading-tight">
-        <span className="block tracking-tight">طباعة إيصال</span>
+        <span className="block tracking-tight">Drucke eine Quittung aus</span>
         {!compact ? (
           <span className="mt-0.5 block text-[10px] font-normal opacity-75 dark:opacity-80">
-            جاهز للطابعة الحرارية (٨٠مم)
+            Bereit für Thermodrucker (80 mm)
           </span>
         ) : null}
       </span>

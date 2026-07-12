@@ -38,7 +38,7 @@ export function CustomersClient({
   if (customers.length === 0) {
     return (
       <p className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-        لا يوجد عملاء مسجّلون بعد. يظهر الزبون هنا بعد أول طلب يُدخل فيه رقم جواله من المنيو.
+        Es sind noch keine Kunden registriert. Der Kunde erscheint hier nach der ersten Bestellung, bei der er seine Handynummer über das Menü eingibt.
       </p>
     );
   }
@@ -48,15 +48,15 @@ export function CustomersClient({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-end">الجوال</TableHead>
-            <TableHead className="text-end">عدد الطلبات</TableHead>
-            <TableHead className="text-end">إجمالي المشتريات</TableHead>
-            <TableHead className="text-end">رصيد النقاط</TableHead>
-            <TableHead className="text-end">قيمة الرصيد (تقدير)</TableHead>
-            <TableHead className="text-end">نقاط مكتسبة (إجمالي)</TableHead>
-            <TableHead className="text-end">نقاط مُستبدَلة</TableHead>
-            <TableHead className="text-end">أول زيارة</TableHead>
-            <TableHead className="text-end">آخر طلب</TableHead>
+            <TableHead className="text-end">ALJUNDAL</TableHead>
+            <TableHead className="text-end">Anfragenummer</TableHead>
+            <TableHead className="text-end">Gesamtzahl der YA-Käufer</TableHead>
+            <TableHead className="text-end">Punktemonitor</TableHead>
+            <TableHead className="text-end">Saldowert (Schätzung)</TableHead>
+            <TableHead className="text-end">Erreichte Punkte (insgesamt)</TableHead>
+            <TableHead className="text-end">Punkte getauscht</TableHead>
+            <TableHead className="text-end">Erster Besuch</TableHead>
+            <TableHead className="text-end">Letzte Bestellung</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -50,7 +50,7 @@ export function RestaurantLoyaltySettingsForm({
     const spendC = parseMajorToCents(spendMajor);
     const valC = parseMajorToCents(pointValueMajor);
     if (spendC == null || valC == null || spendC < 1 || valC < 1) return null;
-    // لكل 100 وحدة إنفاق (بالسنت) كم «قيمة مستردة» بالسنت إذا حُوِّلت النقاط؟
+    
     const pointsPer100CentsSpent = 100 / spendC;
     const rewardCentsPer100Spent = pointsPer100CentsSpent * valC;
     const pct = (rewardCentsPer100Spent / 100) * 100;
@@ -67,7 +67,7 @@ export function RestaurantLoyaltySettingsForm({
     const valCents = parseMajorToCents(pointValueMajor);
     if (spendCents == null || valCents == null) {
       setLoading(false);
-      setError("أدخل أرقاماً صحيحة للمبالغ");
+      setError("Gib gültige Zahlen für die Beträge ein");
       return;
     }
 
@@ -86,9 +86,9 @@ export function RestaurantLoyaltySettingsForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="flex flex-row items-center justify-between gap-4 rounded-lg border border-border/60 p-4">
         <div className="space-y-1">
-          <Label htmlFor="loyalty-enabled">تفعيل برنامج النقاط</Label>
+          <Label htmlFor="loyalty-enabled">Aktiviere das Punkteprogramm</Label>
           <p className="text-xs text-muted-foreground">
-            عند التعطيل: يُسجَّل إجمالي المشتريات للتقارير دون منح نقاط جديدة.
+            Bei Deaktivierung: Die Gesamteinkäufe werden für Berichte erfasst, ohne dass neue Punkte vergeben werden.
           </p>
         </div>
         <Switch
@@ -99,15 +99,15 @@ export function RestaurantLoyaltySettingsForm({
       </div>
 
       <div className="space-y-4 rounded-lg border border-dashed border-border/80 bg-muted/20 p-4">
-        <p className="text-sm font-medium">احتساب النقاط</p>
+        <p className="text-sm font-medium">Punkte berechnen</p>
         <p className="text-xs leading-relaxed text-muted-foreground">
-          <strong>القاعدة:</strong> عدد النقاط = قيمة الطلب (بالسنت) ÷ مبلغ الإنفاق لكسب نقطة واحدة
-          (يُقص الجزء الكسري). مثال: إنفاق 350 سنت وشرط 100 سنت لكل نقطة → 3 نقاط.
+          <strong>Regel:</strong> Anzahl der Punkte = Bestellwert (in Cent) ÷ ausgegebener Betrag, um 1 Punkt zu erhalten
+(Der Nachkommateil wird abgeschnitten.) Beispiel: Gib 350 Cent aus und verlange 100 Cent pro Punkt → 3 Punkte.
         </p>
 
         <div className="space-y-1.5">
           <Label htmlFor="spend-per-point">
-            مبلغ الإنفاق لكسب نقطة واحدة ({symbol} — الوحدة الرئيسية للعملة)
+            Betrag, der ausgegeben wurde, um 1 Punkt zu erhalten ({symbol} — die Hauptwährungseinheit)
           </Label>
           <Input
             id="spend-per-point"
@@ -120,13 +120,13 @@ export function RestaurantLoyaltySettingsForm({
             placeholder="1.00"
           />
           <p className="text-[11px] text-muted-foreground">
-            مثال: 1 يعني أن كل 1.00 من عملتك يمنح نقطة واحدة (إذا كانت أصغر وحدة 0.01).
+            Beispiel: 1 bedeutet, dass jeder 1,00 Ihrer Währung 1 Punkt ergibt (wenn die kleinste Einheit 0,01 ist).
           </p>
         </div>
 
         <div className="space-y-1.5">
           <Label htmlFor="point-value">
-            قيمة نقطة واحدة عند الخصم لاحقاً ({symbol})
+            Der Wert eines Punktes bei späterer Diskontierung ({symbol})
           </Label>
           <Input
             id="point-value"
@@ -139,17 +139,17 @@ export function RestaurantLoyaltySettingsForm({
             placeholder="0.10"
           />
           <p className="text-[11px] text-muted-foreground">
-            عند تفعيل الاستبدال في المستقبل: كل نقطة تخصم من الفاتورة بهذا المبلغ من عملتك.
+            Bei zukünftiger Aktivierung der Einlösung gilt: Jeder Punkt wird für diesen Betrag Ihrer Währung von der Rechnung abgezogen.
           </p>
         </div>
 
         {preview ? (
           <p className="rounded-md bg-background/80 px-3 py-2 text-xs text-muted-foreground">
-            تقدير تقريبي: عن كل 100 {symbol} من الإنفاق المؤهل، قيمة النقاط المكتسبة تساوي حوالي{" "}
+            Grobe Schätzung: etwa alle 100 {symbol} Bei qualifizierenden Ausgaben beträgt der Wert der gesammelten Punkte ca{" "}
             <span dir="ltr" className="font-medium text-foreground tabular-nums">
               {(preview.rewardCentsPer100Spent / 100).toFixed(2)}
             </span>{" "}
-            {symbol} عند الاستبدال (أي ~{preview.pct.toFixed(1)}% من قيمة الإنفاق كرصيد مسترد).
+            {symbol} Beim Austausch (d. h. ~{preview.pct.toFixed(1)}% des Ausgabenwerts als rückzahlbarer Restbetrag).
           </p>
         ) : null}
       </div>
@@ -160,11 +160,11 @@ export function RestaurantLoyaltySettingsForm({
         </p>
       ) : null}
       {success ? (
-        <p className="text-sm text-emerald-600 dark:text-emerald-400">تم حفظ الإعدادات.</p>
+        <p className="text-sm text-emerald-600 dark:text-emerald-400">Einstellungen wurden gespeichert.</p>
       ) : null}
 
       <Button type="submit" disabled={loading}>
-        {loading ? "جاري الحفظ..." : "حفظ إعدادات الولاء"}
+        {loading ? "Sparen..." : "Treueeinstellungen speichern"}
       </Button>
     </form>
   );

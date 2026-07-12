@@ -1,4 +1,4 @@
-/** للعرض والروابط — يضيف https:// عند غياب المخطط */
+/** Format URL — adds https: */
 export function normalizeSocialUrlForHref(raw: string | null | undefined): string | null {
   const t = raw?.trim();
   if (!t) return null;

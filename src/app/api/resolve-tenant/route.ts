@@ -16,11 +16,7 @@ function subdomainFromHost(host: string): string | null {
   return null;
 }
 
-/**
- * يحلّ المطعم من الـ host (لصفحة تسجيل الدخول على النطاق الفرعي).
- * GET /api/resolve-tenant?hostname=mankal.localhost
- * يتطلب تشغيل سياسة RLS "Public can read restaurants" (ملف rls-public-menu.sql).
- */
+
 export async function GET(request: NextRequest) {
   const hostname =
     request.nextUrl.searchParams.get("hostname") ?? request.headers.get("host") ?? "";

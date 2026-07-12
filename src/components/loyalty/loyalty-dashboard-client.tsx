@@ -65,11 +65,11 @@ type Props = {
 type TabId = "customers" | "transactions" | "rewards" | "campaigns" | "settings";
 
 const tabs: { id: TabId; label: string }[] = [
-  { id: "customers", label: "العملاء" },
-  { id: "transactions", label: "الاستبدال السريع" },
-  { id: "rewards", label: "المكافآت" },
-  { id: "campaigns", label: "الإشعارات" },
-  { id: "settings", label: "إعدادات التشغيل" },
+  { id: "customers", label: "Kunden" },
+  { id: "transactions", label: "Schneller Austausch" },
+  { id: "rewards", label: "Belohnungen" },
+  { id: "campaigns", label: "Benachrichtigungen" },
+  { id: "settings", label: "Wiedergabeeinstellungen" },
 ];
 
 export function LoyaltyDashboardClient({
@@ -159,24 +159,24 @@ export function LoyaltyDashboardClient({
   return (
     <div className="space-y-4">
       <div className="rounded-lg border border-border/60 bg-muted/30 px-4 py-3 text-sm leading-relaxed text-muted-foreground">
-        <p className="font-medium text-foreground">كيف تستخدم هذه اللوحة؟</p>
-        <ul className="mt-2 list-disc space-y-1 pr-5">
+        <p className="font-medium text-foreground">Wie benutzt man dieses Board?</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
-            <strong>رابط النقاط للزبون:</strong> يفتح صفحة عامة برصيده وسجله (بدون تسجيل دخول).
+            <strong>Punkte-Link für den Kunden:</strong> Er öffnet eine allgemeine Seite mit seinem Kontostand und seinem Verlauf (ohne Anmeldung).
           </li>
           <li>
-            <strong>واتساب:</strong> يرسل للزبون رسالة فيها رصيده ورابط الصفحة (بعد توليد الرابط أولاً).
+            <strong>WhatsApp:</strong> Dem Kunden wird eine Nachricht mit seinem Kontostand und einem Link zur Seite gesendet (nachdem er zuvor den Link generiert hat).
           </li>
           <li>
-            <strong>إشعار بالقائمة:</strong> يضيف رسالة إلى طابور الإرسال — ثم من تبويب «الإشعارات» اضغط «تشغيل
-            المعالج الآن» (أو فعّل Cron لاحقاً لإرسال SMS/WhatsApp فعلي).
+            <strong>Hinweis zur Liste:</strong> Fügt eine Nachricht zur Sendewarteschlange hinzu – klicke dann auf der Registerkarte „Benachrichtigungen“ auf „Abspielen“.
+Jetzt verarbeiten“ (oder Cron später aktivieren, um tatsächliche SMS/WhatsApp zu senden).
           </li>
           <li>
-            <strong>استبدال نقدي:</strong> يخصم نقاطاً ويحسب قيمة الخصم بالسنت حسب إعدادات قيمة النقطة (لا
-            يحتاج رقم طلب).
+            <strong>Bargeldumtausch:</strong> Es zieht Punkte ab und berechnet den Rabattwert in Cent gemäß den Punktwerteinstellungen (Nr
+Bestellnummer erforderlich).
           </li>
           <li>
-            <strong>استبدال مكافأة:</strong> اختر مكافأة من القائمة إن وُجدت في تبويب المكافآت.
+            <strong>Bonus einlösen:</strong> Wähle eine Belohnung aus der Liste aus, sofern diese auf der Registerkarte „Belohnungen“ verfügbar ist.
           </li>
         </ul>
       </div>
@@ -203,16 +203,16 @@ export function LoyaltyDashboardClient({
       {tab === "customers" ? (
         <Card>
           <CardHeader>
-            <CardTitle>إدارة الولاء لكل عميل</CardTitle>
+            <CardTitle>Loyalitätsmanagement für jeden Kunden</CardTitle>
             <CardDescription>
-              نفس أرقام الجوال أعلاه — تمت مزامنتها تلقائياً مع نظام النقاط الاحترافي. عمود «قيمة الرصيد
-              (تقدير)» = رصيد النقاط × قيمة النقطة من إعدادات الولاء (كالجدول السابق).
+              Dieselben Mobiltelefonnummern wie oben – automatisch synchronisiert mit dem professionellen Punktesystem. Spalte „Saldowert“.
+(Schätzung)“ = Punktestand x Punktewert aus den Treueeinstellungen (wie in der vorherigen Tabelle).
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <Input
               dir="ltr"
-              placeholder="بحث بالجوال أو الاسم..."
+              placeholder="Suche nach Mobiltelefon oder Name..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
@@ -220,21 +220,21 @@ export function LoyaltyDashboardClient({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="min-w-[140px]">الجوال</TableHead>
-                    <TableHead>الاسم</TableHead>
-                    <TableHead>الرصيد</TableHead>
-                    <TableHead>قيمة الرصيد (تقدير)</TableHead>
-                    <TableHead>مكتسبة</TableHead>
-                    <TableHead>مستبدلة</TableHead>
-                    <TableHead>عمليات</TableHead>
-                    <TableHead className="min-w-[280px]">إجراءات</TableHead>
+                    <TableHead className="min-w-[140px]">ALJUNDAL</TableHead>
+                    <TableHead>der Name</TableHead>
+                    <TableHead>Gleichgewicht</TableHead>
+                    <TableHead>Saldowert (Schätzung)</TableHead>
+                    <TableHead>Erworben</TableHead>
+                    <TableHead>Ersetzt</TableHead>
+                    <TableHead>Operationen</TableHead>
+                    <TableHead className="min-w-[280px]">Verfahren</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredCustomers.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={8} className="text-center text-muted-foreground">
-                        لا يوجد عملاء في النظام الجديد بعد. تأكد من تنفيذ ملف SQL للولاء ثم أعد تحميل الصفحة.
+                        Im neuen System sind noch keine Mandanten vorhanden. Stelle sicher, dass die Loyalitäts-SQL-Datei ausgeführt wird, und lade dann die Seite neu.
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -277,8 +277,8 @@ export function LoyaltyDashboardClient({
                                 size="icon"
                                 variant="outline"
                                 disabled={pending}
-                                title="نسخ رابط صفحة النقاط"
-                                aria-label="نسخ رابط صفحة النقاط"
+                                title="Kopiere den Link zur Punkteseite"
+                                aria-label="Kopiere den Link zur Punkteseite"
                                 className={cn(
                                   "size-9 shrink-0 border-emerald-500/45 text-emerald-600 transition-all",
                                   "hover:border-emerald-500 hover:bg-emerald-500/12 hover:text-emerald-700",
@@ -290,7 +290,7 @@ export function LoyaltyDashboardClient({
                                   startTransition(async () => {
                                     const res = await generateCustomerMagicLink(c.customer_id);
                                     if (res.error || !res.url) {
-                                      toast.error("تعذر إنشاء الرابط", {
+                                      toast.error("Der Link konnte nicht erstellt werden", {
                                         description: res.error ?? undefined,
                                       });
                                       return;
@@ -298,12 +298,12 @@ export function LoyaltyDashboardClient({
                                     const copied = await copyTextToClipboard(res.url);
                                     if (copied) {
                                       flashLinkCopied(c.customer_id);
-                                      toast.success("تم نسخ رابط النقاط", {
-                                        description: "يمكنك لصقه في واتساب أو أي تطبيق.",
+                                      toast.success("Punktelink kopiert", {
+                                        description: "Du können es in WhatsApp oder eine andere Anwendung einfügen.",
                                         duration: 2800,
                                       });
                                     } else {
-                                      toast.error("تعذر النسخ التلقائي", {
+                                      toast.error("Automatisches Kopieren nicht möglich", {
                                         description: res.url,
                                         duration: 8000,
                                       });
@@ -325,7 +325,7 @@ export function LoyaltyDashboardClient({
                                   startTransition(async () => {
                                     const res = await generateCustomerMagicLink(c.customer_id);
                                     if (res.error || !res.url) {
-                                      setFeedback(res.error ?? "تعذر إنشاء الرابط");
+                                      setFeedback(res.error ?? "Der Link konnte nicht erstellt werden");
                                       return;
                                     }
                                     const msg = buildWhatsAppLoyaltyPointsMessage({
@@ -336,11 +336,11 @@ export function LoyaltyDashboardClient({
                                     });
                                     const href = buildWhatsAppMeUrl(waDigitsForCustomer(c.phone_normalized), msg);
                                     window.open(href, "_blank", "noopener,noreferrer");
-                                    setFeedback("تم فتح واتساب مع رسالة جاهزة. أرسلها للزبون.");
+                                    setFeedback("WhatsApp wurde mit einer fertigen Nachricht geöffnet. Sende es an den Kunden.");
                                   })
                                 }
                               >
-                                واتساب
+                                WhatsApp
                               </Button>
                               <Button
                                 size="sm"
@@ -352,12 +352,12 @@ export function LoyaltyDashboardClient({
                                     setFeedback(
                                       res.error
                                         ? res.error
-                                        : `تمت إضافة الإشعار للطابور.\nمعاينة الرسالة:\n${res.previewMessage}\n\nانتقل لتبويب «الإشعارات» واضغط «تشغيل المعالج الآن».`
+                                        : `Die Nachricht wurde an den Schüler gesendet.\nNachricht:\n${res.previewMessage}\n\nA Gehen Du zu UndY mit „Benachrichtigungen“ und drücken Du „Führe getzt den Assistenten aus“.`
                                     );
                                   })
                                 }
                               >
-                                إشعار (طابور)
+                                Hinweis (Warteschlange)
                               </Button>
                             </div>
                             <div className="flex flex-wrap items-center gap-1.5">
@@ -366,7 +366,7 @@ export function LoyaltyDashboardClient({
                                 className="h-8 w-20 text-xs"
                                 type="number"
                                 min={1}
-                                placeholder="نقاط"
+                                placeholder="Punkte"
                                 value={cashPointsByCustomer[c.customer_id] ?? ""}
                                 onChange={(e) =>
                                   setCashPointsByCustomer((s) => ({
@@ -386,13 +386,13 @@ export function LoyaltyDashboardClient({
                                     const res = await redeemCustomerCashPoints(c.customer_id, pts, null);
                                     setFeedback(
                                       res.error
-                                        ? `استبدال نقدي: ${res.error}`
-                                        : `تم خصم ${res.pointsRedeemed} نقطة. قيمة الخصم التقديرية: ${res.discountCents} سنت (طبّقها على الطلب يدوياً في نظامك). الرصيد الجديد: ${res.newBalance}.`
+                                        ? `Bargeldumtausch: ${res.error}`
+                                        : `${res.pointsRedeemed} ein Punkt wurde rabattiert. Rabattwertangebot: ${res.discountCents} Cent (gilt für UndYA in Ihrem System). Gleichgewicht NewBalance: ${res.newBalance}.`
                                     );
                                   })
                                 }
                               >
-                                خصم نقاط
+                                Punkteabzug
                               </Button>
                               {rewards.length > 0 ? (
                                 <>
@@ -406,7 +406,7 @@ export function LoyaltyDashboardClient({
                                       }))
                                     }
                                   >
-                                    <option value="">مكافأة...</option>
+                                    <option value="">belohnen...</option>
                                     {rewards
                                       .filter((r) => r.active)
                                       .map((r) => (
@@ -427,13 +427,13 @@ export function LoyaltyDashboardClient({
                                         const res = await redeemCustomerReward(c.customer_id, rid);
                                         setFeedback(
                                           res.error
-                                            ? `استبدال مكافأة: ${res.error}`
-                                            : `تم استبدال المكافأة وخصم ${res.pointsSpent} نقطة. الرصيد: ${res.newBalance}.`
+                                            ? `Bonus einlösen: ${res.error}`
+                                            : `Bonus Undiscounted ${res.pointsSpent} ein Punkt. Gleichgewicht: ${res.newBalance}.`
                                         );
                                       })
                                     }
                                   >
-                                    استبدال
+                                    ersetzen
                                   </Button>
                                 </>
                               ) : null}
@@ -454,10 +454,10 @@ export function LoyaltyDashboardClient({
       {tab === "transactions" ? (
         <Card>
           <CardHeader>
-            <CardTitle>استبدال بدون معرفات تقنية</CardTitle>
+            <CardTitle>Ersatz ohne technische Kennungen</CardTitle>
             <CardDescription>
-              الطريقة الأسهل: استخدم تبويب «العملاء» وأزرار «خصم نقاط» أو «استبدال» بجانب كل رقم. هذا القسم
-              للنسخ اليدوي لمعرّفات العميل/الطلب إن احتجتها.
+              Der einfachste Weg: Nutze den Reiter „Kunden“ und die Buttons „Punkte abziehen“ oder „Einlösen“ neben jeder Zahl. Dieser Abschnitt
+Zum manuellen Kopieren von Kunden-/Bestell-IDs, wenn du diese benötigen.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
@@ -477,22 +477,22 @@ export function LoyaltyDashboardClient({
                   );
                   setFeedback(
                     res.error
-                      ? `فشل الاستبدال النقدي: ${res.error}`
-                      : `تم خصم ${res.pointsRedeemed} نقطة وقيمة خصم ${res.discountCents} سنت. الرصيد: ${res.newBalance}.`
+                      ? `Der Bargeldumtausch ist fehlgeschlagen: ${res.error}`
+                      : `${res.pointsRedeemed} ein Punkt Undiskontierte ${res.discountCents} Cent. Gleichgewicht: ${res.newBalance}.`
                   );
                 });
               }}
             >
-              <p className="text-sm font-medium">استبدال نقدي (متقدم)</p>
-              <Input name="customer_id" placeholder="معرّف العميل (UUID)" dir="ltr" required />
+              <p className="text-sm font-medium">Bargeldwechsel (Erweitert)</p>
+              <Input name="customer_id" placeholder="Client-ID (UUID)" dir="ltr" required />
               <Input
                 name="order_id"
-                placeholder="معرّف الطلب (اختياري — اتركه فارغاً)"
+                placeholder="Bestell-ID (optional – leer lassen)"
                 dir="ltr"
               />
-              <Input name="points" placeholder="عدد النقاط" type="number" min={1} required />
+              <Input name="points" placeholder="Anzahl der Punkte" type="number" min={1} required />
               <Button size="sm" disabled={pending}>
-                تنفيذ
+                umzusetzen
               </Button>
             </form>
 
@@ -512,18 +512,18 @@ export function LoyaltyDashboardClient({
                   );
                   setFeedback(
                     res.error
-                      ? `فشل استبدال المكافأة: ${res.error}`
-                      : `تم الاستبدال. النقاط المخصومة: ${res.pointsSpent} — الرصيد: ${res.newBalance}.`
+                      ? `Das Einlösen der Prämie ist fehlgeschlagen: ${res.error}`
+                      : `Fertig arsetzen. Punkte Eine Zusammenfassung: ${res.pointsSpent} — Gleichgewicht: ${res.newBalance}.`
                   );
                 });
               }}
             >
-              <p className="text-sm font-medium">استبدال مكافأة (متقدم)</p>
-              <Input name="customer_id" placeholder="معرّف العميل" dir="ltr" required />
-              <Input name="reward_id" placeholder="معرّف المكافأة" dir="ltr" required />
-              <Input name="order_id" placeholder="معرّف الطلب (اختياري)" dir="ltr" />
+              <p className="text-sm font-medium">Bonus einlösen (Erweitert)</p>
+              <Input name="customer_id" placeholder="Kunden-ID" dir="ltr" required />
+              <Input name="reward_id" placeholder="Prämien-ID" dir="ltr" required />
+              <Input name="order_id" placeholder="Bestell-ID (optional)" dir="ltr" />
               <Button size="sm" disabled={pending}>
-                تنفيذ
+                umzusetzen
               </Button>
             </form>
           </CardContent>
@@ -533,8 +533,8 @@ export function LoyaltyDashboardClient({
       {tab === "rewards" ? (
         <Card>
           <CardHeader>
-            <CardTitle>كتالوج المكافآت</CardTitle>
-            <CardDescription>تعريف المكافآت القابلة للاستبدال بالنقاط من تبويب العملاء.</CardDescription>
+            <CardTitle>Prämienkatalog</CardTitle>
+            <CardDescription>Definiere die Prämien, die gegen Punkte einlösbar sind, auf der Registerkarte „Kunden“.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <form
@@ -549,12 +549,12 @@ export function LoyaltyDashboardClient({
                     active: rewardForm.active,
                     optionalStock: rewardForm.optionalStock ? Number(rewardForm.optionalStock) : null,
                   });
-                  setFeedback(res.error ? `فشل حفظ المكافأة: ${res.error}` : "تم حفظ المكافأة — أعد تحميل الصفحة إن لم تظهر في القائمة.");
+                  setFeedback(res.error ? `Speichhere die Belohnung failed: ${res.error}` : "Belohnung gespeichert – lade die Seite neu, wenn sie nicht in der Liste erscheint.");
                 });
               }}
             >
               <div className="grid gap-1.5">
-                <Label htmlFor="reward-title">العنوان</Label>
+                <Label htmlFor="reward-title">die Adresse</Label>
                 <Input
                   id="reward-title"
                   value={rewardForm.title}
@@ -563,7 +563,7 @@ export function LoyaltyDashboardClient({
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label htmlFor="reward-desc">الوصف</Label>
+                <Label htmlFor="reward-desc">Beschreibung</Label>
                 <Textarea
                   id="reward-desc"
                   value={rewardForm.description}
@@ -571,7 +571,7 @@ export function LoyaltyDashboardClient({
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label htmlFor="reward-points">تكلفة النقاط</Label>
+                <Label htmlFor="reward-points">Punkte kosten</Label>
                 <Input
                   id="reward-points"
                   type="number"
@@ -582,7 +582,7 @@ export function LoyaltyDashboardClient({
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label htmlFor="reward-stock">المخزون (اختياري)</Label>
+                <Label htmlFor="reward-stock">Inventar (optional)</Label>
                 <Input
                   id="reward-stock"
                   type="number"
@@ -596,10 +596,10 @@ export function LoyaltyDashboardClient({
                   checked={rewardForm.active}
                   onCheckedChange={(v) => setRewardForm((s) => ({ ...s, active: v }))}
                 />
-                <span className="text-sm">مكافأة مفعّلة</span>
+                <span className="text-sm">Bonus aktiviert</span>
               </div>
               <Button size="sm" disabled={pending}>
-                حفظ المكافأة
+                Speichere die Belohnung
               </Button>
             </form>
 
@@ -607,10 +607,10 @@ export function LoyaltyDashboardClient({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>المكافأة</TableHead>
-                    <TableHead>النقاط</TableHead>
-                    <TableHead>مخزون</TableHead>
-                    <TableHead>الحالة</TableHead>
+                    <TableHead>Bonus</TableHead>
+                    <TableHead>Punkte</TableHead>
+                    <TableHead>Aktie</TableHead>
+                    <TableHead>der Zustand</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -624,7 +624,7 @@ export function LoyaltyDashboardClient({
                       </TableCell>
                       <TableCell className="tabular-nums">{r.points_cost}</TableCell>
                       <TableCell className="tabular-nums">{r.optional_stock ?? "—"}</TableCell>
-                      <TableCell>{r.active ? "مفعّلة" : "متوقفة"}</TableCell>
+                      <TableCell>{r.active ? "Aktiviert" : "Angehalten"}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -637,10 +637,10 @@ export function LoyaltyDashboardClient({
       {tab === "campaigns" ? (
         <Card>
           <CardHeader>
-            <CardTitle>طابور الإشعارات</CardTitle>
+            <CardTitle>Benachrichtigungswarteschlange</CardTitle>
             <CardDescription>
-              بعد الضغط على «إشعار (طابور)» لأي عميل، شغّل المعالج هنا. حالياً الإرسال تجريبي — اربط مزود SMS
-              أو واتساب API في الخادم لاحقاً.
+              Nachdem du für einen beliebigen Client auf „Benachrichtigen (Warteschlange)“ geklickt haben, führe den Assistenten hier aus. Der Versand ist derzeit experimentell – schließe einen SMS-Anbieter an
+Oder WhatsApp API später auf dem Server.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -652,23 +652,23 @@ export function LoyaltyDashboardClient({
                   const res = await processQueuedNotifications();
                   setFeedback(
                     res.error
-                      ? `فشل المعالجة: ${res.error}`
-                      : `تمت المعالجة: ${res.processed} | تم الإرسال: ${res.sent} | فشل: ${res.failed}`
+                      ? `Die Verarbeitung ist fehlgeschlagen: ${res.error}`
+                      : `Verarbeitet: ${res.processed} | Gesendet an: ${res.sent} | Fehlgeschlagen: ${res.failed}`
                   );
                 })
               }
             >
-              تشغيل المعالج الآن
+              Führe jetzt den Assistenten aus
             </Button>
             <div className="overflow-x-auto rounded-lg border border-border/60">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>القناة</TableHead>
-                    <TableHead>القالب</TableHead>
-                    <TableHead>الحالة</TableHead>
-                    <TableHead>وقت الإنشاء</TableHead>
-                    <TableHead>الخطأ</TableHead>
+                    <TableHead>Kanal</TableHead>
+                    <TableHead>Vorlage</TableHead>
+                    <TableHead>der Zustand</TableHead>
+                    <TableHead>Schöpfungszeit</TableHead>
+                    <TableHead>Fehler</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -697,23 +697,23 @@ export function LoyaltyDashboardClient({
       {tab === "settings" ? (
         <Card>
           <CardHeader>
-            <CardTitle>إعدادات متقدمة</CardTitle>
+            <CardTitle>Erweiterte Einstellungen</CardTitle>
             <CardDescription>
-              قواعد الكسب وقيمة النقطة من صفحة إعدادات المطعم. هنا تشغيل المعالج وربط المزود لاحقاً.
+              Verdienstregeln und Punktewert auf der Seite mit den Restauranteinstellungen. Führe hier den Assistenten aus und verbinde den Anbieter später.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="list-disc space-y-2 pr-5 text-sm text-muted-foreground">
-              <li>تفعيل Cron كل دقيقة لاستدعاء معالج الإشعارات على الخادم.</li>
-              <li>ربط مزود SMS أو WhatsApp Business API بدل الإرسال التجريبي.</li>
-              <li>تأكد من ضبط «مقدمة الدولة» للجوال في الإعدادات لاتصال واتساب الصحيح.</li>
+            <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+              <li>Aktiviere Cron jede Minute, um den Benachrichtigungshandler auf dem Server aufzurufen.</li>
+              <li>Verbinde den SMS-Anbieter oder die WhatsApp Business API, anstatt den Versand zu testen.</li>
+              <li>Stelle sicher, dass die mobile „Ländereinführung“ in den Einstellungen für die richtige WhatsApp-Verbindung eingestellt ist.</li>
             </ul>
             <p className="mt-3 text-xs text-muted-foreground">
-              النطاق الحالي للوحة:{" "}
+              Aktuelle Reichweite des Panels:{" "}
               <span dir="ltr" className="font-mono">
                 {publicBaseUrl || "—"}
               </span>{" "}
-              · المطعم: {subdomain || "—"}
+              · Restaurant: {subdomain || "—"}
             </p>
           </CardContent>
         </Card>

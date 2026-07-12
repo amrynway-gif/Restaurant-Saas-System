@@ -3,8 +3,8 @@ import { getSession } from "@/app/actions/auth";
 import { SignupForm } from "./signup-form";
 
 export const metadata = {
-  title: "إنشاء حساب مطعم | منيو",
-  description: "إنشاء حساب مطعم والحصول على أول شهر مجاناً",
+  title: "Restaurantkonto erstellen | Speisekarte",
+  description: "Erstelle ein Restaurantkonto und erhalte den ersten Monat kostenlos",
 };
 
 export default async function SignupPage() {
@@ -12,12 +12,12 @@ export default async function SignupPage() {
   if (session) redirect("/complete-profile");
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-muted/30 px-4" dir="rtl">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-muted/30 px-4" dir="ltr">
       <div className="w-full max-w-sm space-y-6 rounded-lg border bg-card p-6 shadow-sm">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-semibold">إنشاء حساب مطعم</h1>
+          <h1 className="text-2xl font-semibold">Erstelle ein Restaurantkonto</h1>
           <p className="text-sm text-muted-foreground">
-            أنشئ حسابك ثم أنشئ مطعمك من نفس الصفحة — أول شهر مجاناً دون إدخال بطاقة بنكية.
+            Erstelle dein Konto und anschließend auf derselben Seite dein Restaurant – der erste Monat ist kostenlos, ohne die Eingabe einer Bankkarte.
           </p>
         </div>
         <SignupForm />

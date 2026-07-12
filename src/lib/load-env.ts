@@ -2,11 +2,7 @@ import { config } from "dotenv";
 import { existsSync } from "fs";
 import { join } from "path";
 
-/**
- * تحميل .env.local (أو .env) إلى process.env (للسيرفر فقط).
- * Next.js يحمّل .env تلقائياً، لكن في بعض السياقات قد لا تكون المتغيرات متوفرة؛
- * dotenv يضمن القراءة من الملف.
- */
+
 let loaded = false;
 export function ensureEnvLoaded(): void {
   if (loaded) return;
