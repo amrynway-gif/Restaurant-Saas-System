@@ -1,14 +1,9 @@
 
 export const MENU_CURRENCIES = [
-  { code: "ILS", labelAr: "NIS", symbol: "₪" },
-  { code: "SYP", labelAr: "Syrische Pfund", symbol: "L.S" },
-  { code: "JOD", labelAr: "Jordanischer Dinar", symbol: "D.A" },
-  { code: "SAR", labelAr: "Saudi-Rial", symbol: "﷼" },
+  { code: "EUR", labelAr: "Euro", symbol: "€" },
   { code: "USD", labelAr: "US-Dollar", symbol: "$" },
-  { code: "AED", labelAr: "Emiratischer Dirham", symbol: "D.E" },
-  { code: "KWD", labelAr: "Kuwaitischer Dinar", symbol: "KWD" },
-  { code: "IQD", labelAr: "Irakischer Dinar", symbol: "zählen" },
-  { code: "LBP", labelAr: "LL", symbol: "LL" },
+  { code: "GBP", labelAr: "Britisches Pfund", symbol: "£" },
+  { code: "CHF", labelAr: "Schweizer Franken", symbol: "CHF" },
 ] as const;
 
 export type MenuCurrencyCode = (typeof MENU_CURRENCIES)[number]["code"];
@@ -23,10 +18,10 @@ export function formatMenuPrice(cents: number, currencyCode: string): string {
   const code =
     currencyCode && MENU_CURRENCIES.some((c) => c.code === currencyCode)
       ? currencyCode
-      : "SAR";
-  const symbol = CURRENCY_SYMBOLS[code] ?? "﷼";
+      : "EUR";
+  const symbol = CURRENCY_SYMBOLS[code] ?? "€";
   const value = cents / 100;
-  const formatted = new Intl.NumberFormat("en-US", {
+  const formatted = new Intl.NumberFormat("de-DE", {
     minimumFractionDigits: value % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   }).format(value);

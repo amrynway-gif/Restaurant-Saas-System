@@ -267,7 +267,7 @@ export function MenuPublicFooter({
  © {year} {restaurantName} — Alle Rechte vorbehalten
  </p>
  <a
- href="https://resturant.app"
+ href="https://reflexrest.app"
  target="_blank"
  rel="noopener noreferrer"
  className={cn(
@@ -276,7 +276,7 @@ export function MenuPublicFooter({
  )}
  >
  <span className={cn("font-normal", shell.muted)}>Angetrieben von </span>
- <strong>Speisekarte</strong>
+ <strong>reflexrest.app</strong>
  </a>
  </div>
  </div>
