@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { createProfileAfterSignup } from "@/app/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -24,7 +23,7 @@ export function SignupForm() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error: signUpErr } = await supabase.auth.signUp({
+    const { data, error: signUpErr } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -38,15 +37,15 @@ export function SignupForm() {
       return;
     }
 
-    const { error: profileErr } = await createProfileAfterSignup();
-    if (profileErr) {
-      setError(profileErr);
-      setLoading(false);
+    setLoading(false);
+    
+    // If no session is returned, email confirmation is required
+    if (!data.session) {
+      setSuccess(true);
       return;
     }
 
-    setLoading(false);
-    setSuccess(true);
+    // Otherwise, redirect immediately
     router.refresh();
     router.push("/complete-profile");
   }
@@ -54,11 +53,14 @@ export function SignupForm() {
   if (success) {
     return (
       <div className="space-y-4 text-center text-sm" dir="ltr">
-        <p className="text-green-600">
-          Das Konto wurde erfolgreich erstellt. You are being directed to create your restaurant...
+        <p className="text-green-600 font-medium">
+          Das Konto wurde erfolgreich erstellt. Bitte überprüfe dein E-Mail-Postfach, um deine E-Mail-Adresse zu bestätigen!
         </p>
-        <Link href="/complete-profile" className={cn(buttonVariants({ variant: "default" }), "w-full inline-flex justify-center h-11")}>
-          Erstelle jetzt mein Restaurant
+        <p className="text-muted-foreground">
+          Nach der Bestätigung kannst du dich einloggen und dein Restaurant erstellen.
+        </p>
+        <Link href="/login" className={cn(buttonVariants({ variant: "outline" }), "w-full inline-flex justify-center h-11")}>
+          Zum Login
         </Link>
       </div>
     );

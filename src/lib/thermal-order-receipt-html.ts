@@ -31,7 +31,7 @@ export function buildThermalOrderReceiptHtml(
   const ownerDisc = order.owner_discount_cents ?? 0;
   const payable = Math.max(0, subtotal - loyaltyDisc - ownerDisc);
   const created = new Date(order.created_at);
-  const dateStr = created.toLocaleString("en-GB", {
+  const dateStr = created.toLocaleString("de-DE", {
     dateStyle: "short",
     timeStyle: "short",
     hour12: false,

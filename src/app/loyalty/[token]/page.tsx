@@ -83,7 +83,7 @@ export default async function LoyaltyPublicPage({ params }: Props) {
                 <div className="space-y-0.5">
                   <p className="font-medium">{txLabel(tx.tx_type)}</p>
                   <p className="text-xs text-muted-foreground">
-                    {new Date(tx.created_at).toLocaleString("en-GB", {
+                    {new Date(tx.created_at).toLocaleString("de-DE", {
                       dateStyle: "short",
                       timeStyle: "short",
                       hour12: false,

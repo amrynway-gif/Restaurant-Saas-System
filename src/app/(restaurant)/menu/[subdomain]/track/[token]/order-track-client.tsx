@@ -107,7 +107,7 @@ export function OrderTrackClient({ subdomain, token, initialData }: Props) {
           </h2>
           <p className="mt-2 text-sm text-stone-600 dark:text-stone-400" dir="ltr">
             Erstellt{" "}
-            {new Date(data.created_at).toLocaleString("ar-SA", {
+            {new Date(data.created_at).toLocaleString("de-DE", {
               dateStyle: "medium",
               timeStyle: "short",
               numberingSystem: "latn",

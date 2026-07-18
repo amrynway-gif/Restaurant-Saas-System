@@ -101,7 +101,7 @@ export function OrderCard({
           <p className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground sm:text-sm">
             <CalendarIcon className="size-3.5 shrink-0" aria-hidden />
             <span dir="ltr" className="tabular-nums">
-              {new Date(o.created_at).toLocaleString("en-GB", {
+              {new Date(o.created_at).toLocaleString("de-DE", {
                 dateStyle: "short",
                 timeStyle: "short",
                 hour12: false,

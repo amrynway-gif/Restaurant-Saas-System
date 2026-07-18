@@ -678,7 +678,7 @@ Oder WhatsApp API später auf dem Server.
                       <TableCell className="font-mono text-xs">{n.template_key}</TableCell>
                       <TableCell>{n.status}</TableCell>
                       <TableCell className="text-xs">
-                        {new Date(n.created_at).toLocaleString("en-GB", {
+                        {new Date(n.created_at).toLocaleString("de-DE", {
                           dateStyle: "short",
                           timeStyle: "short",
                           hour12: false,

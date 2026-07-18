@@ -100,11 +100,11 @@ export default async function AdminDashboardPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--bg-surface-2)] text-[11px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                  <th className="p-4 text-left">der Name</th>
+                  <th className="p-4 text-left">Name</th>
                   <th className="p-4 text-left">Subdomain</th>
                   <th className="p-4 text-left">Benutzername</th>
-                  <th className="p-4 text-left">der Zustand</th>
-                  <th className="p-4 text-left">das Datum</th>
+                  <th className="p-4 text-left">Status</th>
+                  <th className="p-4 text-left">Erstellt am</th>
                 </tr>
               </thead>
               <tbody>
@@ -148,7 +148,7 @@ export default async function AdminDashboardPage() {
                       </td>
                       <td className="p-4 text-[var(--text-muted)]">
                         {r.created_at
-                          ? new Date(r.created_at).toLocaleDateString("ar-SA")
+                          ? new Date(r.created_at).toLocaleDateString("de-DE")
                           : "—"}
                       </td>
                     </tr>

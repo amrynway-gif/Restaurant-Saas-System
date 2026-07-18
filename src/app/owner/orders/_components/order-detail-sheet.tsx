@@ -128,7 +128,7 @@ export function OrderDetailSheet({
             </span>
           </div>
           <DialogDescription className="text-start">
-            {new Date(order.created_at).toLocaleString("en-GB", {
+            {new Date(order.created_at).toLocaleString("de-DE", {
               dateStyle: "short",
               timeStyle: "short",
               hour12: false,

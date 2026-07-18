@@ -102,7 +102,7 @@ export function CustomersClient({
                 <TableCell className="tabular-nums">{c.lifetime_points_redeemed}</TableCell>
                 <TableCell dir="ltr" className="text-xs tabular-nums text-muted-foreground">
                   {c.first_seen_at
-                    ? new Date(c.first_seen_at).toLocaleString("en-GB", {
+                    ? new Date(c.first_seen_at).toLocaleString("de-DE", {
                         dateStyle: "short",
                         timeStyle: "short",
                         hour12: false,
@@ -111,7 +111,7 @@ export function CustomersClient({
                 </TableCell>
                 <TableCell dir="ltr" className="text-xs tabular-nums text-muted-foreground">
                   {c.last_order_at
-                    ? new Date(c.last_order_at).toLocaleString("en-GB", {
+                    ? new Date(c.last_order_at).toLocaleString("de-DE", {
                         dateStyle: "short",
                         timeStyle: "short",
                         hour12: false,
